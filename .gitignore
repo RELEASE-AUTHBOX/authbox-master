@@ -1,0 +1,11 @@
+media/
+staticfiles/
+__pycache__/
+
+.env*
+*.pyc
+*.sqlite3
+
+!.env-default
+
+sendgrid.env
