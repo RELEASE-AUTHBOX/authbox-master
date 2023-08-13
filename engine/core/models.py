@@ -53,7 +53,7 @@ class TemplateOwner(BaseAbstractModel):
 	class Meta:verbose_name=_(_F);verbose_name_plural=_('templates owner')
 	def __str__(self):return self.name
 class Template(BaseAbstractModel):
-	site=models.ManyToManyField(Site,related_name='templates_site');name=models.CharField(_(_C),max_length=50);rel_path=models.CharField(_('relative path'),max_length=255);is_frontend=models.BooleanField(default=_A);template_owner=models.ForeignKey(TemplateOwner,verbose_name=_(_F),on_delete=models.CASCADE,blank=_A,null=_A);service_option=MultiSelectField(choices=OptServiceType.choices,max_length=255)
+	site=models.ManyToManyField(Site,related_name='templates_site',blank=_A);name=models.CharField(_(_C),max_length=50);rel_path=models.CharField(_('relative path'),max_length=255);is_frontend=models.BooleanField(default=_A);template_owner=models.ForeignKey(TemplateOwner,verbose_name=_(_F),on_delete=models.CASCADE,blank=_A,null=_A);service_option=MultiSelectField(choices=OptServiceType.choices,max_length=255,blank=_A,null=_A)
 	class Meta:verbose_name=_(_G);verbose_name_plural=_('templates')
 	def __str__(self):return self.name
 class Service(BaseAbstractModel):
