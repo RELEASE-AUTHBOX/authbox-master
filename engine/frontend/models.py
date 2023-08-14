@@ -93,7 +93,7 @@ class Events(BaseAbstractModel,BaseContentModel,TranslatableModel):
 	def __str__(A):return f"{A.title}"
 	def save(A,*B,**C):A.slug=uuslug(A.title,instance=A,max_length=255);A.word_count=word_count(A.content);A.reading_time=reading_time(A.word_count);super().save(*(B),**C)
 class SlideShow(BaseAbstractModel,TranslatableModel):
-	site=models.ForeignKey(Site,on_delete=models.CASCADE,verbose_name=_(_F));admin=models.ForeignKey(User,on_delete=models.PROTECT);photo=GenericRelation(Photo);translations=TranslatedFields(title=models.CharField(_(_C),max_length=500),sub_title=models.CharField(_(_R),max_length=500,null=_A,blank=_A),content=encrypt(CKEditor5Field(_(_E),blank=_A,null=_A,config_name=_D)));text=CKEditor5Field('Text',config_name=_D);slug=models.SlugField(max_length=255,default='',unique=_A,blank=_A,editable=_B);status=models.SmallIntegerField(choices=OptStatusPublish.choices,default=OptStatusPublish.PUBLISHED)
+	site=models.ForeignKey(Site,on_delete=models.CASCADE,verbose_name=_(_F));admin=models.ForeignKey(User,on_delete=models.PROTECT);photo=GenericRelation(Photo);translations=TranslatedFields(title=models.CharField(_(_C),max_length=500),sub_title=models.CharField(_(_R),max_length=500,null=_A,blank=_A),content=encrypt(CKEditor5Field(_(_E),blank=_A,null=_A,config_name=_D)));slug=models.SlugField(max_length=255,default='',unique=_A,blank=_A,editable=_B);status=models.SmallIntegerField(choices=OptStatusPublish.choices,default=OptStatusPublish.PUBLISHED)
 	class Meta:verbose_name=_('slide show');verbose_name_plural=_('slides show')
 	def __str__(A):return f"{A.title}"
 	def save(A,*B,**C):A.slug=uuslug(A.title,instance=A,max_length=255);super().save(*(B),**C)
