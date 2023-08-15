@@ -1,6 +1,7 @@
+from core._version import __version__
+from core.models import User
 from django.conf import settings
 from django.utils.translation import gettext as _
-from core.models import User
 from django_authbox.common import get_site_id_front
 def get_menu_group(user_id):
 	A=User.objects.filter(id=user_id)
@@ -11,3 +12,4 @@ def get_menu_group(user_id):
 def context_outbox(request):return{'menugroup':get_menu_group(request.user.id)}
 def get_main_domain(request):return{'main_domain':settings.MAIN_DOMAIN}
 def site_id(request):return{'site_id':get_site_id_front(request)}
+def version(request):return{'version':f"{__version__.major}.{__version__.minor}.{__version__.micro}"}

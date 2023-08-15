@@ -165,7 +165,6 @@ from core.views import download_image
 from django_authbox import msgbox
 from django_authbox.common import *
 from frontend.models import *
-from .decorator import group_required
 from .forms import *
 User=get_user_model()
 mMsgBox=msgbox.ClsMsgBox()
