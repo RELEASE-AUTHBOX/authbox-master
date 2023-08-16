@@ -1,18 +1,20 @@
-_P='template'
-_O='description'
-_N='last_login'
-_M='groups'
-_L='is_superuser'
-_K='file_path'
-_J='model_list'
-_I='kind'
-_H='is_staff'
-_G='is_active'
-_F='agency'
+_R='template'
+_Q='description'
+_P='last_login'
+_O='groups'
+_N='is_superuser'
+_M='file_path'
+_L='status'
+_K='service_option'
+_J='kind'
+_I='is_staff'
+_H='is_active'
+_G='agency'
+_F='updated_at'
 _E='email'
 _D='fields'
-_C='-updated_at'
-_B='updated_at'
+_C='model_list'
+_B='-updated_at'
 _A='name'
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
@@ -23,17 +25,19 @@ from .forms import *
 from django.contrib.auth import get_user_model
 User=get_user_model()
 admin.site.register(Agency,TranslatableAdmin)
-class BaseUserAdmin(UserAdmin):fieldsets=(None,{_D:(_E,'password')}),(_('Personal info'),{_D:(_A,_F)}),(_('Permissions'),{_D:(_G,_H,_L,_M,'user_permissions')}),(_('Important dates'),{_D:(_N,)});add_fieldsets=(None,{'classes':('wide',),_D:(_E,_A,'password1','password2',_F)}),;list_display=_E,_A,_H,_N;list_filter=_H,_L,_G,_M;search_fields=_E,_A;ordering=_E,
+class BaseUserAdmin(UserAdmin):fieldsets=(None,{_D:(_E,'password')}),(_('Personal info'),{_D:(_A,_G)}),(_('Permissions'),{_D:(_H,_I,_N,_O,'user_permissions')}),(_('Important dates'),{_D:(_P,)});add_fieldsets=(None,{'classes':('wide',),_D:(_E,_A,'password1','password2',_G)}),;list_display=_E,_A,_I,_P;list_filter=_I,_N,_H,_O;search_fields=_E,_A;ordering=_E,
 admin.site.register(User,BaseUserAdmin)
-class ServiceAdmin(admin.ModelAdmin):list_filter=_I,;list_display=[_I,_F,_G,'site','expired_date',_B];search_fields=_I,;ordering=_C,
+class ServiceAdmin(admin.ModelAdmin):list_filter=_J,;list_display=[_J,_G,_H,'site','expired_date',_F];search_fields=_J,;ordering=_B,
 admin.site.register(Service,ServiceAdmin)
-class TemplateAdmin(admin.ModelAdmin):list_filter=_A,;list_display=[_A,'rel_path',_B];search_fields=_A,;ordering=_C,
+class TemplateAdmin(admin.ModelAdmin):list_filter=_A,;list_display=[_A,'rel_path','get_sites',_K,_F,_L];search_fields=_A,;ordering=_B,
 admin.site.register(Template,TemplateAdmin)
-class TemplateOwnerAdmin(admin.ModelAdmin):list_filter=_A,;list_display=[_A,_B];search_fields=_A,;ordering=_C,
+class TemplateOwnerAdmin(admin.ModelAdmin):list_filter=_A,;list_display=[_A,_F];search_fields=_A,;ordering=_B,
 admin.site.register(TemplateOwner,TemplateOwnerAdmin)
-class ModelListAdmin(admin.ModelAdmin):list_filter=_A,_O,'status';list_display=[_A,_O,_B];search_fields=_A,;ordering=_C,
+class ModelListAdmin(admin.ModelAdmin):list_filter=_A,_Q,_L;list_display=[_A,_Q,'get_templates',_L];search_fields=_A,;ordering=_B,
 admin.site.register(ModelList,ModelListAdmin)
-class ModelListSettingAdmin(admin.ModelAdmin):list_filter=_J,_P;list_display=[_J,_P,_B];search_fields=_J,;ordering=_C,
+class MenuDefaultAdmin(admin.ModelAdmin):list_filter=_K,_C;list_display=[_C,_K];search_fields=_C,;ordering=_B,
+admin.site.register(MenuDefault,MenuDefaultAdmin)
+class ModelListSettingAdmin(admin.ModelAdmin):list_filter=_C,_R;list_display=[_C,_R,'get_image_size',_F];search_fields=_C,;ordering=_B,
 admin.site.register(ModelListSetting,ModelListSettingAdmin)
-class PhotoAdmin(admin.ModelAdmin):list_filter=_K,;list_display=[_K,_B];search_fields=_K,;ordering=_C,
+class PhotoAdmin(admin.ModelAdmin):list_filter=_M,;list_display=[_M,_F];search_fields=_M,;ordering=_B,
 admin.site.register(Photo,PhotoAdmin)

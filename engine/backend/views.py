@@ -604,7 +604,8 @@ def slideshow_create(request):
 	else:messages.info(request,mMsgBox.get(_W));context[_G]=SlideShowForm();context[_L]=PhotoForm()
 	return render(request,template,context)
 def slideshow_update(request,uuid):
-	context={};context[_J]=_AF;active_page=get_translated_active_page(_Ae);context[_E]=active_page;site_id=get_site_id(request);menu=get_menu_caches(request,_D,site_id,active_page);context.update(menu);template=get_template(site_id,is_frontend=_A)+_X;data=SlideShow.objects.filter(site_id=site_id,uuid=uuid);post=get_object_or_404(data);post_photo=post.photo.first()
+	context={};context[_J]=_AF;active_page=get_translated_active_page(_Ae);context[_E]=active_page;site_id=get_site_id(request);print('site_id slideshow update=',site_id);menu=get_menu_caches(request,_D,site_id,active_page);context.update(menu);template=get_template(site_id,is_frontend=_A)+_X;data=SlideShow.objects.filter(site_id=site_id,uuid=uuid);post=get_object_or_404(data);post_photo=post.photo.first()
+	for i in post.photo.all():print('foto ',i)
 	if request.method==_I:
 		form=SlideShowForm(request.POST,instance=post);photo=PhotoForm(request.POST,instance=post_photo)
 		if form.is_valid():
