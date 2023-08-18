@@ -117,7 +117,7 @@ class Pages(BaseAbstractModel,BaseContentModel,TranslatableModel):
 	def save(A,*B,**C):A.slug=uuslug(A.title,instance=A,max_length=255);A.word_count=word_count(A.content);A.reading_time=reading_time(A.word_count);super().save(*(B),**C)
 class SocialMedia(BaseAbstractModel):
 	site=models.ForeignKey(Site,on_delete=models.CASCADE,verbose_name=_(_F));kind=models.SmallIntegerField(choices=OptSocialMediaKinds.choices,verbose_name=_('kind'));link=encrypt(models.URLField(_(_J),max_length=255));status=models.SmallIntegerField(choices=OptStatusPublish.choices,default=OptStatusPublish.PUBLISHED)
-	def __str__(A):return f"{A.site.name} - {A.kind}"
+	def __str__(A):return f"{A.site.name} - {A.get_kind_display()}"
 class BaseGalleryModel(models.Model):
 	site=models.ForeignKey(Site,on_delete=models.CASCADE,verbose_name=_(_F));admin=models.ForeignKey(User,on_delete=models.PROTECT);view_count=models.PositiveIntegerField(default=0,editable=_B);slug=models.SlugField(max_length=255,default='',unique=_A,blank=_A);status=models.SmallIntegerField(choices=OptStatusPublish.choices,default=OptStatusPublish.PUBLISHED)
 	class Meta:app_label=_P;abstract=_A
