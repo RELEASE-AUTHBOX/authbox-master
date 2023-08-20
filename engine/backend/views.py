@@ -304,7 +304,7 @@ def user_init_service(request,agency_id):
 			else:site,created=Site.objects.get_or_create(domain=hostname,defaults={_H:hostname})
 			print(_A6,site)
 		srv=Service.objects.filter(site_id=site.id)
-		if srv:srv=service.get();context[_Ac]=f'Domain "{site.domain}" sudah digunakan oleh service "{srv.get_kind_display()}"! Satu domain hanya dapat digunakan oleh satu service.'
+		if srv:srv=srv.get();context[_Ac]=f'Domain "{site.domain}" sudah digunakan oleh service "{srv.get_kind_display()}"! Satu domain hanya dapat digunakan oleh satu service.'
 		else:
 			srv=Service.objects.create(site_id=site.id,kind=service,agency_id=agency_id,expired_date=tgl_exp,is_active=_f,is_default=_f);template_id=_C;temp=Template.objects.filter(is_frontend=_f)
 			for i in temp:

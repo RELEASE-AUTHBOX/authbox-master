@@ -7,7 +7,6 @@ import io,os,urllib
 from datetime import datetime,timedelta
 from ipaddress import ip_address as validate_ip
 from django.conf import settings
-from django.contrib import messages
 from django.contrib.auth import login,logout
 from django.http import JsonResponse
 from django.shortcuts import HttpResponse,redirect,render

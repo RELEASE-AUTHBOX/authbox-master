@@ -9,6 +9,7 @@ _A='id'
 import json,os
 from allauth.socialaccount.models import SocialApp
 from core.models import MenuDefault,ModelList,ModelListSetting,OptServiceType,Template,TemplateOwner
+from django.contrib.sites.models import Site
 from django.core.management.base import BaseCommand
 from django.db.models import OuterRef,Subquery
 from menu.models import Menu,MenuTranslation
@@ -53,6 +54,12 @@ class Command(BaseCommand):
 		if A:
 			with open(os.path.join(B.file_path,'menu_default.json'),_E)as H:H.write(json.dumps(A))
 		B.info('Done Write [menu_default.json], Total files write: {}'.format(len(A)))
+	def create_site_default(B):
+		A=[];D=Site.objects.filter(domain__in=['localhost:8000','127.0.0.1:8000'])
+		for C in D:E={'domain':C.domain};F={_B:C.name};A.append({_C:E,_D:F})
+		if A:
+			with open(os.path.join(B.file_path,'site_default.json'),_E)as G:G.write(json.dumps(A))
+		B.info('Done Write [site_default.json], Total files write: {}'.format(len(A)))
 	def create_model_list_setting(C):
 		B=[];D=ModelListSetting.objects.all()
 		for A in D:E={_A:A.id};F={_H:A.model_list.id if A.model_list else _F,'template_id':A.template.id if A.template else _F,'image_width':A.image_width,'image_height':A.image_height};B.append({_C:E,_D:F})
@@ -65,4 +72,4 @@ class Command(BaseCommand):
 		if B:
 			with open(os.path.join(C.file_path,'social_app.json'),_E)as G:G.write(json.dumps(B))
 		C.info('Done Write [social_app.json], Total files write: {}'.format(len(B)))
-	def handle(A,*B,**C):A.create_template_owner();A.create_template();A.create_menu();A.create_model_list();A.create_menu_default();A.create_model_list_setting();A.create_social_app();A.info('All Done ...')
+	def handle(A,*B,**C):A.create_site_default();A.create_template_owner();A.create_template();A.create_menu();A.create_model_list();A.create_menu_default();A.create_model_list_setting();A.create_social_app();A.info('All Done ...')

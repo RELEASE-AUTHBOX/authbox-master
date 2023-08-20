@@ -45,10 +45,11 @@ _D='default'
 _C='NAME'
 _B=True
 _A='|'
-import os
+import logging,os
 from pathlib import Path
-from encryption import OutboxEncryption
 from django.utils.translation import gettext_lazy as _
+from encryption import OutboxEncryption
+logger=logging.getLogger(__name__)
 BASE_DIR=Path(__file__).resolve().parent.parent
 BASE_DIR_1=os.path.normpath(os.path.join(BASE_DIR,'..'))
 BASE_DIR_2=os.path.normpath(os.path.join(BASE_DIR_1,'..'))
@@ -72,6 +73,8 @@ if'sqlite3'in DB_ENGINE:
 	if db_name.find('/')<0 and db_name.find('\\')<0:DATABASES={_D:{_O:DB_ENGINE,_C:os.path.join(BASE_DIR,'db',db_name)}}
 	else:DATABASES={_D:{_O:DB_ENGINE,_C:db_name}}
 else:DATABASES={_D:{_O:DB_ENGINE,_C:KEY[_g],'USER':KEY['DB_USER'],'PASSWORD':KEY[_d],'HOST':KEY['DB_HOST'],'PORT':KEY['DB_PORT']}}
+tmp=os.path.basename(DATABASES[_D][_C])
+logger.error(f"Database Name[94m {tmp}[0m")
 AUTH_PASSWORD_VALIDATORS=[{_C:'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},{_C:'django.contrib.auth.password_validation.MinimumLengthValidator'},{_C:'django.contrib.auth.password_validation.CommonPasswordValidator'},{_C:'django.contrib.auth.password_validation.NumericPasswordValidator'}]
 LANGUAGE_CODE=_H
 TIME_ZONE='Asia/Makassar'
