@@ -8,7 +8,7 @@ _B='name'
 _A='id'
 import json,os
 from allauth.socialaccount.models import SocialApp
-from core.models import MenuDefault,ModelList,ModelListSetting,OptServiceType,Template,TemplateOwner
+from core.models import MenuDefault,ModelList,ModelListSetting,Template,TemplateOwner
 from django.contrib.sites.models import Site
 from django.core.management.base import BaseCommand
 from django.db.models import OuterRef,Subquery
