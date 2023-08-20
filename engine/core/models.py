@@ -54,8 +54,8 @@ class TemplateOwner(BaseAbstractModel):
 class OptStatusPublish(models.IntegerChoices):DRAFT=1,_('Draft');PUBLISHED=2,_('Published')
 class Template(BaseAbstractModel):
 	site=models.ManyToManyField(Site,related_name='templates_site',blank=_A);name=models.CharField(_(_C),max_length=50);rel_path=models.CharField(_('relative path'),max_length=255);is_frontend=models.BooleanField(default=_A);template_owner=models.ForeignKey(TemplateOwner,verbose_name=_(_F),on_delete=models.CASCADE,blank=_A,null=_A);service_option=MultiSelectField(choices=OptServiceType.choices,max_length=255,blank=_A,null=_A);photo=GenericRelation(Photo,verbose_name=_('photo'));status=models.SmallIntegerField(choices=OptStatusPublish.choices,default=OptStatusPublish.DRAFT)
-	def get_sites(A):return ', '.join([A.domain for A in A.site.all()])
 	class Meta:verbose_name=_(_G);verbose_name_plural=_('templates')
+	def get_sites(A):return ', '.join([A.domain for A in A.site.all()])
 	def __str__(A):return A.name
 class Service(BaseAbstractModel):
 	site=models.OneToOneField(Site,on_delete=models.PROTECT,blank=_A,null=_A);kind=models.SmallIntegerField(choices=OptServiceType.choices);agency=models.ForeignKey(Agency,on_delete=models.PROTECT,blank=_A,null=_A,related_name='service_agencies');is_active=models.BooleanField(default=_B);is_demo=models.BooleanField(default=_A);expired_date=models.DateTimeField();is_default=models.BooleanField(default=_B)
@@ -84,7 +84,9 @@ class UserLog(BaseAbstractModel):
 	class Meta:verbose_name=_('userlog');verbose_name_plural=_('userlogs')
 	def __str__(A):return A.social_media
 @receiver(signals.post_save,sender=User,dispatch_uid='update_user_group')
-def _update_user_group(sender,instance,**C):A=instance;print('signal from User',A);B=Group.objects.get(id=3);A.groups.clear();A.groups.add(B);print('done')
+def _update_user_group(sender,instance,**D):
+	A=instance;print('signal from User',A);print('group ALL',B);B=A.groups.all()
+	if not B:C=Group.objects.get(id=3);A.groups.add(C);print('done')
 @receiver(signals.post_save,sender=Agency)
 def _update_shortuuid(sender,instance,**D):
 	C=instance;A=str(C.id);B=len(A)

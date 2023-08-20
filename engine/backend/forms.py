@@ -108,6 +108,7 @@ class ModelListForm(ModelForm):
 class ServiceForm(ModelForm):
 	class Meta:model=Service;fields=['site','kind','agency','is_active','expired_date']
 class TemplateForm(ModelForm):
+	dim_w=forms.CharField(widget=forms.HiddenInput(),initial=870);dim_h=forms.CharField(widget=forms.HiddenInput(),initial=500)
 	class Meta:model=Template;fields=[_G,'rel_path','template_owner','is_frontend',_B]
 class BannerForm(ModelForm):
 	dim_w=forms.CharField(widget=forms.HiddenInput(),initial=267);dim_h=forms.CharField(widget=forms.HiddenInput(),initial=417)
