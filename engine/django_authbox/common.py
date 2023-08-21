@@ -1,4 +1,3 @@
-_F='cpanelresult'
 _E='authbox.web.id'
 _D='srv135.niagahoster.com'
 _C='QQ0GWU5HOJ7OYZWNM82IX2IA6PZGEK6M'
@@ -31,8 +30,8 @@ def get_site_id(request):
 	if B:return B.site_id
 	return 0
 def get_agency_from(request):A=User.objects.get(id=request.user.id);B=A.agency.all()[0];return B.id
-def create_sub_domain(sub_domain):A=_B;B=_C;C=_D;D=_E;E='/public_html';F=f"curl -H'Authorization: cpanel {A}:{B}' 'https://{C}:2083/json-api/cpanel?cpanel_jsonapi_func=addsubdomain&cpanel_jsonapi_module=SubDomain&cpanel_jsonapi_version=2&domain={sub_domain}&rootdomain={D}&dir={E}'";G=os.popen(F).read();H=json.loads(G);return H[_F]['data'][0]
-def delete_sub_domain(sub_domain):A=_B;B=_C;C=_D;D=_E;E=f"curl -H'Authorization: cpanel {A}:{B}' 'https://{C}:2083/json-api/cpanel?cpanel_jsonapi_func=delsubdomain&cpanel_jsonapi_module=SubDomain&cpanel_jsonapi_version=2&domain={sub_domain}.{D}'";F=os.popen(E).read();G=json.loads(F);return G[_F]['data'][0]
+def create_sub_domain(sub_domain):A=_B;B=_C;C=_D;D=_E;E='/public_html';F=f"curl -H'Authorization: cpanel {A}:{B}' 'https://{C}:2083/json-api/cpanel?cpanel_jsonapi_func=addsubdomain&cpanel_jsonapi_module=SubDomain&cpanel_jsonapi_version=2&domain={sub_domain}&rootdomain={D}&dir={E}'";G=os.popen(F).read();return _A
+def delete_sub_domain(sub_domain):A=_B;B=_C;C=_D;D=_E;E=f"curl -H'Authorization: cpanel {A}:{B}' 'https://{C}:2083/json-api/cpanel?cpanel_jsonapi_func=delsubdomain&cpanel_jsonapi_module=SubDomain&cpanel_jsonapi_version=2&domain={sub_domain}.{D}'";F=os.popen(E).read();return _A
 def get_site_id_front(request):
 	A=Site.objects.filter(domain=request.get_host()).values_list('id',flat=_A)
 	if A:return A[0]
