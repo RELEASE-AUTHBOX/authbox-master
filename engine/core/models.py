@@ -85,7 +85,7 @@ class UserLog(BaseAbstractModel):
 	def __str__(A):return A.social_media
 @receiver(signals.post_save,sender=User,dispatch_uid='update_user_group')
 def _update_user_group(sender,instance,**D):
-	A=instance;print('signal from User',A);print('group ALL',B);B=A.groups.all()
+	A=instance;print('signal from User',A);B=A.groups.all()
 	if not B:C=Group.objects.get(id=3);A.groups.add(C);print('done')
 @receiver(signals.post_save,sender=Agency)
 def _update_shortuuid(sender,instance,**D):
