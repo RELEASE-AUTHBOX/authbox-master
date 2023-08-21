@@ -30,13 +30,13 @@ class Command(BaseCommand):
 			with open(os.path.join(C.file_path,'template.json'),_E)as G:G.write(json.dumps(B))
 		C.info('Done Write [template.json], Total files write: {}'.format(len(B)))
 	def create_menu(C):
-		B=[];E=Subquery(MenuTranslation.objects.filter(master_id=OuterRef(_A),language_code='en').values(_B));F=Menu.objects.language(_A).filter(kind=2).annotate(name_en=E)
-		for A in F:
-			G={_A:A.id};H={_B:A.name,'parent_id':A.parent.id if A.parent else _F,'link':A.link,'order_menu':A.order_menu,'icon':A.icon,'kind':A.kind,'is_visibled':A.is_visibled,'is_external':A.is_external,'is_new':A.is_new,'exclude_menu':A.exclude_menu};I={_B:A.name_en};D=[]
-			for J in A.menu_group.all():D.append(J.id)
-			K={'menu_group':D};B.append({_C:G,_D:H,'translation':I,'m2m':K})
+		F='order_menu';E='parent_id';B=[];G=Subquery(MenuTranslation.objects.filter(master_id=OuterRef(_A),language_code='en').values(_B));H=Menu.objects.language(_A).filter(kind=2).annotate(name_en=G).order_by(E,F)
+		for A in H:
+			I={_A:A.id};J={_B:A.name,E:A.parent.id if A.parent else _F,'link':A.link,F:A.order_menu,'icon':A.icon,'kind':A.kind,'is_visibled':A.is_visibled,'is_external':A.is_external,'is_new':A.is_new,'exclude_menu':A.exclude_menu};K={_B:A.name_en};D=[]
+			for L in A.menu_group.all():D.append(L.id)
+			M={'menu_group':D};B.append({_C:I,_D:J,'translation':K,'m2m':M})
 		if B:
-			with open(os.path.join(C.file_path,'menu.json'),_E)as L:L.write(json.dumps(B))
+			with open(os.path.join(C.file_path,'menu.json'),_E)as N:N.write(json.dumps(B))
 		C.info('Done Write [menu.json], Total files write: {}'.format(len(B)))
 	def create_model_list(C):
 		B=[];D=ModelList.objects.all()
