@@ -39,30 +39,32 @@ def sync_calendar_all(request,year=_A,month=_A):
 	date=_A
 	if year and month:date=datetime.datetime(year,month,1)
 	site_id=get_site_id_front(request);gcal_default=GC.objects.filter(site_id=site_id,is_default=_B)[:1];gcal=GC.objects.filter(site_id=site_id,is_default=_C)
-	if gcal_default:gcal_default=gcal_default.get()
-	credentials=''
-	if gcal_default.file_path_doc:credentials=gcal_default.file_path_doc.path
-	if not credentials:return _F
-	for i in gcal:
-		if gcal_default.file_path_doc:sync_calendar(request,i.cal_name,gcal_default.cal_name,credentials=credentials,date=date)
-	res=cache.get(f"calendar_cache_{year}_{month}",version=site_id)
-	if not res:
-		res=[];calendar=GoogleCalendar(gcal_default.cal_name,credentials_path=credentials);start,end=get_month_range(date);events=calendar.get_events(start,end)
-		for i in events:tmp={'title':i.summary,'start':i.start,'end':i.end,'desc':i.description};res.append(tmp)
-		print('GET FROM default Cal');cache.set(f"calendar_cache_{year}_{month}",res,version=site_id)
-	else:print('GET FROM calendar_cache')
-	return res
+	if gcal_default:
+		gcal_default=gcal_default.get();credentials=''
+		if gcal_default.file_path_doc:credentials=gcal_default.file_path_doc.path
+		if not credentials:return _F
+		for i in gcal:
+			if gcal_default.file_path_doc:sync_calendar(request,i.cal_name,gcal_default.cal_name,credentials=credentials,date=date)
+		res=cache.get(f"calendar_cache_{year}_{month}",version=site_id)
+		if not res:
+			res=[];calendar=GoogleCalendar(gcal_default.cal_name,credentials_path=credentials);start,end=get_month_range(date);events=calendar.get_events(start,end)
+			for i in events:tmp={'title':i.summary,'start':i.start,'end':i.end,'desc':i.description};res.append(tmp)
+			print('GET FROM default Cal');cache.set(f"calendar_cache_{year}_{month}",res,version=site_id)
+		else:print('GET FROM calendar_cache')
+		return res
+	return _A
 def add_new_events(request,default_cal,credentials_path,event_name,start,end,description):
 	site_id=get_site_id(request);gcal_default=GC.objects.filter(site_id=site_id,is_default=_B)[:1]
-	if gcal_default:gcal_default=gcal_default.get()
-	credentials=''
-	if gcal_default.file_path_doc:credentials=gcal_default.file_path_doc.path
-	if not credentials:return _F
-	event=Event(event_name,start=start,end=end,description=description,minutes_before_email_reminder=50);cal=GoogleCalendar(gcal_default.cal_name,credentials_path=credentials)
-	if not is_event_exists(cal,start,end,event_name):
-		try:cal.add_event(event);print('Event added!');cache.delete(f"calendar_cache_{start.year}_{start.month}",version=site_id);print(_D,str(site_id))
-		except Exception as e:print(_E,e)
-	else:print('event already exists!')
+	if gcal_default:
+		gcal_default=gcal_default.get();credentials=''
+		if gcal_default.file_path_doc:credentials=gcal_default.file_path_doc.path
+		if not credentials:return _F
+		event=Event(event_name,start=start,end=end,description=description,minutes_before_email_reminder=50);cal=GoogleCalendar(gcal_default.cal_name,credentials_path=credentials)
+		if not is_event_exists(cal,start,end,event_name):
+			try:cal.add_event(event);print('Event added!');cache.delete(f"calendar_cache_{start.year}_{start.month}",version=site_id);print(_D,str(site_id))
+			except Exception as e:print(_E,e)
+		else:print('event already exists!')
+	return _A
 def index(request):
 	A='credentials.json';calendar=GoogleCalendar('suratiwan03@gmail.com',credentials_path=A);print(f"calendar {calendar}");start=(6/Jun/2023)[12];end=(30/Jun/2023)[11:59:59];events=calendar.get_events(start,end)
 	for event in events:print(event.start,' -- ',event.summary)
