@@ -3,16 +3,13 @@ _D='srv135.niagahoster.com'
 _C='QQ0GWU5HOJ7OYZWNM82IX2IA6PZGEK6M'
 _B='u1578244'
 _A=True
-import calendar,json,os
+import calendar,os
 from datetime import datetime,timedelta
 from django.contrib.humanize.templatetags.humanize import naturalday,naturaltime
 from django.contrib.sites.models import Site
-from django.db.models import Subquery
-from django.http import Http404,JsonResponse
-from django.shortcuts import redirect
-from django.urls import reverse_lazy
+from django.http import Http404
 from django.utils.translation import gettext_lazy as _
-from core.models import Agency,Service,Template,User
+from core.models import Service,Template,User
 def get_site_id(request):
 	D=request
 	if not D:return-1
@@ -30,8 +27,8 @@ def get_site_id(request):
 	if B:return B.site_id
 	return 0
 def get_agency_from(request):A=User.objects.get(id=request.user.id);B=A.agency.all()[0];return B.id
-def create_sub_domain(sub_domain):A=_B;B=_C;C=_D;D=_E;E='/public_html';F=f"curl -H'Authorization: cpanel {A}:{B}' 'https://{C}:2083/json-api/cpanel?cpanel_jsonapi_func=addsubdomain&cpanel_jsonapi_module=SubDomain&cpanel_jsonapi_version=2&domain={sub_domain}&rootdomain={D}&dir={E}'";G=os.popen(F).read();return _A
-def delete_sub_domain(sub_domain):A=_B;B=_C;C=_D;D=_E;E=f"curl -H'Authorization: cpanel {A}:{B}' 'https://{C}:2083/json-api/cpanel?cpanel_jsonapi_func=delsubdomain&cpanel_jsonapi_module=SubDomain&cpanel_jsonapi_version=2&domain={sub_domain}.{D}'";F=os.popen(E).read();return _A
+def create_sub_domain(sub_domain):A=_B;B=_C;C=_D;D=_E;E='/public_html';F=f"curl -H'Authorization: cpanel {A}:{B}' 'https://{C}:2083/json-api/cpanel?cpanel_jsonapi_func=addsubdomain&cpanel_jsonapi_module=SubDomain&cpanel_jsonapi_version=2&domain={sub_domain}&rootdomain={D}&dir={E}'";G=os.popen(F);return _A
+def delete_sub_domain(sub_domain):A=_B;B=_C;C=_D;D=_E;E=f"curl -H'Authorization: cpanel {A}:{B}' 'https://{C}:2083/json-api/cpanel?cpanel_jsonapi_func=delsubdomain&cpanel_jsonapi_module=SubDomain&cpanel_jsonapi_version=2&domain={sub_domain}.{D}'";F=os.popen(E);return _A
 def get_site_id_front(request):
 	A=Site.objects.filter(domain=request.get_host()).values_list('id',flat=_A)
 	if A:return A[0]

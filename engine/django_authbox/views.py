@@ -8,5 +8,5 @@ def service_exists(request):
 	return None
 def redirect_service(request):
 	A=request;print('redirect....');B=service_exists(A)
-	if B:return redirect(f"/id/{B}/")
+	if B:return redirect(f"/id/")
 	raise Http404("service untuk '%s' belum terdaftar, silahkan daftar di halaman <a href='%s'>admin</a>"%(A.get_host(),'/admin'))
