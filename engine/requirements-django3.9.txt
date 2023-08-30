@@ -30,7 +30,7 @@ django-import-export==3.2.0
 django-js-asset==2.1.0
 django-multiselectfield==0.1.12
 django-outbox-hitcount==1.0.11
-django-outbox-menu==1.0.28
+django-outbox-menu==1.1.29
 django-outbox-region==1.0.2
 django-parler==2.3
 django-recaptcha==3.0.0
