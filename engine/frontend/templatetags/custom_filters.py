@@ -14,3 +14,5 @@ def phone_number(number):
 def replace_with(string,find_replace=',|_'):A,B=find_replace.split('|');return string.replace(A,B)
 @register.filter
 def natural_datetime(data_datetime):A=datetime.datetime.now();return get_natural_datetime(data_datetime,A)
+@register.filter
+def get_class(value):return value[0].__class__.__name__.lower()

@@ -157,7 +157,7 @@ class HowItWorks(BaseAbstractModel,BaseGalleryModel,TranslatableModel):
 				if not B[_H]is _J:A.order_item=B[_H]+1
 		super().save(*(C),**D)
 class AboutUs(BaseAbstractModel,BaseGalleryModel,TranslatableModel):
-	translations=TranslatedFields(sub_title=encrypt(models.CharField(_(_I),max_length=100)),title=encrypt(models.CharField(_(_C),max_length=100)),content=encrypt(CKEditor5Field(_(_E),blank=_A,null=_A,config_name=_D)));photo=GenericRelation(Photo,verbose_name=_(_F),null=_A,blank=_A)
+	translations=TranslatedFields(sub_title=encrypt(models.CharField(_(_I),max_length=100)),title=encrypt(models.CharField(_(_C),max_length=100)),content=encrypt(CKEditor5Field(_(_E),blank=_A,null=_A,config_name=_D)));photo=GenericRelation(Photo,verbose_name=_(_F),null=_A,blank=_A);is_header_text=models.BooleanField(default=_B)
 	def __str__(A):return f"{A.title}"
 	def save(A,*B,**C):A.slug=uuslug(A.title,instance=A,max_length=255);super().save(*(B),**C)
 class Testimony(BaseAbstractModel,TranslatableModel):
