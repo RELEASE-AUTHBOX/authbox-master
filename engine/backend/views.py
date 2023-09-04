@@ -311,7 +311,7 @@ def user_init_service(request,agency_id):
 			while not created:
 				site,created=Site.objects.get_or_create(domain=tmp,defaults={_H:name})
 				if not created:tmp=f"{name+str(mcount)}.{main_domain}";mcount+=1
-			subdomain=tmp;print('Begin Create SUB DOMAIN = ',subdomain);create_sub_domain(subdomain)
+			subdomain=tmp;print('Begin Create SUB DOMAIN = ',subdomain);create_sub_domain(name)
 		else:
 			subdomain=hostname;site=Site.objects.filter(domain=hostname)
 			if site:site=site.get()
