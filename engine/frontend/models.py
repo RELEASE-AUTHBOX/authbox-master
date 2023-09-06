@@ -147,7 +147,7 @@ class Offers(BaseAbstractModel,BaseGalleryModel,TranslatableModel):
 				if not B[_H]is _J:A.order_item=B[_H]+1
 		super().save(*(C),**D)
 class HowItWorks(BaseAbstractModel,BaseGalleryModel,TranslatableModel):
-	icon=models.CharField(_('icon'),max_length=100,null=_A,blank=_A);translations=TranslatedFields(title=encrypt(models.CharField(_(_C),max_length=100)),content=encrypt(models.CharField(_(_E),max_length=500)));is_header_text=models.BooleanField(default=_B);order_item=models.PositiveIntegerField(default=0);photo=GenericRelation(Photo,verbose_name=_(_F),null=_A,blank=_A)
+	icon=models.CharField(_('icon'),max_length=100,null=_A,blank=_A);translations=TranslatedFields(title=encrypt(models.CharField(_(_C),max_length=100)),content=encrypt(models.CharField(_(_E),max_length=500,blank=_A,null=_A)));is_header_text=models.BooleanField(default=_B);order_item=models.PositiveIntegerField(default=0);photo=GenericRelation(Photo,verbose_name=_(_F),null=_A,blank=_A)
 	def __str__(A):return f"{A.title}"
 	def save(A,*C,**D):
 		A.slug=uuslug(A.title,instance=A,max_length=255)

@@ -1,1 +1,1 @@
-[{"condition": {"domain": "127.0.0.1:8000"}, "defaults": {"name": "127.0.0.1:8000"}}, {"condition": {"domain": "localhost:8000"}, "defaults": {"name": "Iwan Setiawan"}}]
+[{"condition": {"domain": "127.0.0.1:8000"}, "defaults": {"name": "AUTHBOX"}}, {"condition": {"domain": "localhost:8000"}, "defaults": {"name": "Iwan Setiawan"}}]

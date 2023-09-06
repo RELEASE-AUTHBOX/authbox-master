@@ -83,6 +83,7 @@ class PagesForm(TranslatableModelForm):
 class SocialMediaForm(ModelForm):
 	class Meta:model=SocialMedia;fields=['kind',_L,_B]
 class HowItWorksForm(TranslatableModelForm):
+	dim_w=forms.CharField(widget=forms.HiddenInput(),initial=500);dim_h=forms.CharField(widget=forms.HiddenInput(),initial=624)
 	class Meta:model=HowItWorks;fields=[_F,_A,_M,_K,_J,_B];widgets={_A:CKEditor5Widget(attrs={_C:_D},config_name=_E)}
 class AboutUsForm(TranslatableModelForm):
 	dim_w=forms.CharField(widget=forms.HiddenInput(),initial=900);dim_h=forms.CharField(widget=forms.HiddenInput(),initial=600)
