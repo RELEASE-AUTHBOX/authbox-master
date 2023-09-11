@@ -1330,7 +1330,7 @@ def banner_update(request,uuid):
 		if post_photo:context[_L]=PhotoForm(instance=post_photo)
 		else:context[_L]=PhotoForm()
 	return render(request,template,context)
-def banner_delete(request,uuid):context={};site_id=get_site_id(request);data=Banner.objects.filter(site_id=site_id,uuid=uuid);post=get_object_or_404(data);tmp=post.position;post.delete();messages.info(request,mMsgBox.get(_a,tmp));return redirect(reverse_lazy(_A7))
+def banner_delete(request,uuid):context={};site_id=get_site_id(request);data=Banner.objects.filter(site_id=site_id,uuid=uuid);post=get_object_or_404(data);tmp=post.link;post.delete();messages.info(request,mMsgBox.get(_a,tmp));return redirect(reverse_lazy(_A7))
 class LocationView(TemplateView):
 	site_id=_C
 	def get(self,request,*args,**kwargs):self.site_id=get_site_id(request);template=get_template(self.site_id,is_frontend=_B);self.template_name=template+'location.html';return super(LocationView,self).get(request,*(args),**kwargs)
