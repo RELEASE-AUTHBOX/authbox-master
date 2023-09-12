@@ -1,18 +1,17 @@
-_x='MAIN_DOMAIN'
-_w='backgroundColors'
-_v='borderColors'
-_u='tableCellProperties'
-_t='tableProperties'
-_s='styles'
-_r='heading3'
-_q='heading2'
-_p='heading1'
-_o='paragraph'
-_n='mediaEmbed'
-_m='fontSize'
-_l='italic'
-_k='MEDIA_ROOT'
-_j='static'
+_w='MAIN_DOMAIN'
+_v='backgroundColors'
+_u='borderColors'
+_t='tableCellProperties'
+_s='tableProperties'
+_r='styles'
+_q='heading3'
+_p='heading2'
+_o='heading1'
+_n='paragraph'
+_m='mediaEmbed'
+_l='fontSize'
+_k='italic'
+_j='MEDIA_ROOT'
 _i='STATIC_ROOT'
 _h='templates'
 _g='DB_NAME'
@@ -96,11 +95,11 @@ TEMPLATES[0][_I].clear()
 TEMPLATES[0][_I].append(os.path.join(CONTRIBUTE_PATH,_h))
 TEMPLATES[0][_I].append(os.path.join(CONTRIBUTE_PATH,_h,_e))
 STATIC_ROOT=KEY[_i]if KEY.get(_i)else os.path.join(CONTRIBUTE_PATH,'staticfiles')
-path_level_up=os.path.join(STATIC_ROOT,'..',_j)
-print(_j,path_level_up)
+path_level_up=os.path.abspath(os.path.join(STATIC_ROOT,'..','staticserver'))
+print('static',path_level_up)
 STATICFILES_DIRS=[path_level_up]
 MEDIA_URL='/media/'
-MEDIA_ROOT=KEY[_k]if KEY.get(_k)else os.path.join(CONTRIBUTE_PATH,'media')
+MEDIA_ROOT=KEY[_j]if KEY.get(_j)else os.path.join(CONTRIBUTE_PATH,'media')
 DEBUG_TOOLBAR_PANELS=['cachalot.panels.CachalotPanel','debug_toolbar.panels.history.HistoryPanel','debug_toolbar.panels.versions.VersionsPanel','debug_toolbar.panels.timer.TimerPanel','debug_toolbar.panels.settings.SettingsPanel','debug_toolbar.panels.headers.HeadersPanel','debug_toolbar.panels.request.RequestPanel','debug_toolbar.panels.sql.SQLPanel','debug_toolbar.panels.staticfiles.StaticFilesPanel','debug_toolbar.panels.templates.TemplatesPanel','debug_toolbar.panels.cache.CachePanel','debug_toolbar.panels.signals.SignalsPanel','debug_toolbar.panels.redirects.RedirectsPanel','debug_toolbar.panels.profiling.ProfilingPanel']
 MIDDLEWARE+=['debug_toolbar.middleware.DebugToolbarMiddleware','frontend.request_exposer.RequestExposerMiddleware']
 HITCOUNT_KEEP_HIT_IN_DATABASE={'months':3}
@@ -146,8 +145,8 @@ CACHES={_D:{_f:'django.core.cache.backends.locmem.LocMemCache','LOCATION':'uniqu
 CACHES_TIMEOUT=24*60*60
 INTERNAL_IPS=['127.0.0.1','localhost','authbox.web.id']
 customColorPalette=[{_F:'hsl(4, 90%, 58%)',_G:'Red'},{_F:'hsl(340, 82%, 52%)',_G:'Pink'},{_F:'hsl(291, 64%, 42%)',_G:'Purple'},{_F:'hsl(262, 52%, 47%)',_G:'Deep Purple'},{_F:'hsl(231, 48%, 48%)',_G:'Indigo'},{_F:'hsl(207, 90%, 54%)',_G:'Blue'}]
-CKEDITOR_5_CONFIGS={_D:{_R:[_S,_A,'bold',_l,'link',_T,_U,_V,'imageUpload',_m]},'extends':{'blockToolbar':[_o,_p,_q,_r,_A,_T,_U,_A,_V],_n:{'previewsInData':_J},_R:[_S,_A,'outdent','indent',_A,'alignment',_A,'bold',_l,'underline','strikethrough',_A,'link',_A,_P,'subscript','superscript','highlight',_A,_T,_U,'todoList',_A,'codeBlock','sourceEditing','insertImage',_A,_V,_A,'fontFamily',_m,'fontColor','fontBackgroundColor',_n,'removeFormat','insertTable'],'image':{_R:['imageTextAlternative',_A,'imageStyle:alignLeft','imageStyle:alignRight','imageStyle:alignCenter','imageStyle:side',_A],_s:['full','side','alignLeft','alignRight','alignCenter']},'table':{'contentToolbar':['tableColumn','tableRow','mergeTableCells',_t,_u],_t:{_v:customColorPalette,_w:customColorPalette},_u:{_v:customColorPalette,_w:customColorPalette}},_S:{'options':[{_K:_o,_L:'Paragraph',_M:'ck-heading_paragraph'},{_K:_p,_W:'h1',_L:'Heading 1',_M:'ck-heading_heading1'},{_K:_q,_W:'h2',_L:'Heading 2',_M:'ck-heading_heading2'},{_K:_r,_W:'h3',_L:'Heading 3',_M:'ck-heading_heading3'}]}},'list':{'properties':{_s:_J,'startIndex':_J,'reversed':_J}}}
+CKEDITOR_5_CONFIGS={_D:{_R:[_S,_A,'bold',_k,'link',_T,_U,_V,'imageUpload',_l]},'extends':{'blockToolbar':[_n,_o,_p,_q,_A,_T,_U,_A,_V],_m:{'previewsInData':_J},_R:[_S,_A,'outdent','indent',_A,'alignment',_A,'bold',_k,'underline','strikethrough',_A,'link',_A,_P,'subscript','superscript','highlight',_A,_T,_U,'todoList',_A,'codeBlock','sourceEditing','insertImage',_A,_V,_A,'fontFamily',_l,'fontColor','fontBackgroundColor',_m,'removeFormat','insertTable'],'image':{_R:['imageTextAlternative',_A,'imageStyle:alignLeft','imageStyle:alignRight','imageStyle:alignCenter','imageStyle:side',_A],_r:['full','side','alignLeft','alignRight','alignCenter']},'table':{'contentToolbar':['tableColumn','tableRow','mergeTableCells',_s,_t],_s:{_u:customColorPalette,_v:customColorPalette},_t:{_u:customColorPalette,_v:customColorPalette}},_S:{'options':[{_K:_n,_L:'Paragraph',_M:'ck-heading_paragraph'},{_K:_o,_W:'h1',_L:'Heading 1',_M:'ck-heading_heading1'},{_K:_p,_W:'h2',_L:'Heading 2',_M:'ck-heading_heading2'},{_K:_q,_W:'h3',_L:'Heading 3',_M:'ck-heading_heading3'}]}},'list':{'properties':{_r:_J,'startIndex':_J,'reversed':_J}}}
 CRISPY_TEMPLATE_PACK='bootstrap4'
-tmp=KEY.get(_x)
-MAIN_DOMAIN=KEY[_x]if tmp else'localhost:8000'
+tmp=KEY.get(_w)
+MAIN_DOMAIN=KEY[_w]if tmp else'localhost:8000'
 SOCIALACCOUNT_PROVIDERS={'github':{_X:{_Y:'6c0e925336cace458a21',_Z:'e5e0a76006524a3b49e9c0593ac29f2d1ee8c354',_a:''}},'facebook':{_X:{_Y:'1582129178867576',_Z:'6edc1f622ef5ba62ec8d8e54d8228ef8',_a:''}},'google':{_X:{_Y:'921195599940-a4ft11sk9m64oop9vr1amjkvu8g192af.apps.googleusercontent.com',_Z:'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',_a:''},'SCOPE':['profile','email'],'AUTH_PARAMS':{'access_type':'online'}}}
