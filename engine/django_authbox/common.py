@@ -1,15 +1,17 @@
-_E='authbox.web.id'
-_D='srv135.niagahoster.com'
-_C='QQ0GWU5HOJ7OYZWNM82IX2IA6PZGEK6M'
-_B='u1578244'
+_F='CPANEL_DOMAIN'
+_E='CPANEL_URL'
+_D='CPANEL_TOKEN'
+_C='CPANEL_USER'
+_B=False
 _A=True
 import calendar,os
 from datetime import datetime,timedelta
+from core.models import Service,Template,User
+from django.conf import settings
 from django.contrib.humanize.templatetags.humanize import naturalday,naturaltime
 from django.contrib.sites.models import Site
 from django.http import Http404
 from django.utils.translation import gettext_lazy as _
-from core.models import Service,Template,User
 def get_site_id(request):
 	D=request
 	if not D:return-1
@@ -27,8 +29,14 @@ def get_site_id(request):
 	if B:return B.site_id
 	return 0
 def get_agency_from(request):A=User.objects.get(id=request.user.id);B=A.agency.all()[0];return B.id
-def create_sub_domain(sub_domain):A=_B;B=_C;C=_D;D=_E;E='/public_html';F=f"curl -H'Authorization: cpanel {A}:{B}' 'https://{C}:2083/json-api/cpanel?cpanel_jsonapi_func=addsubdomain&cpanel_jsonapi_module=SubDomain&cpanel_jsonapi_version=2&domain={sub_domain}&rootdomain={D}&dir={E}'";G=os.popen(F);return _A
-def delete_sub_domain(sub_domain):A=_B;B=_C;C=_D;D=_E;E=f"curl -H'Authorization: cpanel {A}:{B}' 'https://{C}:2083/json-api/cpanel?cpanel_jsonapi_func=delsubdomain&cpanel_jsonapi_module=SubDomain&cpanel_jsonapi_version=2&domain={sub_domain}.{D}'";F=os.popen(E);return _A
+def create_sub_domain(sub_domain):
+	A=getattr(settings,_C,'');B=getattr(settings,_D,'');C=getattr(settings,_E,'');D=getattr(settings,_F,'')
+	if A:E='/public_html';F=f"curl -H'Authorization: cpanel {A}:{B}' 'https://{C}:2083/json-api/cpanel?cpanel_jsonapi_func=addsubdomain&cpanel_jsonapi_module=SubDomain&cpanel_jsonapi_version=2&domain={sub_domain}&rootdomain={D}&dir={E}'";G=os.popen(F);return _A
+	return _B
+def delete_sub_domain(sub_domain):
+	A=getattr(settings,_C,'');B=getattr(settings,_D,'');C=getattr(settings,_E,'');D=getattr(settings,_F,'')
+	if A:E=f"curl -H'Authorization: cpanel {A}:{B}' 'https://{C}:2083/json-api/cpanel?cpanel_jsonapi_func=delsubdomain&cpanel_jsonapi_module=SubDomain&cpanel_jsonapi_version=2&domain={sub_domain}.{D}'";F=os.popen(E);return _A
+	return _B
 def get_site_id_front(request):
 	A=Site.objects.filter(domain=request.get_host()).values_list('id',flat=_A)
 	if A:return A[0]
@@ -38,7 +46,7 @@ def get_template(site_id,is_frontend=_A):
 	if A:return A[0]
 	raise Http404("template belum terdaftar, silahkan daftar di halaman <a href='%s'>admin</a>"%'/admin')
 def get_week_date(year,month,day):
-	A=calendar.Calendar();A=A.monthdatescalendar(year,month);E=False;D=0
+	A=calendar.Calendar();A=A.monthdatescalendar(year,month);E=_B;D=0
 	for D in range(0,len(A)-1):
 		for F in A[D]:
 			if F.day==day:E=_A;break
