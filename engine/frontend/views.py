@@ -55,6 +55,7 @@ _C='-updated_at'
 _B='announcement'
 _A=None
 import calendar,datetime,random
+from django_authbox.common import get_natural_datetime
 from django.shortcuts import redirect
 from django.apps import apps
 from django.contrib.contenttypes.models import ContentType
@@ -68,13 +69,14 @@ from hitcount.models import Hit,HitCount
 from hitcount.views import HitCountMixin
 from menu.models import MenuGroup
 from parler.utils import get_active_language_choices
+from django.utils.text import Truncator
 from backend.views import get_menu_caches,get_translated_active_page,get_menu_caches_footer
 from core.common import get_agency_info
-from core.models import Agency,Service
 from django_authbox.common import add_months,get_site_id_front,get_template,get_week_date
 from django_authbox.views import service_exists
 from .calendar import sync_calendar_all
 from .models import *
+from django.utils.html import strip_tags
 def get_calendar_ajax(request,year,month):A='get_calendar_ajax';print(A,request);print(A,year,month);res=sync_calendar_all(request,year,month);return JsonResponse(res,safe=_Y)
 def get_menu_group(site_id):
 	menugroup=MenuGroup.objects.filter(site_id=site_id,kind=1)
@@ -138,7 +140,11 @@ def get_photogallery(site_id,lang):subquery_foto=get_photo(_H);return PhotoGalle
 def get_videogallery(site_id,lang):subquery_foto=get_photo(_v);return VideoGallery.objects.language(lang).filter(site_id=site_id,status=OptStatusPublish.PUBLISHED).annotate(file_path=subquery_foto).order_by(_C)[:6]
 def get_relatedlink(site_id,lang):return RelatedLink.objects.language(lang).filter(site_id=site_id,status=OptStatusPublish.PUBLISHED).order_by(_C)[:10]
 def get_news(site_id,lang):subquery_foto=get_photo(_F);return News.objects.language(lang).filter(site_id=site_id,status=OptStatusPublish.PUBLISHED).annotate(file_path=subquery_foto).order_by(_C)[:7]
-def get_article(site_id,lang):subquery_foto=get_photo(_L);return Article.objects.language(lang).filter(site_id=site_id,status=OptStatusPublish.PUBLISHED).annotate(file_path=subquery_foto).order_by(_E,_C)[:6]
+def get_article(site_id,lang,max_data=3,max_words=20):
+	subquery_foto=get_photo(_L);article=Article.objects.language(lang).filter(site_id=site_id,status=OptStatusPublish.PUBLISHED).annotate(file_path=subquery_foto).order_by(_E,_C)[:max_data]
+	for i in article:
+		if not i.is_header_text:i.content=Truncator(strip_tags(i.content)).words(max_words);i.created_at=get_natural_datetime(i.created_at)
+	return article
 def get_document(site_id,lang):return Document.objects.language(lang).filter(site_id=site_id,status=OptStatusPublish.PUBLISHED).order_by(_C)[:7]
 def get_socialmedia(site_id):return SocialMedia.objects.filter(site_id=site_id,status=OptStatusPublish.PUBLISHED).order_by(_C)[:6]
 def get_categories_list(site_id,lang,max_data,model):
