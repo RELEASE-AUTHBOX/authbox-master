@@ -2,7 +2,7 @@ asgiref==3.7.2
 attrs==23.1.0
 Automat==22.10.0
 Babel==2.12.1
-#backports.zoneinfo==0.2.1
+# backports.zoneinfo==0.2.1
 beautiful-date==2.2.0
 beautifulsoup4==4.12.2
 cachetools==5.3.1
@@ -54,6 +54,7 @@ idna==3.4
 incremental==22.10.0
 jsonfield==3.1.0
 MarkupPy==1.14
+midtransclient==1.4.1
 oauthlib==3.2.2
 odfpy==1.4.1
 openpyxl==3.1.2
