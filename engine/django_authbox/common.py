@@ -30,8 +30,13 @@ def get_site_id(request):
 	return 0
 def get_agency_from(request):A=User.objects.get(id=request.user.id);B=A.agency.all()[0];return B.id
 def create_sub_domain(sub_domain):
-	A=getattr(settings,_C,'');B=getattr(settings,_D,'');C=getattr(settings,_E,'');D=getattr(settings,_F,'')
-	if A:E='/public_html';F=f"curl -H'Authorization: cpanel {A}:{B}' 'https://{C}:2083/json-api/cpanel?cpanel_jsonapi_func=addsubdomain&cpanel_jsonapi_module=SubDomain&cpanel_jsonapi_version=2&domain={sub_domain}&rootdomain={D}&dir={E}'";G=os.popen(F);return _A
+	A=getattr(settings,_C,'');D=getattr(settings,_D,'');E=getattr(settings,_E,'');F=getattr(settings,_F,'');print('cpanel_user',A);B=-1
+	if A:
+		G='/public_html';H=f"curl -H'Authorization: cpanel {A}:{D}' 'https://{E}:2083/json-api/cpanel?cpanel_jsonapi_func=addsubdomain&cpanel_jsonapi_module=SubDomain&cpanel_jsonapi_version=2&domain={sub_domain}&rootdomain={F}&dir={G}'";C=3
+		while B!=0:
+			B=os.system(H);C-=1
+			if C<=0:break
+	if B==0:return _A
 	return _B
 def delete_sub_domain(sub_domain):
 	A=getattr(settings,_C,'');B=getattr(settings,_D,'');C=getattr(settings,_E,'');D=getattr(settings,_F,'')
