@@ -168,6 +168,7 @@ from core.views import download_image
 from django_authbox import msgbox
 from django_authbox.common import *
 from frontend.models import *
+from core.copy_initial_data import do_init_data
 from .forms import *
 User=get_user_model()
 mMsgBox=msgbox.ClsMsgBox()
@@ -247,11 +248,11 @@ class IndexView(TemplateView):
 	site_id=_C
 	def get(self,request,*args,**kwargs):
 		self.site_id=get_site_id(request);print('SITEID = ',self.site_id)
-		if self.site_id==-1:return redirect(reverse_lazy(_AA))
-		elif self.site_id==-2:return redirect(_Af)
-		elif self.site_id==-3 or self.site_id==-31:return redirect(reverse_lazy('user_init_agency'))
-		elif self.site_id==-4 or self.site_id==-41:return redirect(reverse_lazy('user_init_service',kwargs={_B6:get_agency_from(request)}))
-		else:print('GOTO INDEX DASHBOARD');template=get_template(self.site_id,is_frontend=_B);print('template = ',template);self.template_name=template+'index.html'
+		if self.site_id==-1:print('begin dashboard');return redirect(reverse_lazy(_AA))
+		elif self.site_id==-2:print('begin logout');return redirect(_Af)
+		elif self.site_id==-3 or self.site_id==-31:print('begin user init agency ');return redirect(reverse_lazy('user_init_agency'))
+		elif self.site_id==-4 or self.site_id==-41:print('begin user init service');return redirect(reverse_lazy('user_init_service',kwargs={_B6:get_agency_from(request)}))
+		else:print('GOTO INDEX DASHBOARD');do_init_data(self.site_id);template=get_template(self.site_id,is_frontend=_B);print('template = ',template);self.template_name=template+'index.html'
 		return super(IndexView,self).get(request,*(args),**kwargs)
 	def get_context_data(self,*args,**kwargs):
 		context=super(IndexView,self).get_context_data(*(args),**kwargs);active_page=get_translated_active_page(_AA);context[_E]=active_page;menu=get_menu_caches(self.request,_D,self.site_id,active_page);agency=get_agency(self.request);context[_O]=agency;service=[]

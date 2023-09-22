@@ -19,21 +19,23 @@ LANGUAGES=getattr(settings,'LANGUAGES',None)
 def do_init_data(site_id):
 	for A in MODEL_DATA:copy_initial_data(site_id,A[_A],A[_B],A[_C],A[_D])
 def copy_initial_data(site_id,model,field_trans,field,is_translation):
-	Q='save complete';P='begin save';O='admin_id';N='site_id';M='obj';J=model;I=True;F=site_id;C=apps.get_model('frontend',J);print('---------------------');print('proses',J);B=C.objects.filter(site_id=F)
+	Q='save complete';P='begin save';O='site_id';N='obj';K=model;J=True;H=site_id;G='admin_id';C=apps.get_model('frontend',K);print('---------------------');print('proses',K);B=C.objects.filter(site_id=H)
 	if not B:
-		print('model kosong (lanjutkan)',B);K=C.objects.filter(is_initial_data=I);E=[]
-		if K:
-			print('data initial data ',K);E=field_trans+field;print('mfield_all',E);A=None;L=0
+		print('model kosong (lanjutkan)',B);L=C.objects.filter(is_initial_data=J);F=[]
+		if L:
+			print('data initial data ',L);F=field_trans+field;print('mfield_all',F);A=None;M=0
 			if is_translation:
-				for G in LANGUAGES:
-					print('lang',G[0]);B=C.objects.language(G[0]).filter(is_initial_data=I);print(M,B)
-					if L==0:A=C();L+=1
-					print('obj_create',A);A.set_current_language(G[0]);setattr(A,N,F);setattr(A,O,'1')
-					for H in B:
-						for D in E:setattr(A,D,getattr(H,D))
+				for I in LANGUAGES:
+					print('lang',I[0]);B=C.objects.language(I[0]).filter(is_initial_data=J);print(N,B)
+					if M==0:A=C();M+=1
+					print('obj_create',A);A.set_current_language(I[0]);setattr(A,O,H)
+					for D in B:
+						setattr(A,G,getattr(D,G))
+						for E in F:setattr(A,E,getattr(D,E))
 					print(P);A.save();print(Q)
 			else:
-				print('no translation');B=C.objects.filter(is_initial_data=I);print(M,B);A=C();setattr(A,N,F);setattr(A,O,'1')
-				for H in B:
-					for D in E:setattr(A,D,getattr(H,D))
+				print('no translation');B=C.objects.filter(is_initial_data=J);print(N,B);A=C();setattr(A,O,H)
+				for D in B:
+					setattr(A,G,getattr(D,G))
+					for E in F:setattr(A,E,getattr(D,E))
 				print(P);A.save();print(Q)
