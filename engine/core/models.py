@@ -17,9 +17,6 @@ from django.contrib.sites.models import Site
 from django.db import models
 from django.db.models import signals
 from django.dispatch import receiver
-from django.template.loader import render_to_string
-from django.utils.encoding import force_bytes
-from django.utils.http import urlsafe_base64_encode
 from django.utils.translation import gettext_lazy as _
 from django_ckeditor_5.fields import CKEditor5Field
 from django_cryptography.fields import encrypt
