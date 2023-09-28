@@ -1463,6 +1463,7 @@ def template_lookup_ajax(request,service_id):
 	else:object_list=template.values(_A,text=F(_H))
 	return JsonResponse({_Aj:list(object_list),_BL:{'more':_e}},safe=_B)
 def template_photo_ajax(request,template_id):subquery_foto=Subquery(Photo.objects.filter(object_id=OuterRef(_A),content_type__model=_q).values(_h)[:1]);object_list=Template.objects.filter(id=template_id).values(_L).annotate(file_path=subquery_foto);return JsonResponse(list(object_list),safe=_B)
+@transaction.atomic
 def template_change(request,template_id):
 	site_id=get_site_id(request);template=Template.objects.filter(is_frontend=_e,site__id=site_id)
 	for i in template:i.site.remove(site_id)
