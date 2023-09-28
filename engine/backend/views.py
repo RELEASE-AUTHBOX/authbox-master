@@ -193,7 +193,7 @@ def get_menu_caches(request,caches_name,site_id,active_page,kinds=2,exclude_menu
 		if group_id:group_id=group_id.get().id
 		print('==',group_id);model_list=[]
 		if group_id<=2:
-			temp=Template.objects.filter(site__id=site_id,is_frontend=1)
+			temp=Template.objects.filter(site__id=site_id,is_frontend=1)[:1]
 			if temp:temp=temp.get().id;model_list=list(ModelListSetting.objects.filter(template_id=temp).values_list('model_list_id',flat=_e))
 		else:
 			service_id=Service.objects.filter(site_id=site_id);kind_id=_C
