@@ -42,3 +42,5 @@ class ModelListSettingAdmin(admin.ModelAdmin):list_filter=_D,_R;list_display=[_D
 admin.site.register(ModelListSetting,ModelListSettingAdmin)
 class PhotoAdmin(admin.ModelAdmin):list_filter=_M,;list_display=['content_type',_M,'object_id','content_object',_C];search_fields=_M,;ordering=_B,
 admin.site.register(Photo,PhotoAdmin)
+class GlobalSettingAdmin(admin.ModelAdmin):list_filter=_A,;list_display=[_A,'value','site',_C];search_fields=_A,;ordering=_B,
+admin.site.register(GlobalSetting,GlobalSettingAdmin)

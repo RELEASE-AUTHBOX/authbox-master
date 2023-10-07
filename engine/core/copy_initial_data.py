@@ -29,73 +29,74 @@ MODEL_DATA=[{_A:'logo',_B:[_J],_C:[_E],_D:0},{_A:'favicon',_B:[_J],_C:[_E],_D:0}
 def do_init_data(site_id):
 	for A in MODEL_DATA:copy_initial_data(site_id,A[_A],A[_B],A[_C],A[_D])
 def copy_initial_data(site_id,model,field_trans,field,is_translation):
-	m='save complete';l='save photo complete';k='url';j='new_url';i='extension';h='%Y%m%d-%H%M%S-%f';g='file_name';f='proses photo';d='site_id';X='.';W='/';V='file_path';U='admin_id';P=True;M=model;L=site_id;G=None;n=getattr(settings,'LANGUAGES',G);Q=getattr(settings,'MEDIA_ROOT',G)
-	if M==_M:H=apps.get_model(_M,M)
-	else:H=apps.get_model('frontend',M)
+	n='save complete';m='save photo complete';l='url';k='new_url';j='extension';i='%Y%m%d-%H%M%S-%f';h='file_name';g='proses photo';f=False;d='site_id';X='.';W='/';V='file_path';U='admin_id';Q=True;M=model;L=site_id;D=None;o=getattr(settings,'LANGUAGES',D);R=getattr(settings,'MEDIA_ROOT',D)
+	if M==_M:I=apps.get_model(_M,M)
+	else:I=apps.get_model('frontend',M)
 	print('---------------------');print('proses',M)
 	if M==_M:
 		J=MenuGroup.objects.filter(site_id=L)[:1]
 		if J:J=J.get()
-		B=H.objects.filter(menu_group=J);print(';menu',B)
-	else:B=H.objects.filter(site_id=L)
+		B=I.objects.filter(menu_group=J);print(';menu',B)
+	else:B=I.objects.filter(site_id=L)
 	if not B:
-		print('model kosong (lanjutkan)',B);Y=H.objects.filter(is_initial_data=P);print('src_data',Y);R=[]
+		print('model kosong (lanjutkan)',B);Y=I.objects.filter(is_initial_data=Q);print('src_data',Y);S=[]
 		if Y:
-			print('data initial data ',Y);R=field_trans+field;print('mfield_all',R);Z=[];B=H.objects.filter(is_initial_data=P)
-			for D in B:Z.append(D.id)
+			print('data initial data ',Y);S=field_trans+field;print('mfield_all',S);Z=[];B=I.objects.filter(is_initial_data=Q)
+			for E in B:Z.append(E.id)
 			print('m_array',Z)
 			if is_translation:
-				for S in Z:
-					C=G
-					for (a,e) in enumerate(n):
-						B=H.objects.language(e[0]).get(id=S)
-						if a==0:C=H();print('obj_create')
-						C.set_current_language(e[0]);A=getattr(B,d,G)
+				for T in Z:
+					C=D
+					for (a,e) in enumerate(o):
+						B=I.objects.language(e[0]).get(id=T)
+						if a==0:C=I();print('obj_create')
+						C.set_current_language(e[0]);A=getattr(B,d,D)
 						if A:setattr(C,d,L)
-						A=getattr(B,U,G)
+						A=getattr(B,U,D)
 						if A:setattr(C,U,A)
-						T=False;K=G
-						for D in R:
-							if D==_E:
+						O=f;K=D
+						for E in S:
+							if E==_E:
 								if a==0:
-									print(f);A=getattr(B,D,G)
+									print(g);A=getattr(B,E,D)
 									if A:
-										N=Photo.objects.filter(object_id=B.id,content_type__model=M).values(V)[:1];print(_E,N);I=N[0][V]
-										if I:
-											E=I.split(W);print(g,E);b=datetime.now();c=str(L)+'-'+b.strftime(h);F=E[len(E)-1].split(X);print(i,F)
-											if len(F)>1:F=X+F[1]
-											else:F=''
-											E[len(E)-1]=c+F;K=W.join(E);print(j,K);print(k,I);O=Image.open(os.path.join(Q,I));O=O.save(os.path.join(Q,K));T=P
-							elif D==_R:
+										N=Photo.objects.filter(object_id=B.id,content_type__model=M).values(V)[:1];print(_E,N);H=D
+										if N:H=N[0][V]
+										if H:
+											F=H.split(W);print(h,F);b=datetime.now();c=str(L)+'-'+b.strftime(i);G=F[len(F)-1].split(X);print(j,G)
+											if len(G)>1:G=X+G[1]
+											else:G=''
+											F[len(F)-1]=c+G;K=W.join(F);print(k,K);print(l,H);P=Image.open(os.path.join(R,H));P=P.save(os.path.join(R,K));O=Q
+							elif E==_R:
 								if a==0:
-									print('proses menu_group');A=getattr(B,D,G)
+									print('proses menu_group');A=getattr(B,E,D)
 									if A:
 										J=MenuGroup.objects.filter(site_id=L)
 										if J:J=J.get()
 							else:
-								A=getattr(B,D,G)
-								if A:setattr(C,D,A)
+								A=getattr(B,E,D)
+								if A:setattr(C,E,A)
 						C.save()
-						if T:Photo.objects.create(content_object=C,file_path=K);print(l)
-						print(m)
+						if O:Photo.objects.create(content_object=C,file_path=K);print(m)
+						print(n)
 			else:
-				print('no translation');B=H.objects.filter(is_initial_data=P);C=G
-				for S in B:
-					C=H();setattr(C,d,L);A=getattr(S,U,G)
+				print('no translation');B=I.objects.filter(is_initial_data=Q);C=D;O=f
+				for T in B:
+					C=I();setattr(C,d,L);A=getattr(T,U,D)
 					if A:setattr(C,U,A)
-					for D in R:
-						if D==_E:
-							print(f);A=getattr(B,D,G)
+					for E in S:
+						if E==_E:
+							print(g);A=getattr(B,E,D)
 							if A:
-								N=Photo.objects.filter(object_id=B.id,content_type__model=M).values(V)[:1];print(_E,N);I=N[0][V]
-								if I:
-									E=I.split(W);print(g,E);b=datetime.now();c=str(L)+'-'+b.strftime(h);F=E[len(E)-1].split(X);print(i,F)
-									if len(F)>1:F=X+F[1]
-									else:F=''
-									E[len(E)-1]=c+F;K=W.join(E);print(j,K);print(k,I);O=Image.open(os.path.join(Q,I));O=O.save(os.path.join(Q,K));T=P
+								N=Photo.objects.filter(object_id=B.id,content_type__model=M).values(V)[:1];print(_E,N);H=N[0][V]
+								if H:
+									F=H.split(W);print(h,F);b=datetime.now();c=str(L)+'-'+b.strftime(i);G=F[len(F)-1].split(X);print(j,G)
+									if len(G)>1:G=X+G[1]
+									else:G=''
+									F[len(F)-1]=c+G;K=W.join(F);print(k,K);print(l,H);P=Image.open(os.path.join(R,H));P=P.save(os.path.join(R,K));O=Q
 						else:
-							A=getattr(S,D,G)
-							if A:setattr(C,D,A)
+							A=getattr(T,E,D)
+							if A:setattr(C,E,A)
 				print('begin save');C.save()
-				if T:Photo.objects.create(content_object=C,file_path=K);print(l)
-				print(m)
+				if O:Photo.objects.create(content_object=C,file_path=K);print(m)
+				print(n)
