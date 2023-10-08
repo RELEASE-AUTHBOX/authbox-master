@@ -88,10 +88,10 @@ def post_login_redirect(request,user_id,uuid):
 	if A:A=A.get();A.user_id=user_id;A.save();B=request.scheme+'://';B=B+A.site.domain;print(B);return HttpResponse(B+'/id/accounts/login/?u='+str(A.user_id)+'&media='+A.social_media+'&s='+str(A.uuid))
 	return HttpResponse(_E)
 def get_crop_image_size(request,model_name):
-	C=model_name;F=get_site_id(request);A=Template.objects.filter(site__id=F,is_frontend=_A)[:1];print('template',A);print('model_name',C);C=C.replace('_',' ')
-	if A:
-		A=A.get().id;D=0;E=0;B=ModelListSetting.objects.filter(template_id=A,model_list__name__iexact=C)
-		if B:B=B.get();D=B.image_width;E=B.image_height
+	C=model_name;F=get_site_id(request);B=Template.objects.filter(site__id=F,is_frontend=_A)[:1];print('template',B);print('model_name',C);C=C.replace('_',' ')
+	if B:
+		B=B.get().id;D=0;E=0;A=ModelListSetting.objects.filter(template_id=B,model_list__name__iexact=C);print(A,'modellist')
+		if A:A=A.get();D=A.image_width;E=A.image_height
 	return JsonResponse({'ww':D,'hh':E},safe=_B)
 def account_activation_sent(request):return render(request,'account_activation_sent.html')
 def activate(request,uidb64,token):

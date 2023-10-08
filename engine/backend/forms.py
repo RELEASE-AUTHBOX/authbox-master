@@ -1,3 +1,4 @@
+_T='is_visibled'
 _S='subtitle'
 _R='priority'
 _Q='description'
@@ -97,8 +98,10 @@ class RelatedLinkForm(TranslatableModelForm):
 	class Meta:model=RelatedLink;fields=[_G,_M,_B]
 class DocumentForm(TranslatableModelForm):
 	class Meta:model=Document;fields=[_G,_A,'file_path_doc',_H,_B];widgets={_A:CKEditor5Widget(attrs={_C:_D},config_name=_E)}
+class MenuDashboardForm(TranslatableModelForm):
+	class Meta:model=Menu;fields=[_G,_T]
 class MenuForm(TranslatableModelForm):
-	class Meta:model=Menu;fields=[_G,_M,'order_menu',_N,'is_visibled','is_external','exclude_menu']
+	class Meta:model=Menu;fields=[_G,_M,'order_menu',_N,_T,'is_external','exclude_menu']
 class AgencyForm(TranslatableModelForm):
 	class Meta:model=Agency;fields=[_G,'email','phone','fax','whatsapp','address','notes'];widgets={'notes':CKEditor5Widget(attrs={_C:_D},config_name=_E)}
 class CategoriesForm(TranslatableModelForm):
