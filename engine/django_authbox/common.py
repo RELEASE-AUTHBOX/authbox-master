@@ -1,3 +1,6 @@
+_I='/admin'
+_H="template belum terdaftar, silahkan daftar di halaman <a href='%s'>admin</a>"
+_G='template'
 _F='CPANEL_DOMAIN'
 _E='CPANEL_URL'
 _D='CPANEL_TOKEN'
@@ -22,7 +25,7 @@ def get_site_id(request):
 	C=C.get();A=C.agency.filter(is_default=_A)
 	if not A:return-3
 	if len(A)>1:return-31
-	A=A[0];print('agency == ',A);B=Service.objects.filter(agency_id=A.id,is_default=_A)
+	A=A[0];B=Service.objects.filter(agency_id=A.id,is_default=_A)
 	if not B:return-4
 	if len(B)>1:return-41
 	B=B[0]
@@ -30,7 +33,7 @@ def get_site_id(request):
 	return 0
 def get_agency_from(request):A=User.objects.get(id=request.user.id);B=A.agency.all()[0];return B.id
 def create_sub_domain(sub_domain):
-	A=getattr(settings,_C,'');D=getattr(settings,_D,'');E=getattr(settings,_E,'');F=getattr(settings,_F,'');print('cpanel_user',A);B=-1
+	A=getattr(settings,_C,'');D=getattr(settings,_D,'');E=getattr(settings,_E,'');F=getattr(settings,_F,'');B=-1
 	if A:
 		G='/public_html';H=f"curl -H'Authorization: cpanel {A}:{D}' 'https://{E}:2083/json-api/cpanel?cpanel_jsonapi_func=addsubdomain&cpanel_jsonapi_module=SubDomain&cpanel_jsonapi_version=2&domain={sub_domain}&rootdomain={F}&dir={G}'";C=3
 		while B!=0:
@@ -46,10 +49,14 @@ def get_site_id_front(request):
 	A=Site.objects.filter(domain=request.get_host()).values_list('id',flat=_A)
 	if A:return A[0]
 	return 0
-def get_template(site_id,is_frontend=_A):
-	B=site_id;print('site',B);A=Template.objects.filter(site__id=B,is_frontend=is_frontend).values_list('rel_path',flat=_A)[:1];print('template',A)
+def get_template_id(site_id,is_frontend=_A):
+	B=site_id;A=Template.objects.filter(site__id=B,is_frontend=is_frontend).values_list('id',flat=_A)[:1];
 	if A:return A[0]
-	raise Http404("template belum terdaftar, silahkan daftar di halaman <a href='%s'>admin</a>"%'/admin')
+	raise Http404(_H%_I)
+def get_template(site_id,is_frontend=_A):
+	B=site_id;A=Template.objects.filter(site__id=B,is_frontend=is_frontend).values_list('rel_path',flat=_A)[:1];
+	if A:return A[0]
+	raise Http404(_H%_I)
 def get_week_date(year,month,day):
 	A=calendar.Calendar();A=A.monthdatescalendar(year,month);E=_B;D=0
 	for D in range(0,len(A)-1):

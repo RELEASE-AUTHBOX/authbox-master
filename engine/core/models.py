@@ -52,6 +52,8 @@ class TemplateOwner(BaseAbstractModel):
 	class Meta:verbose_name=_(_H);verbose_name_plural=_('templates owner')
 	def __str__(A):return A.name
 class OptStatusPublish(models.IntegerChoices):DRAFT=1,_('Draft');PUBLISHED=2,_('Published')
+class OptPriceLevel(models.IntegerChoices):LEVEL_1=1,_('Level 1');LEVEL_2=2,_('Level 2');LEVEL_3=3,_('Level 3');LEVEL_9=9,_('Custom Level')
+class OptSettingName(models.IntegerChoices):SLIDE_SHOW=1,_('Slide Show');MENU=2,_('Menu')
 class Template(BaseAbstractModel):
 	site=models.ManyToManyField(Site,related_name='templates_site',blank=_A);name=models.CharField(_(_C),max_length=50);rel_path=models.CharField(_('relative path'),max_length=255);is_frontend=models.BooleanField(default=_A);template_owner=models.ForeignKey(TemplateOwner,verbose_name=_(_H),on_delete=models.CASCADE,blank=_A,null=_A);service_option=MultiSelectField(choices=OptServiceType.choices,max_length=255,blank=_A,null=_A);photo=GenericRelation(Photo,verbose_name=_(_E));status=models.SmallIntegerField(choices=OptStatusPublish.choices,default=OptStatusPublish.DRAFT)
 	class Meta:verbose_name=_(_I);verbose_name_plural=_('templates')
@@ -84,13 +86,15 @@ class UserLog(BaseAbstractModel):
 	class Meta:verbose_name=_('userlog');verbose_name_plural=_('userlogs')
 	def __str__(A):return A.social_media
 class TemplateBlock(BaseAbstractModel):
-	template=models.ForeignKey(Template,on_delete=models.CASCADE);name=models.CharField(_('block name'),max_length=100,null=_A,blank=_A,default=_D);variation=models.SmallIntegerField(_('variation number'),default=1);photo=GenericRelation(Photo,verbose_name=_(_E));price_level=models.SmallIntegerField(default=1);status=models.SmallIntegerField(choices=OptStatusPublish.choices,default=OptStatusPublish.DRAFT)
+	template=models.ForeignKey(Template,on_delete=models.CASCADE,blank=_A);model_list=models.ManyToManyField(ModelList,blank=_A);name=models.CharField(_('block name'),max_length=100);photo=GenericRelation(Photo,verbose_name=_(_E));price_level=models.SmallIntegerField(choices=OptPriceLevel.choices,default=OptPriceLevel.LEVEL_1);status=models.SmallIntegerField(choices=OptStatusPublish.choices,default=OptStatusPublish.DRAFT)
 	class Meta:verbose_name=_('template block');verbose_name_plural=_('template blocks')
 	def __str__(A):return A.name
 class GlobalSetting(BaseAbstractModel):
-	site=models.ForeignKey(Site,on_delete=models.CASCADE);name=models.CharField(_(_C),max_length=100,null=_A,blank=_A,default=_D);value=models.CharField(_('value'),max_length=100,null=_A,blank=_A,default=_D)
+	site=models.ForeignKey(Site,on_delete=models.CASCADE);name=models.SmallIntegerField(choices=OptSettingName.choices,default=_D);value=models.CharField(_('value'),max_length=255,null=_A,blank=_A,default=_D)
 	class Meta:verbose_name=_('global setting');verbose_name_plural=_('global settings')
-	def __str__(A):return A.name
+	def __str__(A):
+		if A.name:return A.get_name_display()
+		return'-'
 @receiver(signals.post_save,sender=User,dispatch_uid='update_user_group')
 def _update_user_group(sender,instance,**D):
 	A=instance;B=A.groups.all()
