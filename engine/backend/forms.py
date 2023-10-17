@@ -100,6 +100,9 @@ class DocumentForm(TranslatableModelForm):
 	class Meta:model=Document;fields=[_G,_A,'file_path_doc',_H,_B];widgets={_A:CKEditor5Widget(attrs={_C:_D},config_name=_E)}
 class MenuDashboardForm(TranslatableModelForm):
 	class Meta:model=Menu;fields=[_G,_T]
+class GlobalSettingForm(ModelForm):
+	setting_name=forms.CharField(widget=forms.TextInput(),required=False)
+	class Meta:model=GlobalSetting;fields=['setting_name',_G]
 class MenuForm(TranslatableModelForm):
 	class Meta:model=Menu;fields=[_G,_M,'order_menu',_N,_T,'is_external','exclude_menu']
 class AgencyForm(TranslatableModelForm):

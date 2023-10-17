@@ -31,70 +31,70 @@ def do_init_data(site_id):
 	if B:
 		for A in MODEL_DATA:copy_initial_data(B,A[_A],A[_B],A[_C],A[_D])
 def copy_initial_data(site_id,model,field_trans,field,is_translation):
-	n='save complete';m='save photo complete';l='url';k='new_url';j='extension';i='%Y%m%d-%H%M%S-%f';h='file_name';g='proses photo';f=False;d='site_id';X='.';W='/';V='file_path';U='admin_id';Q=True;M=model;L=site_id;D=None;o=getattr(settings,'LANGUAGES',D);R=getattr(settings,'MEDIA_ROOT',D)
-	if M==_M:I=apps.get_model(_M,M)
-	else:I=apps.get_model('frontend',M)
+	h='save complete';g='save photo complete';f='%Y%m%d-%H%M%S-%f';e=False;b='site_id';W='.';V='/';U='file_path';T='admin_id';Q=True;M=model;K=site_id;D=None;i=getattr(settings,'LANGUAGES',D);R=getattr(settings,'MEDIA_ROOT',D)
+	if M==_M:H=apps.get_model(_M,M)
+	else:H=apps.get_model('frontend',M)
 	if M==_M:
-		J=MenuGroup.objects.filter(site_id=L)[:1]
+		J=MenuGroup.objects.filter(site_id=K)[:1]
 		if J:J=J.get()
-		B=I.objects.filter(menu_group=J);
-	else:B=I.objects.filter(site_id=L)
+		B=H.objects.filter(menu_group=J)
+	else:B=H.objects.filter(site_id=K)
 	if not B:
-		Y=I.objects.filter(is_initial_data=Q);S=[]
-		if Y:
-			S=field_trans+field;Z=[];B=I.objects.filter(is_initial_data=Q)
-			for E in B:Z.append(E.id)
+		j=H.objects.filter(is_initial_data=Q);X=[]
+		if j:
+			X=field_trans+field;c=[];B=H.objects.filter(is_initial_data=Q)
+			for E in B:c.append(E.id)
 			if is_translation:
-				for T in Z:
+				for S in c:
 					C=D
-					for (a,e) in enumerate(o):
-						B=I.objects.language(e[0]).get(id=T)
-						if a==0:C=I();
-						C.set_current_language(e[0]);A=getattr(B,d,D)
-						if A:setattr(C,d,L)
-						A=getattr(B,U,D)
-						if A:setattr(C,U,A)
-						O=f;K=D
-						for E in S:
+					for (Y,d) in enumerate(i):
+						B=H.objects.language(d[0]).get(id=S)
+						if Y==0:C=H()
+						C.set_current_language(d[0]);A=getattr(B,b,D)
+						if A:setattr(C,b,K)
+						A=getattr(B,T,D)
+						if A:setattr(C,T,A)
+						N=e;L=D
+						for E in X:
 							if E==_E:
-								if a==0:
+								if Y==0:
 									A=getattr(B,E,D)
 									if A:
-										N=Photo.objects.filter(object_id=B.id,content_type__model=M).values(V)[:1];H=D
-										if N:H=N[0][V]
-										if H:
-											F=H.split(W);b=datetime.now();c=str(L)+'-'+b.strftime(i);G=F[len(F)-1].split(X);
-											if len(G)>1:G=X+G[1]
+										O=Photo.objects.filter(object_id=B.id,content_type__model=M).values(U)[:1];I=D
+										if O:I=O[0][U]
+										if I:
+											F=I.split(V);Z=datetime.now();a=str(K)+'-'+Z.strftime(f);G=F[len(F)-1].split(W)
+											if len(G)>1:G=W+G[1]
 											else:G=''
-											F[len(F)-1]=c+G;K=W.join(F);P=Image.open(os.path.join(R,H));P=P.save(os.path.join(R,K));O=Q
+											F[len(F)-1]=a+G;L=V.join(F);P=Image.open(os.path.join(R,I));P=P.save(os.path.join(R,L));N=Q
 							elif E==_R:
-								if a==0:
+								if Y==0:
 									A=getattr(B,E,D)
 									if A:
-										J=MenuGroup.objects.filter(site_id=L)
+										J=MenuGroup.objects.filter(site_id=K)
 										if J:J=J.get()
 							else:
 								A=getattr(B,E,D)
 								if A:setattr(C,E,A)
 						C.save()
-						if O:Photo.objects.create(content_object=C,file_path=K);
+						if N:Photo.objects.create(content_object=C,file_path=L);
 			else:
-				B=I.objects.filter(is_initial_data=Q);C=D;O=f
-				for T in B:
-					C=I();setattr(C,d,L);A=getattr(T,U,D)
-					if A:setattr(C,U,A)
-					for E in S:
+				B=H.objects.filter(is_initial_data=Q);C=D;N=e
+				for S in B:
+					C=H();setattr(C,b,K);A=getattr(S,T,D)
+					if A:setattr(C,T,A)
+					for E in X:
 						if E==_E:
 							A=getattr(B,E,D)
 							if A:
-								N=Photo.objects.filter(object_id=B.id,content_type__model=M).values(V)[:1];H=N[0][V]
-								if H:
-									F=H.split(W);b=datetime.now();c=str(L)+'-'+b.strftime(i);G=F[len(F)-1].split(X);
-									if len(G)>1:G=X+G[1]
+								O=Photo.objects.filter(object_id=B.id,content_type__model=M).values(U)[:1];I=O[0][U]
+								if I:
+									F=I.split(V);Z=datetime.now();a=str(K)+'-'+Z.strftime(f);G=F[len(F)-1].split(W);
+									if len(G)>1:G=W+G[1]
 									else:G=''
-									F[len(F)-1]=c+G;K=W.join(F);P=Image.open(os.path.join(R,H));P=P.save(os.path.join(R,K));O=Q
+									F[len(F)-1]=a+G;L=V.join(F);P=Image.open(os.path.join(R,I));P=P.save(os.path.join(R,L));N=Q
 						else:
-							A=getattr(T,E,D)
+							A=getattr(S,E,D)
 							if A:setattr(C,E,A)
 				C.save()
-				if O:Photo.objects.create(content_object=C,file_path=K);
+				if N:Photo.objects.create(content_object=C,file_path=L);
