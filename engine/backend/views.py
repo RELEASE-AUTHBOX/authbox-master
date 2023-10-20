@@ -1067,9 +1067,13 @@ def application_update(request,uuid):
 	if request.method==_I:
 		form=GlobalSettingForm(request.POST,instance=post)
 		if form.is_valid():
-			print('form VALID');template_block_id=request.POST.get(A);template_block=TemplateBlock.objects.filter(id=template_block_id)
+			setting_name=request.POST.get(_H);label='Setting'
+			for i in OptSettingName:
+				print('--->',i.value,setting_name)
+				if i.value==int(setting_name):label=i.label;print('label inside',label);break
+			template_block_id=request.POST.get(A);template_block=TemplateBlock.objects.filter(id=template_block_id)
 			if template_block:template_block=template_block.get();post.value=tmp_template+template_block.name;post.ref_template_block_id=template_block_id;post.save()
-			messages.info(request,mMsgBox.get(_W,request.POST.get(_H)));return redirect(reverse_lazy(_AI))
+			messages.info(request,mMsgBox.get(_W,label));return redirect(reverse_lazy(_AI))
 	else:messages.info(request,mMsgBox.get(_X));context[_G]=GlobalSettingForm(instance=post)
 	return render(request,template,context)
 def application_update_ajax(request):
