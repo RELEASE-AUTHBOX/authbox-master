@@ -90,7 +90,7 @@ class TemplateBlock(BaseAbstractModel):
 	class Meta:verbose_name=_('template block');verbose_name_plural=_('template blocks')
 	def __str__(A):return A.name
 class GlobalSetting(BaseAbstractModel):
-	site=models.ForeignKey(Site,on_delete=models.CASCADE);name=models.SmallIntegerField(choices=OptSettingName.choices,default=_D);value=models.CharField(_('value'),max_length=255,null=_A,blank=_A,default=_D)
+	site=models.ForeignKey(Site,on_delete=models.CASCADE);name=models.SmallIntegerField(choices=OptSettingName.choices,default=_D);value=models.CharField(_('value'),max_length=255,null=_A,blank=_A,default=_D);ref_template_block=models.ForeignKey(TemplateBlock,on_delete=models.CASCADE,null=_A,default=_A)
 	class Meta:verbose_name=_('global setting');verbose_name_plural=_('global settings')
 	def __str__(A):
 		if A.name:return A.get_name_display()

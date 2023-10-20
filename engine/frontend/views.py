@@ -218,7 +218,7 @@ def set_setting(site_id,setting_id):
 		if i.value==setting_id:label=i.label;break
 	ret=_A
 	for i in template_block:
-		if str(label)in[j.name for j in i.model_list.all()]:ret=template+i.name;ret=GlobalSetting.objects.create(site_id=site_id,name=setting_id,value=ret);break
+		if str(label)in[j.name for j in i.model_list.all()]:ret=template+i.name;GlobalSetting.objects.create(site_id=site_id,name=setting_id,value=ret,ref_template_block_id=i.id);break
 	return ret
 def get_setting(site_id,setting_id):
 	global_setting=GlobalSetting.objects.filter(site_id=site_id,name=setting_id);
@@ -237,7 +237,7 @@ class IndexView(TemplateView):
 	def get_context_data(self,*args,**kwargs):
 		context=super().get_context_data(*(args),**kwargs);context[_m]='index';context[_M]=self.request.device[_M];
 		for i in OptSettingName:
-			setting=get_setting(self.site_id,i.value)
+			setting=get_setting(self.site_id,i.value);
 			if setting:context[i.name]=setting;
 		active_page=get_translated_active_page(_U);menu=get_menu_caches(self.request,_V,self.site_id,active_page,kinds=1,exclude_menu=0);context.update(menu);menu_footer1=get_menu_caches_footer(self.request,_N,self.site_id,active_page,kinds=1,exclude_menu=1,parent_name=_N);context.update(menu_footer1);menu_footer2=get_menu_caches_footer(self.request,_O,self.site_id,active_page,kinds=1,exclude_menu=1,parent_name=_O);context.update(menu_footer2);agency=get_agency_info(self.site_id);context.update(agency);statistic=get_statistic(self.site_id,_G);context.update(statistic);context[_J]=get_logo(self.site_id);lang=get_active_language_choices()[0];context[_u]=get_banner(self.site_id);context[_D]=get_announcement(self.site_id,lang,max_data=5);context[_Q]=get_slideshow(self.site_id,lang,max_data=5);context['dailyalert']=get_dailyalert(self.site_id,lang,max_data=5);context[_g]=get_howitworks(self.site_id,lang,max_data=5);context[_j]=get_aboutus(self.site_id,lang);context[_k]=get_testimony(self.site_id,lang,max_data=5);context[_b]=get_product(self.site_id,lang,max_data=5);context['whyus']=get_whyus(self.site_id,lang,max_data=5);context[_Z]=get_fasilities(self.site_id,lang);context[_a]=get_offers(self.site_id,lang);context[_c]=get_greeting(self.site_id,lang);context[_K]=get_events(self.site_id,lang);context[_H]=get_photogallery(self.site_id,lang);context[_v]=get_videogallery(self.site_id,lang);context[_W]=get_relatedlink(self.site_id,lang);context[_F]=get_news(self.site_id,lang,max_data=5);context[_L]=get_article(self.site_id,lang,max_data=5);context[_h]=get_document(self.site_id,lang,max_data=5);context[_X]=get_socialmedia(self.site_id,max_data=5);context['location']=get_location(self.site_id,lang);context[_I]=get_base_url(self.request);og=get_og(self.site_id);context.update(og);return context
 class CheckOutView(TemplateView):
