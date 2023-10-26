@@ -44,5 +44,5 @@ class PhotoAdmin(admin.ModelAdmin):list_filter=_N,;list_display=['content_type',
 admin.site.register(Photo,PhotoAdmin)
 class GlobalSettingAdmin(admin.ModelAdmin):list_filter=_A,;list_display=[_A,'value','site',_C];search_fields=_A,;ordering=_B,
 admin.site.register(GlobalSetting,GlobalSettingAdmin)
-class TemplateBlockAdmin(admin.ModelAdmin):list_filter=_A,;list_display=[_M,_A,'price_level',_H,_C];search_fields=_A,;ordering=_B,
+class TemplateBlockAdmin(admin.ModelAdmin):list_filter=_A,;list_display=[_M,'id',_A,'price_level',_H,_C];search_fields=_A,;ordering=_B,
 admin.site.register(TemplateBlock,TemplateBlockAdmin)
