@@ -1,5 +1,5 @@
 from django_authbox.common import get_natural_datetime
-import datetime
+import datetime,random
 from django import template
 register=template.Library()
 @register.filter
@@ -16,3 +16,5 @@ def replace_with(string,find_replace=',|_'):A,B=find_replace.split('|');return s
 def natural_datetime(data_datetime):A=datetime.datetime.now();return get_natural_datetime(data_datetime,A)
 @register.filter
 def get_class(value):return value[0].__class__.__name__.lower()
+@register.filter
+def shuffle(arg):A=list(arg)[:];random.shuffle(A);return A
