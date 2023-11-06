@@ -71,7 +71,7 @@ from menu.models import MenuGroup
 from parler.utils import get_active_language_choices
 from django.utils.text import Truncator
 from backend.views import get_menu_caches,get_translated_active_page,get_menu_caches_footer
-from core.common import get_agency_info
+from core.common import get_agency_info,get_agency_meta
 from core.models import OptSettingName,GlobalSetting,TemplateBlock
 from django_authbox.common import add_months,get_site_id_front,get_template,get_template_id,get_week_date
 from django_authbox.views import service_exists
@@ -238,7 +238,7 @@ class IndexView(TemplateView):
 		if request.session.session_key:obj=Site.objects.get(id=self.site_id);hit_count=HitCount.objects.get_for_object(obj);HitCountMixin.hit_count(request,hit_count)
 		template=get_template(self.site_id);self.template_name=template+'index.html';return super().get(request,*(args),**kwargs)
 	def get_context_data(self,*args,**kwargs):
-		context=super().get_context_data(*(args),**kwargs);context[_m]='index';context['menu_justify']='right';context[_N]=self.request.device[_N];
+		context=super().get_context_data(*(args),**kwargs);context[_m]='index';context['menu_justify']='right';context['agency_meta']=get_agency_meta(self.site_id);context[_N]=self.request.device[_N];
 		for i in OptSettingName:
 			setting=get_setting(self.site_id,i.value);
 			if setting:context[i.name]=setting;

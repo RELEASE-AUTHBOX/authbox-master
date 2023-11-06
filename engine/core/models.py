@@ -1,6 +1,7 @@
-_J='model_list'
-_I='template'
-_H='template owner'
+_K='model_list'
+_J='template'
+_I='template owner'
+_H='description'
 _G='abcdefghkmnprwxy2345678'
 _F='email'
 _E='photo'
@@ -57,9 +58,18 @@ class Photo(BaseAbstractModel):
 		if A.file_path:return f"{A.file_path.url}"
 		return'-'
 class Agency(BaseAbstractModel,TranslatableModel):
-	name=models.CharField(_(_D),max_length=100);shortuuid=ShortUUIDField(length=4,max_length=10,alphabet=_G,null=_A,blank=_A,editable=_B);email=encrypt(models.EmailField(_(_F),null=_A,blank=_A));phone=encrypt(models.CharField(_('phone'),max_length=20,null=_A,blank=_A));fax=encrypt(models.CharField(_('fax'),max_length=20,null=_A,blank=_A));whatsapp=encrypt(models.CharField(_('whatsapp'),max_length=20,null=_A,blank=_A));country=models.ForeignKey(Country,null=_A,blank=_A,on_delete=models.PROTECT,verbose_name=_('country'));province=models.ForeignKey(Province,null=_A,blank=_A,on_delete=models.PROTECT,verbose_name=_('province'));regency=models.ForeignKey(Regency,null=_A,blank=_A,on_delete=models.PROTECT,verbose_name=_('regency'));sub_district=models.ForeignKey(SubDistrict,null=_A,blank=_A,on_delete=models.PROTECT,verbose_name=_('sub district'));urban_village=models.ForeignKey(UrbanVillage,null=_A,blank=_A,on_delete=models.PROTECT,verbose_name=_('urban village'));billing_type=models.SmallIntegerField(_('billing type'),choices=OptBillingType.choices,default=OptBillingType.TIME_BASE,blank=_A);conversion=models.FloatField(default=0,blank=_A,editable=_B);translations=TranslatedFields(address=encrypt(models.CharField(_('address'),max_length=255,null=_A,blank=_A)),notes=encrypt(CKEditor5Field(_('description'),null=_A,blank=_A)));is_default=models.BooleanField(default=_B)
+	name=models.CharField(_(_D),max_length=100);shortuuid=ShortUUIDField(length=4,max_length=10,alphabet=_G,null=_A,blank=_A,editable=_B);email=encrypt(models.EmailField(_(_F),null=_A,blank=_A));phone=encrypt(models.CharField(_('phone'),max_length=20,null=_A,blank=_A));fax=encrypt(models.CharField(_('fax'),max_length=20,null=_A,blank=_A));whatsapp=encrypt(models.CharField(_('whatsapp'),max_length=20,null=_A,blank=_A));country=models.ForeignKey(Country,null=_A,blank=_A,on_delete=models.PROTECT,verbose_name=_('country'));province=models.ForeignKey(Province,null=_A,blank=_A,on_delete=models.PROTECT,verbose_name=_('province'));regency=models.ForeignKey(Regency,null=_A,blank=_A,on_delete=models.PROTECT,verbose_name=_('regency'));sub_district=models.ForeignKey(SubDistrict,null=_A,blank=_A,on_delete=models.PROTECT,verbose_name=_('sub district'));urban_village=models.ForeignKey(UrbanVillage,null=_A,blank=_A,on_delete=models.PROTECT,verbose_name=_('urban village'));billing_type=models.SmallIntegerField(_('billing type'),choices=OptBillingType.choices,default=OptBillingType.TIME_BASE,blank=_A);conversion=models.FloatField(default=0,blank=_A,editable=_B);translations=TranslatedFields(address=encrypt(models.CharField(_('address'),max_length=255,null=_A,blank=_A)),notes=encrypt(CKEditor5Field(_(_H),null=_A,blank=_A)));is_default=models.BooleanField(default=_B)
 	class Meta:verbose_name=_('agency');verbose_name_plural=_('agencies')
 	def __str__(A):return A.name
+class OptImageType(models.IntegerChoices):JPEG=1,'image/jpeg';PNG=2,'image/png'
+class OptLocaleType(models.IntegerChoices):INDONESIA=1,'id_ID';ENGLISH=2,'en_US'
+class OptWebType(models.IntegerChoices):WEBSITE=1,'website';ARTICLE=2,'article';PROFILE=3,'profile';BOOK=4,'book';VIDEO=5,'video';MOVIE=6,'movie';EDUCATION=7,'education';NEWS=8,'news'
+class AgencyMeta(BaseAbstractModel):
+	agency=models.OneToOneField(Agency,on_delete=models.PROTECT,blank=_A,null=_A);name=models.CharField(_('site name'),max_length=100,blank=_A,null=_A);url=models.CharField(_('URL'),max_length=255);title=models.CharField(_('title'),max_length=255);description=models.CharField(_(_H),max_length=500);web_type=models.SmallIntegerField(_('web type'),choices=OptWebType.choices,default=OptWebType.WEBSITE,blank=_A);locale=models.SmallIntegerField(_('locale'),choices=OptLocaleType.choices,default=OptLocaleType.INDONESIA,blank=_A);locale_alternate=models.SmallIntegerField(_('locale alternate'),choices=OptLocaleType.choices,default=OptLocaleType.INDONESIA,blank=_A);image=GenericRelation(Photo);image_type=models.SmallIntegerField(_('image type'),choices=OptImageType.choices,default=OptImageType.JPEG,blank=_A)
+	class Meta:verbose_name=_('agency meta');verbose_name_plural=_('agency metas')
+	def __str__(A):
+		if A.name:return A.name
+		return'-'
 class User(AbstractBaseUser,PermissionsMixin):
 	uuid=models.UUIDField(unique=_A,default=uuid.uuid4,editable=_B,blank=_A,null=_A);email=models.EmailField(_('email address'),max_length=100,unique=_A);name=models.CharField(_(_D),max_length=100,blank=_A);is_active=models.BooleanField(_('active'),default=_A);is_staff=models.BooleanField(_('staff'),default=_A);is_superuser=models.BooleanField(_('super user'),default=_B);avatar=GenericRelation(Photo);agency=models.ManyToManyField(Agency);site=models.ForeignKey(Site,on_delete=models.CASCADE,default=_C,blank=_A,null=_A);email_confirmed=models.BooleanField(default=_B);date_joined=models.DateTimeField(_('date joined'),auto_now_add=_A,editable=_B);last_login=models.DateTimeField(_('last login'),null=_A,blank=_A);updated_at=models.DateTimeField(auto_now=_A,editable=_B);objects=UserManager();USERNAME_FIELD=_F;EMAIL_FIELD=_F;REQUIRED_FIELDS=[]
 	class Meta:verbose_name=_('user');verbose_name_plural=_('users')
@@ -67,14 +77,14 @@ class User(AbstractBaseUser,PermissionsMixin):
 	def get_absolute_url(A):return'/users/%i/'%A.pk
 class TemplateOwner(BaseAbstractModel):
 	name=models.CharField(_(_D),max_length=50)
-	class Meta:verbose_name=_(_H);verbose_name_plural=_('templates owner')
+	class Meta:verbose_name=_(_I);verbose_name_plural=_('templates owner')
 	def __str__(A):return A.name
 class OptStatusPublish(models.IntegerChoices):DRAFT=1,_('Draft');PUBLISHED=2,_('Published')
 class OptPriceLevel(models.IntegerChoices):LEVEL_1=1,_('Level 1');LEVEL_2=2,_('Level 2');LEVEL_3=3,_('Level 3');LEVEL_9=9,_('Custom Level')
 class OptSettingName(models.IntegerChoices):SLIDE_SHOW=1,_('Slide Show');MENU=2,_('Menu')
 class Template(BaseAbstractModel):
-	site=models.ManyToManyField(Site,related_name='templates_site',blank=_A);name=models.CharField(_(_D),max_length=50);rel_path=models.CharField(_('relative path'),max_length=255);is_frontend=models.BooleanField(default=_A);template_owner=models.ForeignKey(TemplateOwner,verbose_name=_(_H),on_delete=models.CASCADE,blank=_A,null=_A);service_option=MultiSelectField(choices=OptServiceType.choices,max_length=255,blank=_A,null=_A);photo=GenericRelation(Photo,verbose_name=_(_E));status=models.SmallIntegerField(choices=OptStatusPublish.choices,default=OptStatusPublish.DRAFT)
-	class Meta:verbose_name=_(_I);verbose_name_plural=_('templates')
+	site=models.ManyToManyField(Site,related_name='templates_site',blank=_A);name=models.CharField(_(_D),max_length=50);rel_path=models.CharField(_('relative path'),max_length=255);is_frontend=models.BooleanField(default=_A);template_owner=models.ForeignKey(TemplateOwner,verbose_name=_(_I),on_delete=models.CASCADE,blank=_A,null=_A);service_option=MultiSelectField(choices=OptServiceType.choices,max_length=255,blank=_A,null=_A);photo=GenericRelation(Photo,verbose_name=_(_E));status=models.SmallIntegerField(choices=OptStatusPublish.choices,default=OptStatusPublish.DRAFT)
+	class Meta:verbose_name=_(_J);verbose_name_plural=_('templates')
 	def get_sites(A):return ', '.join([A.domain for A in A.site.all()])
 	def __str__(A):return A.name
 class Service(BaseAbstractModel):
@@ -91,13 +101,13 @@ class ModelList(BaseAbstractModel):
 	def __str__(A):return A.name
 class ModelListSetting(BaseAbstractModel):
 	model_list=models.ForeignKey(ModelList,on_delete=models.CASCADE);template=models.ForeignKey(Template,on_delete=models.CASCADE);image_width=models.SmallIntegerField(default=0);image_height=models.SmallIntegerField(default=0)
-	class Meta:verbose_name=_('model list setting');verbose_name_plural=_('model list settings');unique_together=_J,_I
+	class Meta:verbose_name=_('model list setting');verbose_name_plural=_('model list settings');unique_together=_K,_J
 	def get_image_size(A):
 		if A.image_width>0 and A.image_height>0:return f"{A.image_width} x {A.image_height} px"
 		return _C
 class MenuDefault(BaseAbstractModel):
 	model_list=models.ForeignKey(ModelList,on_delete=models.CASCADE);service_option=MultiSelectField(choices=OptServiceType.choices,max_length=255,blank=_A,null=_A)
-	class Meta:verbose_name=_('menu default');verbose_name_plural=_('menus default');unique_together='service_option',_J
+	class Meta:verbose_name=_('menu default');verbose_name_plural=_('menus default');unique_together='service_option',_K
 	def __str__(A):return''
 class UserLog(BaseAbstractModel):
 	site=models.ForeignKey(Site,on_delete=models.CASCADE);user=models.ForeignKey(User,on_delete=models.CASCADE,blank=_A,null=_A);user_agent=models.CharField(max_length=255,editable=_B);ip_address=models.CharField(max_length=40,editable=_B);is_expired=models.BooleanField(default=_B);social_media=models.CharField(max_length=20)

@@ -3,11 +3,11 @@ _Q='groups'
 _P='is_superuser'
 _O='file_path'
 _N='template'
-_M='description'
-_L='service_option'
-_K='kind'
-_J='is_staff'
-_I='is_active'
+_M='service_option'
+_L='kind'
+_K='is_staff'
+_J='is_active'
+_I='description'
 _H='status'
 _G='agency'
 _F='email'
@@ -26,17 +26,17 @@ from django.contrib.auth import get_user_model
 User=get_user_model()
 class AgencyAdmin(TranslatableAdmin):list_filter=_A,;list_display=[_A,'shortuuid','province','regency','sub_district','urban_village','address','phone',_C];search_fields=_A,;ordering=_B,
 admin.site.register(Agency,AgencyAdmin)
-class BaseUserAdmin(UserAdmin):fieldsets=(None,{_E:(_F,'password')}),(_('Personal info'),{_E:(_A,_G)}),(_('Permissions'),{_E:(_I,_J,_P,_Q,'user_permissions')}),(_('Important dates'),{_E:(_R,)});add_fieldsets=(None,{'classes':('wide',),_E:(_F,_A,'password1','password2',_G)}),;list_display=_F,_A,_J,_R;list_filter=_J,_P,_I,_Q;search_fields=_F,_A;ordering=_F,
+class BaseUserAdmin(UserAdmin):fieldsets=(None,{_E:(_F,'password')}),(_('Personal info'),{_E:(_A,_G)}),(_('Permissions'),{_E:(_J,_K,_P,_Q,'user_permissions')}),(_('Important dates'),{_E:(_R,)});add_fieldsets=(None,{'classes':('wide',),_E:(_F,_A,'password1','password2',_G)}),;list_display=_F,_A,_K,_R;list_filter=_K,_P,_J,_Q;search_fields=_F,_A;ordering=_F,
 admin.site.register(User,BaseUserAdmin)
-class ServiceAdmin(admin.ModelAdmin):list_filter=_G,_K;list_display=[_G,_K,_I,'site','expired_date',_C];search_fields=_G,_K;ordering=_B,
+class ServiceAdmin(admin.ModelAdmin):list_filter=_G,_L;list_display=[_G,_L,_J,'site','expired_date',_C];search_fields=_G,_L;ordering=_B,
 admin.site.register(Service,ServiceAdmin)
-class TemplateAdmin(admin.ModelAdmin):list_filter=_A,;list_display=[_A,'rel_path','get_sites',_L,'template_owner',_C,_H];search_fields=_A,;ordering=_B,
+class TemplateAdmin(admin.ModelAdmin):list_filter=_A,;list_display=[_A,'rel_path','get_sites',_M,'template_owner',_C,_H];search_fields=_A,;ordering=_B,
 admin.site.register(Template,TemplateAdmin)
 class TemplateOwnerAdmin(admin.ModelAdmin):list_filter=_A,;list_display=[_A,_C];search_fields=_A,;ordering=_B,
 admin.site.register(TemplateOwner,TemplateOwnerAdmin)
-class ModelListAdmin(admin.ModelAdmin):list_filter=_A,_M,_H;list_display=[_A,_M,'get_templates',_H];search_fields=_A,;ordering=_B,
+class ModelListAdmin(admin.ModelAdmin):list_filter=_A,_I,_H;list_display=[_A,_I,'get_templates',_H];search_fields=_A,;ordering=_B,
 admin.site.register(ModelList,ModelListAdmin)
-class MenuDefaultAdmin(admin.ModelAdmin):list_filter=_L,_D;list_display=[_D,_L];search_fields=_D,;ordering=_B,
+class MenuDefaultAdmin(admin.ModelAdmin):list_filter=_M,_D;list_display=[_D,_M];search_fields=_D,;ordering=_B,
 admin.site.register(MenuDefault,MenuDefaultAdmin)
 class ModelListSettingAdmin(admin.ModelAdmin):list_filter=_D,_N;list_display=[_D,_N,'get_image_size',_C];search_fields=_D,;ordering=_B,
 admin.site.register(ModelListSetting,ModelListSettingAdmin)
@@ -44,5 +44,7 @@ class PhotoAdmin(admin.ModelAdmin):list_filter=_O,;list_display=['content_type',
 admin.site.register(Photo,PhotoAdmin)
 class GlobalSettingAdmin(admin.ModelAdmin):list_filter=_A,;list_display=[_A,'value','site','order_item',_C];search_fields=_A,;ordering=_B,
 admin.site.register(GlobalSetting,GlobalSettingAdmin)
-class TemplateBlockAdmin(admin.ModelAdmin):list_filter=_A,;list_display=[_N,'id',_A,'price_level',_M,_H,_C];search_fields=_A,;ordering=_B,
+class TemplateBlockAdmin(admin.ModelAdmin):list_filter=_A,;list_display=[_N,'id',_A,'price_level',_I,_H,_C];search_fields=_A,;ordering=_B,
 admin.site.register(TemplateBlock,TemplateBlockAdmin)
+class AgencyMetaAdmin(admin.ModelAdmin):list_filter=_A,;list_display=[_A,'id','url','title',_I,'web_type',_C];search_fields=_A,;ordering=_B,
+admin.site.register(AgencyMeta,AgencyMetaAdmin)
