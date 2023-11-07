@@ -1,6 +1,7 @@
 _A='agency'
 from .models import Service,Agency,Photo,AgencyMeta
 from django.db.models import OuterRef,Subquery
+from django.conf import settings
 def get_agency_info(site_id):
 	C=Service.objects.filter(site_id=site_id).values_list(_A,flat=True);D=None
 	if C:E=Agency.objects.filter(id=C[0])[0];F=E.get_current_language();D=Agency.objects.language(F).filter(id=C[0])
@@ -15,5 +16,5 @@ def get_agency_meta(request,site_id):
 		B=Agency.objects.filter(id=D[0])
 		if B:
 			B=B.get();A=AgencyMeta.objects.filter(agency_id=B.id).annotate(file_path=E)[:1]
-			if A:A=A.get();A.file_path='%s://%s/%s/'%('https'if C.is_secure()else'http',C.get_host(),A.file_path);return A
+			if A:A=A.get();F=settings.MEDIA_URL;A.file_path='%s://%s%s%s'%('https'if C.is_secure()else'http',C.get_host(),F,A.file_path);return A
 	return None
