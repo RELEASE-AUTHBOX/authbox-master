@@ -14,7 +14,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import gettext_lazy as _
 from parler.admin import TranslatableAdmin
-from .models import *
+from.models import*
 class LogoAdmin(admin.ModelAdmin):list_filter=_A,_I;list_display=[_A,_I,_B,_C];search_fields=_A,_I;ordering=_D,
 admin.site.register(Logo,LogoAdmin)
 class AnnouncementAdmin(TranslatableAdmin):list_filter=_A,;list_display=[_A,_F,_H,_L,_G,_B,_C,_E];search_fields=_A,;ordering=_D,
@@ -55,7 +55,7 @@ admin.site.register(GoogleCalendar)
 admin.site.register(GoogleCalendarDetail)
 class WhyUsAdmin(TranslatableAdmin):list_filter=_A,;list_display=[_A,_F,_H,'icon',_G,_B,_C,_E];search_fields=_A,;ordering=_D,
 admin.site.register(WhyUs,WhyUsAdmin)
-class AboutUsAdmin(TranslatableAdmin):list_filter=_A,;list_display=[_A,_F,_H,_G,_B,_C,_E];search_fields=_A,;ordering=_D,
+class AboutUsAdmin(TranslatableAdmin):list_filter=_A,;list_display=[_A,_F,_H,_B,_C,_E];search_fields=_A,;ordering=_D,
 admin.site.register(AboutUs,AboutUsAdmin)
 class HowItWorksAdmin(TranslatableAdmin):list_filter=_A,;list_display=[_A,_F,_H,_K,_G,_B,_C,_E];search_fields=_A,;ordering=_D,
 admin.site.register(HowItWorks,HowItWorksAdmin)
