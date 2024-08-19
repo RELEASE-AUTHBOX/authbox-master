@@ -7,7 +7,7 @@ _D='CPANEL_TOKEN'
 _C='CPANEL_USER'
 _B=False
 _A=True
-import calendar,os
+import pytz,calendar,os
 from datetime import datetime,timedelta
 from core.models import Service,Template,User
 from django.conf import settings
@@ -25,7 +25,7 @@ def get_site_id(request):
 	C=C.get();A=C.agency.filter(is_default=_A)
 	if not A:return-3
 	if len(A)>1:return-31
-	A=A[0];B=Service.objects.filter(agency_id=A.id,is_default=_A)
+	A=A[0];print('agency == ',A);B=Service.objects.filter(agency_id=A.id,is_default=_A)
 	if not B:return-4
 	if len(B)>1:return-41
 	B=B[0]
@@ -33,7 +33,7 @@ def get_site_id(request):
 	return 0
 def get_agency_from(request):A=User.objects.get(id=request.user.id);B=A.agency.all()[0];return B.id
 def create_sub_domain(sub_domain):
-	A=getattr(settings,_C,'');D=getattr(settings,_D,'');E=getattr(settings,_E,'');F=getattr(settings,_F,'');B=-1
+	A=getattr(settings,_C,'');D=getattr(settings,_D,'');E=getattr(settings,_E,'');F=getattr(settings,_F,'');print('cpanel_user',A);B=-1
 	if A:
 		G='/public_html';H=f"curl -H'Authorization: cpanel {A}:{D}' 'https://{E}:2083/json-api/cpanel?cpanel_jsonapi_func=addsubdomain&cpanel_jsonapi_module=SubDomain&cpanel_jsonapi_version=2&domain={sub_domain}&rootdomain={F}&dir={G}'";C=3
 		while B!=0:
@@ -50,11 +50,11 @@ def get_site_id_front(request):
 	if A:return A[0]
 	return 0
 def get_template_id(site_id,is_frontend=_A):
-	B=site_id;A=Template.objects.filter(site__id=B,is_frontend=is_frontend).values_list('id',flat=_A)[:1];
+	B=site_id;print('site',B);A=Template.objects.filter(site__id=B,is_frontend=is_frontend).values_list('id',flat=_A)[:1];print(_G,A)
 	if A:return A[0]
 	raise Http404(_H%_I)
 def get_template(site_id,is_frontend=_A):
-	B=site_id;A=Template.objects.filter(site__id=B,is_frontend=is_frontend).values_list('rel_path',flat=_A)[:1];
+	B=site_id;print('site',B);A=Template.objects.filter(site__id=B,is_frontend=is_frontend).values_list('rel_path',flat=_A)[:1];print(_G,A)
 	if A:return A[0]
 	raise Http404(_H%_I)
 def get_week_date(year,month,day):
@@ -67,16 +67,16 @@ def get_week_date(year,month,day):
 def get_month_range(date):A=date;B=calendar.monthrange(A.year,A.month)[1];C=datetime(A.year,A.month,1);D=datetime(A.year,A.month,B,23,59,59);return C,D
 def add_months(sourcedate,months):B=sourcedate;A=B.month-1+months;C=B.year+A//12;A=A%12+1;D=min(B.day,calendar.monthrange(C,A)[1]);return datetime(C,A,D)
 def get_natural_datetime(data_datetime,skrg=datetime.now()):
-	H='a week ago';B=data_datetime;A=skrg;I=datetime(A.year,A.month,A.day,0,0,0);J=datetime(A.year,A.month,A.day,23,59,59);D=A-timedelta(days=1);K=datetime(D.year,D.month,D.day,0,0,0);L=datetime(D.year,D.month,D.day,23,59,59);F,G=get_week_date(A.year,A.month,A.day);M=F-timedelta(days=7);N=G-timedelta(days=7);O=F-timedelta(days=14);P=G-timedelta(days=14);Q=F-timedelta(days=21);R=G-timedelta(days=21);E=calendar.monthrange(A.year,A.month)[1];S=datetime(A.year,A.month,1,0,0,0);T=datetime(A.year,A.month,E,23,59,59);C=add_months(A,-1);E=calendar.monthrange(C.year,C.month)[1];U=datetime(C.year,C.month,1,0,0,0);V=datetime(C.year,C.month,E,23,59,59);C=add_months(A,-2);E=calendar.monthrange(C.year,C.month)[1];W=datetime(C.year,C.month,1,0,0,0);X=datetime(C.year,C.month,E,23,59,59)
-	if I<=B<=J:return naturaltime(B)
-	elif K<=B<=L:return naturalday(B)
-	elif F<=B<=G:return _(B.strftime('%A'))
-	elif M<=B<=N:
-		if B.weekday()==6:return _(H)
-		else:return _(H)+', '+_(B.strftime('%A'))
-	elif O<=B<=P and A.weekday()==B.weekday():return _('two weeks ago')
-	elif Q<=B<=R and A.weekday()==B.weekday():return _('three weeks ago')
-	elif S<=B<=T:return _('this month')
-	elif U<=B<=V and (A-B).days>=30:return _('a month ago')
-	elif W<=B<=X and (A-B).days>=60:return _('two months ago')
-	return naturalday(B)
+	I='a week ago';C=data_datetime;A=skrg;J=datetime(A.year,A.month,A.day,0,0,0);K=datetime(A.year,A.month,A.day,23,59,59);E=A-timedelta(days=1);L=datetime(E.year,E.month,E.day,0,0,0);M=datetime(E.year,E.month,E.day,23,59,59);G,H=get_week_date(A.year,A.month,A.day);N=G-timedelta(days=7);O=H-timedelta(days=7);P=G-timedelta(days=14);Q=H-timedelta(days=14);R=G-timedelta(days=21);S=H-timedelta(days=21);F=calendar.monthrange(A.year,A.month)[1];T=datetime(A.year,A.month,1,0,0,0);U=datetime(A.year,A.month,F,23,59,59);D=add_months(A,-1);F=calendar.monthrange(D.year,D.month)[1];V=datetime(D.year,D.month,1,0,0,0);W=datetime(D.year,D.month,F,23,59,59);D=add_months(A,-2);F=calendar.monthrange(D.year,D.month)[1];X=datetime(D.year,D.month,1,0,0,0);Y=datetime(D.year,D.month,F,23,59,59);B=pytz.UTC
+	if B.localize(J)<=C<=B.localize(K):return naturaltime(C)
+	elif B.localize(L)<=C<=B.localize(M):return naturalday(C)
+	elif B.localize(G)<=C<=B.localize(H):return _(C.strftime('%A'))
+	elif B.localize(N)<=C<=B.localize(O):
+		if C.weekday()==6:return _(I)
+		else:return _(I)+', '+_(C.strftime('%A'))
+	elif B.localize(P)<=C<=B.localize(Q)and B.localize(A.weekday())==C.weekday():return _('two weeks ago')
+	elif B.localize(R)<=C<=B.localize(S)and B.localize(A.weekday())==C.weekday():return _('three weeks ago')
+	elif B.localize(T)<=C<=B.localize(U):return _('this month')
+	elif B.localize(V)<=C<=B.localize(W)and (A-C).days>=30:return _('a month ago')
+	elif B.localize(X)<=C<=B.localize(Y)and (A-C).days>=60:return _('two months ago')
+	return naturalday(C)

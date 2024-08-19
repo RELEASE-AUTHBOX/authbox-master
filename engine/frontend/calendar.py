@@ -38,7 +38,7 @@ def sync_calendar(request,cal,default_cal,credentials,date=_A):
 def sync_calendar_all(request,year=_A,month=_A):
 	date=_A
 	if year and month:date=datetime.datetime(year,month,1)
-	site_id=get_site_id_front(request);gcal_default=GC.objects.filter(site_id=site_id,is_default=_B)[:1];gcal=GC.objects.filter(site_id=site_id,is_default=_C)
+	site_id=get_site_id_front(request);print('site_id',site_id);gcal_default=GC.objects.filter(site_id=site_id,is_default=_B)[:1];print('gcal_default',gcal_default);gcal=GC.objects.filter(site_id=site_id,is_default=_C)
 	if gcal_default:
 		gcal_default=gcal_default.get();credentials=''
 		if gcal_default.file_path_doc:credentials=gcal_default.file_path_doc.path
