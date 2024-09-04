@@ -1,12 +1,14 @@
-_a='menu_2'
-_Z='menu_1'
-_Y='menu_active'
-_X='menu_class_2'
-_W='menu_class_1'
-_V='google calendar'
-_U='product'
-_T='subtitle'
-_S='why us'
+_c='menu_2'
+_b='menu_1'
+_a='menu_active'
+_Z='menu_class_2'
+_Y='menu_class_1'
+_X='google calendar'
+_W='product'
+_V='subtitle'
+_U='why us'
+_T='description'
+_S='location'
 _R='priority'
 _Q='frontend'
 _P='Middle'
@@ -93,7 +95,7 @@ class Article(BaseAbstractModel,BaseContentModel,TranslatableModel):
 	def __str__(A):return f"{A.title}"
 	def save(A,*B,**C):A.slug=uuslug(A.title,instance=A,max_length=255);A.word_count=word_count(A.content);A.reading_time=reading_time(A.word_count);super().save(*B,**C)
 class Events(BaseAbstractModel,BaseContentModel,TranslatableModel):
-	translations=TranslatedFields(title=encrypt(models.CharField(_(_C),max_length=LEN_TITLE)),sub_title=encrypt(models.CharField(_(_G),max_length=LEN_SUB_TITLE,null=_A,blank=_A)),content=encrypt(CKEditor5Field(_(_E),blank=_A,null=_A,config_name=_D)),location=encrypt(models.CharField(_('location'),max_length=255,null=_A,blank=_A)));word_count=models.PositiveIntegerField(default=0,blank=_A,editable=_B);reading_time=models.PositiveIntegerField(default=0,blank=_A,editable=_B);is_header_text=models.BooleanField(default=_B);date=models.DateField(_('date'));time=models.TimeField(_('time'))
+	translations=TranslatedFields(title=encrypt(models.CharField(_(_C),max_length=LEN_TITLE)),sub_title=encrypt(models.CharField(_(_G),max_length=LEN_SUB_TITLE,null=_A,blank=_A)),content=encrypt(CKEditor5Field(_(_E),blank=_A,null=_A,config_name=_D)),location=encrypt(models.CharField(_(_S),max_length=255,null=_A,blank=_A)));word_count=models.PositiveIntegerField(default=0,blank=_A,editable=_B);reading_time=models.PositiveIntegerField(default=0,blank=_A,editable=_B);is_header_text=models.BooleanField(default=_B);date=models.DateField(_('date'));time=models.TimeField(_('time'))
 	class Meta:verbose_name=_('event');verbose_name_plural=_('events')
 	def __str__(A):return f"{A.title}"
 	def save(A,*B,**C):A.slug=uuslug(A.title,instance=A,max_length=255);A.word_count=word_count(A.content);A.reading_time=reading_time(A.word_count);super().save(*B,**C)
@@ -107,8 +109,8 @@ class DailyAlert(BaseAbstractModel,TranslatableModel):
 	class Meta:verbose_name=_('daily alert');verbose_name_plural=_('daily alerts')
 	def __str__(A):return f"{A.alert}"
 class WhyUs(BaseAbstractModel,TranslatableModel):
-	site=models.ForeignKey(Site,on_delete=models.CASCADE);admin=models.ForeignKey(User,on_delete=models.PROTECT);icon=models.CharField(_('icon'),max_length=100);translations=TranslatedFields(title=models.CharField(_(_C),max_length=LEN_TITLE),sub_title=encrypt(models.CharField(_(_G),max_length=LEN_SUB_TITLE,null=_A,blank=_A)),description=models.CharField(_('description'),max_length=500));is_header_text=models.BooleanField(default=_B);status=models.SmallIntegerField(choices=OptStatusPublish.choices,default=OptStatusPublish.PUBLISHED)
-	class Meta:verbose_name=_(_S);verbose_name_plural=_(_S)
+	site=models.ForeignKey(Site,on_delete=models.CASCADE);admin=models.ForeignKey(User,on_delete=models.PROTECT);icon=models.CharField(_('icon'),max_length=100);translations=TranslatedFields(title=models.CharField(_(_C),max_length=LEN_TITLE),sub_title=encrypt(models.CharField(_(_G),max_length=LEN_SUB_TITLE,null=_A,blank=_A)),description=models.CharField(_(_T),max_length=500));is_header_text=models.BooleanField(default=_B);status=models.SmallIntegerField(choices=OptStatusPublish.choices,default=OptStatusPublish.PUBLISHED)
+	class Meta:verbose_name=_(_U);verbose_name_plural=_(_U)
 	def __str__(A):return f"{A.icon}"
 class Greeting(BaseAbstractModel,TranslatableModel):
 	site=models.ForeignKey(Site,on_delete=models.CASCADE,verbose_name=_(_H));admin=models.ForeignKey(User,on_delete=models.PROTECT);photo=GenericRelation(Photo,verbose_name=_(_F));translations=TranslatedFields(title=models.CharField(_(_C),max_length=LEN_TITLE),content=encrypt(CKEditor5Field(_(_E),blank=_A,null=_A,config_name=_D)),name=encrypt(models.CharField(_('greeting name'),max_length=LEN_NAME,null=_A,blank=_A)),designation=encrypt(models.CharField(_('designation'),max_length=LEN_NAME,null=_A,blank=_A)));slug=models.SlugField(max_length=255,default='',unique=_A,blank=_A,editable=_B);view_count=models.PositiveIntegerField(default=0,editable=_B);status=models.SmallIntegerField(choices=OptStatusPublish.choices,default=OptStatusPublish.PUBLISHED)
@@ -167,7 +169,7 @@ class AboutUs(BaseAbstractModel,BaseGalleryModel,TranslatableModel):
 		if not A.slug:A.slug=uuslug(A.title,instance=A,max_length=255)
 		super().save(*B,**C)
 class Testimony(BaseAbstractModel,TranslatableModel):
-	translations=TranslatedFields(content=encrypt(CKEditor5Field(_(_E),blank=_A,null=_A,config_name=_D)));subtitle=encrypt(models.CharField(_(_T),max_length=LEN_SUB_TITLE));title=encrypt(models.CharField(_(_C),max_length=LEN_TITLE));is_header_text=models.BooleanField(default=_B);photo=GenericRelation(Photo,verbose_name=_(_F),null=_A,blank=_A);site=models.ForeignKey(Site,on_delete=models.CASCADE,verbose_name=_(_H));admin=models.ForeignKey(User,on_delete=models.PROTECT);status=models.SmallIntegerField(choices=OptStatusPublish.choices,default=OptStatusPublish.PUBLISHED)
+	translations=TranslatedFields(content=encrypt(CKEditor5Field(_(_E),blank=_A,null=_A,config_name=_D)));subtitle=encrypt(models.CharField(_(_V),max_length=LEN_SUB_TITLE));title=encrypt(models.CharField(_(_C),max_length=LEN_TITLE));is_header_text=models.BooleanField(default=_B);photo=GenericRelation(Photo,verbose_name=_(_F),null=_A,blank=_A);site=models.ForeignKey(Site,on_delete=models.CASCADE,verbose_name=_(_H));admin=models.ForeignKey(User,on_delete=models.PROTECT);status=models.SmallIntegerField(choices=OptStatusPublish.choices,default=OptStatusPublish.PUBLISHED)
 	def __str__(A):return f"{A.title} - {A.subtitle}"
 class Product(BaseAbstractModel,BaseGalleryModel,TranslatableModel):
 	translations=TranslatedFields(name=encrypt(models.CharField(_(_M),max_length=LEN_NAME)),title=encrypt(models.CharField(_(_C),max_length=LEN_TITLE)),sub_title=encrypt(models.CharField(_(_G),max_length=LEN_SUB_TITLE,null=_A,blank=_A)),content=encrypt(CKEditor5Field(_(_E),blank=_A,null=_A,config_name=_D)));is_header_text=models.BooleanField(default=_B);order_item=models.PositiveIntegerField(default=0);icon=models.CharField(max_length=100,null=_A,blank=_A);photo=GenericRelation(Photo,verbose_name=_(_F),null=_A,blank=_A);price=MoneyField(max_digits=10,decimal_places=2,default=0,default_currency='IDR')
@@ -180,10 +182,10 @@ class Product(BaseAbstractModel,BaseGalleryModel,TranslatableModel):
 				if not B[_I]is _J:A.order_item=B[_I]+1
 		super().save(*C,**D)
 class Cart(BaseAbstractModel):
-	product=models.ForeignKey(Product,on_delete=models.CASCADE,verbose_name=_(_U));qty=models.PositiveIntegerField(default=1,blank=_A,editable=_B);site=models.ForeignKey(Site,on_delete=models.CASCADE,verbose_name=_(_H));admin=models.ForeignKey(User,on_delete=models.PROTECT);status=models.SmallIntegerField(choices=OptStatusPublish.choices,default=OptStatusPublish.PUBLISHED)
+	product=models.ForeignKey(Product,on_delete=models.CASCADE,verbose_name=_(_W));qty=models.PositiveIntegerField(default=1,blank=_A,editable=_B);site=models.ForeignKey(Site,on_delete=models.CASCADE,verbose_name=_(_H));admin=models.ForeignKey(User,on_delete=models.PROTECT);status=models.SmallIntegerField(choices=OptStatusPublish.choices,default=OptStatusPublish.PUBLISHED)
 	def __str__(A):return f"{A.product.name}"
 class Purchasing(BaseAbstractModel):
-	product=models.ForeignKey(Product,on_delete=models.CASCADE,verbose_name=_(_U));qty=models.PositiveIntegerField(default=1,blank=_A,editable=_B);site=models.ForeignKey(Site,on_delete=models.CASCADE,verbose_name=_(_H));admin=models.ForeignKey(User,on_delete=models.PROTECT);status=models.SmallIntegerField(choices=OptStatusPublish.choices,default=OptStatusPublish.PUBLISHED)
+	product=models.ForeignKey(Product,on_delete=models.CASCADE,verbose_name=_(_W));qty=models.PositiveIntegerField(default=1,blank=_A,editable=_B);site=models.ForeignKey(Site,on_delete=models.CASCADE,verbose_name=_(_H));admin=models.ForeignKey(User,on_delete=models.PROTECT);status=models.SmallIntegerField(choices=OptStatusPublish.choices,default=OptStatusPublish.PUBLISHED)
 	def __str__(A):return f"{A.product.name}"
 def save_embed_video(embed):
 	E='src';D=0;A='';F=embed.split(' ');B=_B
@@ -195,7 +197,6 @@ def save_embed_video(embed):
 			if B and C.lower()!=E:
 				if D==0:A+=C;D+=1
 				else:A+='='+C
-				print(A)
 	if A.find('watch')<=0:A=A.replace('"','');A=A.replace('&quot;','');return A
 	else:return
 class VideoGallery(BaseAbstractModel,BaseGalleryModel,TranslatableModel):
@@ -221,20 +222,23 @@ class Banner(BaseAbstractModel):
 		elif A.priority==3:B='Low'
 		B=f"{B} [{A.site.id}] {A.site} {A.link}";return B
 class Location(BaseAbstractModel,BaseGalleryModel,TranslatableModel):
-	translations=TranslatedFields(title=encrypt(models.CharField(_(_C),max_length=LEN_TITLE)),subtitle=encrypt(models.CharField(_(_T),max_length=LEN_SUB_TITLE)));embed=CKEditor5Field(_('embed'),blank=_A,null=_A,config_name=_D);is_header_text=models.BooleanField(default=_B)
+	translations=TranslatedFields(title=encrypt(models.CharField(_(_C),max_length=LEN_TITLE)),subtitle=encrypt(models.CharField(_(_V),max_length=LEN_SUB_TITLE)));embed=CKEditor5Field(_('embed'),blank=_A,null=_A,config_name=_D);is_header_text=models.BooleanField(default=_B)
 	def __str__(A):return f"{A.title}"
 	def save(A,*B,**C):A.slug=uuslug(A.title,instance=A,max_length=255);super().save(*B,**C)
-def get_upload_path(instance,filename):return os.path.join('credentials',f"{instance.site_id}_{filename}")
+def get_upload_path(instance,filename):
+	A=Site.objects.filter(id=instance.site_id)
+	if A:A=A.get();A=A.domain
+	B=A.split('.')
+	if B:B=B[0]
+	return os.path.join('credentials',B,'credentials.json')
 class GoogleCalendar(BaseAbstractModel):
-	site=models.ForeignKey(Site,on_delete=models.CASCADE);cal_name=models.CharField(_('google calendar ID'),max_length=LEN_NAME);file_path_doc=models.FileField(verbose_name=_('google calendar credentials path'),upload_to=get_upload_path,blank=_A,null=_A);is_default=models.BooleanField(default=_B)
-	class Meta:verbose_name=_(_V);verbose_name_plural=_('google calendars')
-	def __str__(A):return A.cal_name
-	def save(A,*B,**C):A.site_id=get_site_id(exposed_request);super().save(*B,**C)
+	site=models.ForeignKey(Site,on_delete=models.CASCADE);calendar_id=models.CharField(_('google calendar ID'),max_length=LEN_NAME);file_path_doc=models.FileField(verbose_name=_('google calendar credentials path'),upload_to=get_upload_path,blank=_A,null=_A);is_default=models.BooleanField(default=_B)
+	class Meta:verbose_name=_(_X);verbose_name_plural=_('google calendars')
+	def __str__(A):return A.calendar_id
 class GoogleCalendarDetail(BaseAbstractModel):
-	site=models.ForeignKey(Site,on_delete=models.CASCADE);google_calendar=models.ForeignKey(GoogleCalendar,on_delete=models.CASCADE,verbose_name=_(_V));cal_year=models.PositiveIntegerField(default=2023,blank=_A,editable=_B);cal_month=models.PositiveIntegerField(default=2023,blank=_A,editable=_B);cal_json=JSONField(null=_A,blank=_A)
+	site=models.ForeignKey(Site,on_delete=models.CASCADE,blank=_A,null=_A);google_calendar=models.ForeignKey(GoogleCalendar,on_delete=models.CASCADE,verbose_name=_(_X));event_id=models.CharField(_('google event ID'),max_length=LEN_NAME);start=models.DateTimeField(_('date start'),blank=_A,null=_A);end=models.DateTimeField(_('date end'),blank=_A,null=_A);summary=models.CharField(_('Summary'),max_length=LEN_TITLE,blank=_A,null=_A);description=models.CharField(_(_T),max_length=LEN_SUB_TITLE,blank=_A,null=_A);visibility=models.CharField(_('visibility'),max_length=LEN_SUB_TITLE,blank=_A,null=_A);location=models.CharField(_(_S),max_length=LEN_SUB_TITLE,blank=_A,null=_A);transparency=models.CharField(_('transparency'),max_length=LEN_SUB_TITLE,blank=_A,null=_A);cal_year=models.PositiveIntegerField(default=2023,blank=_A,editable=_B);cal_month=models.PositiveIntegerField(default=2023,blank=_A,editable=_B);cal_json=JSONField(null=_A,blank=_A)
 	class Meta:verbose_name=_('google calendar detail');verbose_name_plural=_('google calendars detail')
-	def __str__(A):return f"{A.cal_month}/{A.cal_year}"
-	def save(A,*B,**C):A.site_id=get_site_id(exposed_request);super().save(*B,**C)
+	def __str__(A):return f"{A.event_id}"
 @receiver(models.signals.post_delete,sender=Document)
 @receiver(models.signals.post_delete,sender=GoogleCalendar)
 def auto_delete_file_on_delete(sender,instance,**B):
@@ -256,10 +260,10 @@ def auto_delete_file_on_change(sender,instance,**E):
 @receiver(post_delete,sender=ModelListSetting,dispatch_uid=_N)
 def menu_post_delete_handler(sender,**B):
 	A=get_site_id(exposed_request)
-	if A>0:print('clear cache delete',A);cache.delete(_W,version=A);cache.delete(_X,version=A);cache.delete(_Y,version=A);cache.delete(_Z,version=A);cache.delete(_a,version=A)
+	if A>0:cache.delete(_Y,version=A);cache.delete(_Z,version=A);cache.delete(_a,version=A);cache.delete(_b,version=A);cache.delete(_c,version=A)
 @receiver(post_save,sender=Menu,dispatch_uid=_O)
 @receiver(post_save,sender=ModelList,dispatch_uid=_O)
 @receiver(post_save,sender=ModelListSetting,dispatch_uid=_O)
 def menu_post_save_handler(sender,**B):
 	A=get_site_id(exposed_request)
-	if A>0:print('clear cache update',A);cache.delete(_W,version=A);cache.delete(_X,version=A);cache.delete(_Y,version=A);cache.delete(_Z,version=A);cache.delete(_a,version=A)
+	if A>0:cache.delete(_Y,version=A);cache.delete(_Z,version=A);cache.delete(_a,version=A);cache.delete(_b,version=A);cache.delete(_c,version=A)
