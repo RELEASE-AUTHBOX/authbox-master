@@ -1,8 +1,9 @@
-_c='menu_2'
-_b='menu_1'
-_a='menu_active'
-_Z='menu_class_2'
-_Y='menu_class_1'
+_d='menu_2'
+_c='menu_1'
+_b='menu_active'
+_a='menu_class_2'
+_Z='menu_class_1'
+_Y='token_calendar_v3.pickle'
 _X='google calendar'
 _W='product'
 _V='subtitle'
@@ -232,38 +233,46 @@ def get_upload_path(instance,filename):
 	if B:B=B[0]
 	return os.path.join('credentials',B,'credentials.json')
 class GoogleCalendar(BaseAbstractModel):
-	site=models.ForeignKey(Site,on_delete=models.CASCADE);calendar_id=models.CharField(_('google calendar ID'),max_length=LEN_NAME);file_path_doc=models.FileField(verbose_name=_('google calendar credentials path'),upload_to=get_upload_path,blank=_A,null=_A);is_default=models.BooleanField(default=_B)
+	site=models.ForeignKey(Site,on_delete=models.CASCADE);calendar_id=models.CharField(_('google calendar ID'),max_length=LEN_NAME);file_path_doc=models.FileField(verbose_name=_('google calendar credentials path'),upload_to=get_upload_path);is_default=models.BooleanField(default=_B)
 	class Meta:verbose_name=_(_X);verbose_name_plural=_('google calendars')
 	def __str__(A):return A.calendar_id
 class GoogleCalendarDetail(BaseAbstractModel):
-	site=models.ForeignKey(Site,on_delete=models.CASCADE,blank=_A,null=_A);google_calendar=models.ForeignKey(GoogleCalendar,on_delete=models.CASCADE,verbose_name=_(_X));event_id=models.CharField(_('google event ID'),max_length=LEN_NAME);start=models.DateTimeField(_('date start'),blank=_A,null=_A);end=models.DateTimeField(_('date end'),blank=_A,null=_A);summary=models.CharField(_('Summary'),max_length=LEN_TITLE,blank=_A,null=_A);description=models.CharField(_(_T),max_length=LEN_SUB_TITLE,blank=_A,null=_A);visibility=models.CharField(_('visibility'),max_length=LEN_SUB_TITLE,blank=_A,null=_A);location=models.CharField(_(_S),max_length=LEN_SUB_TITLE,blank=_A,null=_A);transparency=models.CharField(_('transparency'),max_length=LEN_SUB_TITLE,blank=_A,null=_A);cal_year=models.PositiveIntegerField(default=2023,blank=_A,editable=_B);cal_month=models.PositiveIntegerField(default=2023,blank=_A,editable=_B);cal_json=JSONField(null=_A,blank=_A)
+	site=models.ForeignKey(Site,on_delete=models.CASCADE,blank=_A,null=_A);google_calendar=models.ForeignKey(GoogleCalendar,on_delete=models.CASCADE,verbose_name=_(_X));event_id=models.CharField(_('google event ID'),max_length=LEN_NAME);start=models.DateTimeField(_('date start'),blank=_A,null=_A);end=models.DateTimeField(_('date end'),blank=_A,null=_A);summary=models.CharField(_('Summary'),max_length=LEN_TITLE,blank=_A,null=_A);description=models.TextField(_(_T),blank=_A,null=_A);visibility=models.CharField(_('visibility'),max_length=LEN_SUB_TITLE,blank=_A,null=_A);location=models.CharField(_(_S),max_length=LEN_SUB_TITLE,blank=_A,null=_A);transparency=models.CharField(_('transparency'),max_length=LEN_SUB_TITLE,blank=_A,null=_A);cal_year=models.PositiveIntegerField(default=2023,blank=_A,editable=_B);cal_month=models.PositiveIntegerField(default=2023,blank=_A,editable=_B);cal_json=JSONField(null=_A,blank=_A)
 	class Meta:verbose_name=_('google calendar detail');verbose_name_plural=_('google calendars detail')
 	def __str__(A):return f"{A.event_id}"
 @receiver(models.signals.post_delete,sender=Document)
 @receiver(models.signals.post_delete,sender=GoogleCalendar)
-def auto_delete_file_on_delete(sender,instance,**B):
+def auto_delete_file_on_delete(sender,instance,**E):
 	A=instance
 	if A.file_path_doc:
-		if os.path.isfile(A.file_path_doc.path):os.remove(A.file_path_doc.path)
+		if os.path.isfile(A.file_path_doc.path):
+			os.remove(A.file_path_doc.path)
+			if sender==GoogleCalendar:
+				C=os.path.dirname(A.file_path_doc.path);D=_Y;B=os.path.join(C,D)
+				if os.path.isfile(B):os.remove(B)
 @receiver(models.signals.pre_save,sender=Document)
 @receiver(models.signals.pre_save,sender=GoogleCalendar)
-def auto_delete_file_on_change(sender,instance,**E):
-	C=sender;A=instance
-	if not A.pk:return _B
-	try:B=C.objects.get(pk=A.pk).file_path_doc
-	except C.DoesNotExist:return _B
-	D=A.file_path_doc
-	if not B==D:
-		if os.path.isfile(B.path):os.remove(B.path)
+def auto_delete_file_on_change(sender,instance,**H):
+	C=instance;B=sender
+	if not C.pk:return _B
+	try:A=B.objects.get(pk=C.pk).file_path_doc
+	except B.DoesNotExist:return _B
+	E=C.file_path_doc
+	if not A==E:
+		if os.path.isfile(A.path):
+			os.remove(A.path)
+			if B==GoogleCalendar:
+				F=os.path.dirname(A.path);G=_Y;D=os.path.join(F,G)
+				if os.path.isfile(D):os.remove(D)
 @receiver(post_delete,sender=Menu,dispatch_uid=_N)
 @receiver(post_delete,sender=ModelList,dispatch_uid=_N)
 @receiver(post_delete,sender=ModelListSetting,dispatch_uid=_N)
 def menu_post_delete_handler(sender,**B):
 	A=get_site_id(exposed_request)
-	if A>0:cache.delete(_Y,version=A);cache.delete(_Z,version=A);cache.delete(_a,version=A);cache.delete(_b,version=A);cache.delete(_c,version=A)
+	if A>0:cache.delete(_Z,version=A);cache.delete(_a,version=A);cache.delete(_b,version=A);cache.delete(_c,version=A);cache.delete(_d,version=A)
 @receiver(post_save,sender=Menu,dispatch_uid=_O)
 @receiver(post_save,sender=ModelList,dispatch_uid=_O)
 @receiver(post_save,sender=ModelListSetting,dispatch_uid=_O)
 def menu_post_save_handler(sender,**B):
 	A=get_site_id(exposed_request)
-	if A>0:cache.delete(_Y,version=A);cache.delete(_Z,version=A);cache.delete(_a,version=A);cache.delete(_b,version=A);cache.delete(_c,version=A)
+	if A>0:cache.delete(_Z,version=A);cache.delete(_a,version=A);cache.delete(_b,version=A);cache.delete(_c,version=A);cache.delete(_d,version=A)
