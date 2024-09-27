@@ -1,28 +1,26 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en">
+<html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>django_authbox package &mdash; AUTHBOX 1.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
-
-  
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="_static/jquery.js?v=5d32c60e"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=359c27e9"></script>
-        <script src="_static/doctools.js?v=888ff710"></script>
-        <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="frontend package" href="frontend.html" />
-    <link rel="prev" title="core.managers package" href="core.managers.html" /> 
+    <link rel="prev" title="core.migrations package" href="core.migrations.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -71,7 +69,8 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#module-django_authbox.settings">django_authbox.settings module</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#django_authbox.settings.PARLER_LANGUAGES"><code class="docutils literal notranslate"><span class="pre">PARLER_LANGUAGES</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#django_authbox.settings.CACHES"><code class="docutils literal notranslate"><span class="pre">CACHES</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#django_authbox.settings.CACHES_TIMEOUT"><code class="docutils literal notranslate"><span class="pre">CACHES_TIMEOUT</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#django_authbox.settings.SITE_ID"><code class="docutils literal notranslate"><span class="pre">SITE_ID</span></code></a></li>
 </ul>
 </li>
@@ -131,7 +130,7 @@
 </section>
 <section id="module-django_authbox.common">
 <span id="django-authbox-common-module"></span><h2>django_authbox.common module<a class="headerlink" href="#module-django_authbox.common" title="Permalink to this heading"></a></h2>
-<p>Use in many apps</p>
+<p>Common function and procedure, digunakan berkali-kali di module lain</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="django_authbox.common.add_months">
 <span class="sig-prename descclassname"><span class="pre">django_authbox.common.</span></span><span class="sig-name descname"><span class="pre">add_months</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sourcedate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">months</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#django_authbox.common.add_months" title="Permalink to this definition"></a></dt>
@@ -172,40 +171,92 @@ end dante: 31/1/21</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="django_authbox.common.get_site_id">
 <span class="sig-prename descclassname"><span class="pre">django_authbox.common.</span></span><span class="sig-name descname"><span class="pre">get_site_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#django_authbox.common.get_site_id" title="Permalink to this definition"></a></dt>
-<dd><p>For BACKEND</p>
-<p>GET SITE ID, rombak total  (18 May 2023)
-Ambil data dari user login
-user.uuid or ID &gt; (m2m) agency &gt; (n2m) service &gt; site_id
-user.ID cukup aman karena user tsb sudah berhasil login</p>
-<p>User &gt; Agency &gt; Service &gt; Site
-Agency ambil yg last_active</p>
-<p>return:
--1: Not Login
--2: User belum terdaftar
--3: agency belum terdaftar
--31: show agency option (becouse agency more than one)</p>
-<p>-4: service belum terdaftar
--41: show service option</p>
-<p>-5: template belum terdaftar</p>
+<dd><p>Get <strong>Site ID</strong> khusus untuk halaman <strong>Dashboard</strong></p>
+<p>Jadi, user harus login dahulu.</p>
+<p>Algoritma:</p>
+<p><strong>get_site_id</strong>, rombak total  (18 May 2023)</p>
+<p>Ambil data dari user login</p>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">User.id</span></code> &gt; (m2m) <code class="xref py py-class docutils literal notranslate"><span class="pre">Agency</span></code> &gt; (n2m) <code class="xref py py-class docutils literal notranslate"><span class="pre">Service</span></code> &gt; (n2n) <code class="xref py py-class docutils literal notranslate"><span class="pre">Site</span></code> &gt; <strong>site_id</strong></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>request</strong> (<em>str</em>) – parameter ini untuk memastikan apakah user sudah login atau belum</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>Site ID</strong>, <strong>0</strong> jika site tidak ditemukan, atau <strong>Kode</strong> (Penjelasan <strong>Kode</strong> dibawah)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+<dl>
+<dt>Penjelasan <strong>Kode</strong>:</dt><dd><p>-1: Not Login</p>
+<p>-2: User belum terdaftar</p>
+<p>-3: Agency belum terdaftar</p>
+<p>-31: Tampilkan halaman <strong>Agency Option</strong> (Becouse Agency more than one)</p>
+<p>-4: Service belum terdaftar</p>
+<p>-41: Tampilkan halaman <strong>Service Option</strong> (Becouse Service more than one)</p>
+<p>-5: Template belum terdaftar</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="django_authbox.common.get_site_id_front">
 <span class="sig-prename descclassname"><span class="pre">django_authbox.common.</span></span><span class="sig-name descname"><span class="pre">get_site_id_front</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#django_authbox.common.get_site_id_front" title="Permalink to this definition"></a></dt>
-<dd><p>Dipanggil di semua halaman
-return langsung di variabel site_id, jika return = 0 render pesan error</p>
-<p>Khusus untuk front end</p>
+<dd><p>Get <strong>Site ID</strong> khusus untuk halaman <strong>Frontend</strong></p>
+<p>Ambil data <strong>Site ID</strong> berdasarkan <strong>Domain</strong> yang sedang aktif</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>request</strong> (<em>str</em>) – parameter ini untuk mendapatkan alamat <strong>Domain</strong></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>Site ID</strong>, <strong>0</strong> jika site tidak ditemukan</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="django_authbox.common.get_template">
 <span class="sig-prename descclassname"><span class="pre">django_authbox.common.</span></span><span class="sig-name descname"><span class="pre">get_template</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">site_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_frontend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#django_authbox.common.get_template" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Ambil Relatif Path (Lokasi) template</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>site_id</strong> (<em>int</em>) – parameter ini untuk filter berdasarkan <strong>Site</strong></p></li>
+<li><p><strong>is_frontend</strong> (<em>int</em><em>, </em><em>optional</em>) – parameter ini untuk filter berdasarkan <strong>Site</strong></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>Path</strong>, <strong>404</strong> jika template tidak ditemukan</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="django_authbox.common.get_template_id">
 <span class="sig-prename descclassname"><span class="pre">django_authbox.common.</span></span><span class="sig-name descname"><span class="pre">get_template_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">site_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_frontend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#django_authbox.common.get_template_id" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Ambil ID template</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>site_id</strong> (<em>int</em>) – parameter ini untuk filter berdasarkan <strong>Site</strong></p></li>
+<li><p><strong>is_frontend</strong> (<em>int</em><em>, </em><em>optional</em>) – parameter ini untuk filter berdasarkan <strong>Site</strong></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>Template ID</strong>, <strong>404</strong> jika template tidak ditemukan</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="django_authbox.common.get_week_date">
@@ -256,15 +307,21 @@ tanggal akhir = 4/12</p>
 <p>For the full list of settings and their values, see
 <a class="reference external" href="https://docs.djangoproject.com/en/4.2/ref/settings/">https://docs.djangoproject.com/en/4.2/ref/settings/</a></p>
 <dl class="py data">
-<dt class="sig sig-object py" id="django_authbox.settings.PARLER_LANGUAGES">
-<span class="sig-prename descclassname"><span class="pre">django_authbox.settings.</span></span><span class="sig-name descname"><span class="pre">PARLER_LANGUAGES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{1:</span> <span class="pre">({'code':</span> <span class="pre">'id',</span> <span class="pre">'fallbacks':</span> <span class="pre">['id'],</span> <span class="pre">'hide_untranslated':</span> <span class="pre">False},</span> <span class="pre">{'code':</span> <span class="pre">'en',</span> <span class="pre">'fallbacks':</span> <span class="pre">['id'],</span> <span class="pre">'hide_untranslated':</span> <span class="pre">False}),</span> <span class="pre">'default':</span> <span class="pre">{'fallbacks':</span> <span class="pre">['id'],</span> <span class="pre">'hide_untranslated':</span> <span class="pre">False,</span> <span class="pre">'code':</span> <span class="pre">'id'}}</span></em><a class="headerlink" href="#django_authbox.settings.PARLER_LANGUAGES" title="Permalink to this definition"></a></dt>
-<dd><p># reCAPTCHA type:v2 Invisible</p>
+<dt class="sig sig-object py" id="django_authbox.settings.CACHES">
+<span class="sig-prename descclassname"><span class="pre">django_authbox.settings.</span></span><span class="sig-name descname"><span class="pre">CACHES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'default':</span> <span class="pre">{'BACKEND':</span> <span class="pre">'django.core.cache.backends.locmem.LocMemCache',</span> <span class="pre">'LOCATION':</span> <span class="pre">'unique-snowflake'}}</span></em><a class="headerlink" href="#django_authbox.settings.CACHES" title="Permalink to this definition"></a></dt>
+<dd><p>Caches Location</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="django_authbox.settings.CACHES_TIMEOUT">
+<span class="sig-prename descclassname"><span class="pre">django_authbox.settings.</span></span><span class="sig-name descname"><span class="pre">CACHES_TIMEOUT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">43200</span></em><a class="headerlink" href="#django_authbox.settings.CACHES_TIMEOUT" title="Permalink to this definition"></a></dt>
+<dd><p>Caches Timeout 12 Jam</p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="django_authbox.settings.SITE_ID">
 <span class="sig-prename descclassname"><span class="pre">django_authbox.settings.</span></span><span class="sig-name descname"><span class="pre">SITE_ID</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#django_authbox.settings.SITE_ID" title="Permalink to this definition"></a></dt>
-<dd><p>Setting Path</p>
+<dd><p>Setting Path Default</p>
 </dd></dl>
 
 </section>
@@ -273,67 +330,32 @@ tanggal akhir = 4/12</p>
 </section>
 <section id="module-django_authbox.urls">
 <span id="django-authbox-urls-module"></span><h2>django_authbox.urls module<a class="headerlink" href="#module-django_authbox.urls" title="Permalink to this heading"></a></h2>
-<p>django_outbox URL Configuration</p>
 <dl class="simple">
-<dt>The <cite>urlpatterns</cite> list routes URLs to views. For more information please see:</dt><dd><p><a class="reference external" href="https://docs.djangoproject.com/en/4.1/topics/http/urls/">https://docs.djangoproject.com/en/4.1/topics/http/urls/</a></p>
-</dd>
-</dl>
-<p>Examples:
-Function views</p>
-<blockquote>
-<div><ol class="arabic simple">
-<li><p>Add an import:  from my_app import views</p></li>
-<li><p>Add a URL to urlpatterns:  path(‘’, views.home, name=’home’)</p></li>
-</ol>
-</div></blockquote>
-<dl class="simple">
-<dt>Class-based views</dt><dd><ol class="arabic simple">
-<li><p>Add an import:  from other_app.views import Home</p></li>
-<li><p>Add a URL to urlpatterns:  path(‘’, Home.as_view(), name=’home’)</p></li>
-</ol>
-</dd>
-<dt>Including another URLconf</dt><dd><ol class="arabic simple">
-<li><p>Import the include() function: from django.urls import include, path</p></li>
-<li><p>Add a URL to urlpatterns:  path(‘blog/’, include(‘blog.urls’))</p></li>
+<dt>Daftar <strong>URL</strong>:</dt><dd><ol class="arabic simple">
+<li><p>__debug__/</p></li>
+<li><p>register/</p></li>
+<li><p>doc/</p></li>
+<li><p>accounts/</p></li>
+<li><p>ckeditor5/</p></li>
+<li><p>id/ckeditor/    <strong>deprecated</strong></p></li>
+<li><p>id/dashboard/</p></li>
 </ol>
 </dd>
 </dl>
 </section>
 <section id="module-django_authbox.views">
 <span id="django-authbox-views-module"></span><h2>django_authbox.views module<a class="headerlink" href="#module-django_authbox.views" title="Permalink to this heading"></a></h2>
+<p>Function yang ada di module ini digunakan berkali-kali di module lain.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="django_authbox.views.redirect_service">
 <span class="sig-prename descclassname"><span class="pre">django_authbox.views.</span></span><span class="sig-name descname"><span class="pre">redirect_service</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#django_authbox.views.redirect_service" title="Permalink to this definition"></a></dt>
-<dd><p>Ini Contoh Penulisan yg benar:
-This is a conceptual class representation of a simple BLE device
-(GATT Server). It is essentially an extended combination of the
-<code class="xref py py-class docutils literal notranslate"><span class="pre">bluepy.btle.Peripheral</span></code> and <code class="xref py py-class docutils literal notranslate"><span class="pre">bluepy.btle.ScanEntry</span></code> classes</p>
+<dd><p>Jika service sudah tedaftar, maka akan di redirect ke URL default yaitu <strong>“/id/”</strong></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>client</strong> (class:<cite>simpleble.SimpleBleClient</cite>) – A handle to the <code class="xref py py-class docutils literal notranslate"><span class="pre">simpleble.SimpleBleClient</span></code> client
-object that detected the device</p></li>
-<li><p><strong>addr</strong> (<em>str</em><em>, </em><em>optional</em>) – Device MAC address, defaults to None</p></li>
-<li><p><strong>addrType</strong> (<em>str</em><em>, </em><em>optional</em>) – Device address type - one of ADDR_TYPE_PUBLIC or
-ADDR_TYPE_RANDOM, defaults to ADDR_TYPE_PUBLIC</p></li>
-<li><p><strong>iface</strong> (<em>int</em><em>, </em><em>optional</em>) – Bluetooth interface number (0 = /dev/hci0) used for the
-connection, defaults to 0</p></li>
-<li><p><strong>data</strong> (<em>list</em><em>, </em><em>optional</em>) – A list of tuples (adtype, description, value) containing the
-AD type code, human-readable description and value for all available
-advertising data items, defaults to None</p></li>
-<li><p><strong>rssi</strong> (<em>int</em><em>, </em><em>optional</em>) – Received Signal Strength Indication for the last received
-broadcast from the device. This is an integer value measured in dB,
-where 0 dB is the maximum (theoretical) signal strength, and more
-negative numbers indicate a weaker signal, defaults to 0</p></li>
-<li><p><strong>connectable</strong> (<em>bool</em><em>, </em><em>optional</em>) – <cite>True</cite> if the device supports connections, and <cite>False</cite>
-otherwise (typically used for advertising ‘beacons’).,
-defaults to <cite>False</cite></p></li>
-<li><p><strong>updateCount</strong> (<em>int</em><em>, </em><em>optional</em>) – Integer count of the number of advertising packets
-received from the device so far, defaults to 0</p></li>
-</ul>
+<dd class="field-odd"><p><strong>request</strong> (<em>str</em>) – parameter ini untuk mencari <strong>Site ID</strong></p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>root path</p>
+<dd class="field-even"><p><strong>URL redirect</strong> atau <strong>404</strong></p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>string</p>
@@ -344,25 +366,29 @@ received from the device so far, defaults to 0</p></li>
 <dl class="py function">
 <dt class="sig sig-object py" id="django_authbox.views.service_exists">
 <span class="sig-prename descclassname"><span class="pre">django_authbox.views.</span></span><span class="sig-name descname"><span class="pre">service_exists</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#django_authbox.views.service_exists" title="Permalink to this definition"></a></dt>
-<dd><p>Relasi <strong>Service</strong> ke <strong>Site</strong> adalah <em>OneToOne</em>.</p>
+<dd><p>Relasi <code class="xref py py-class docutils literal notranslate"><span class="pre">Service</span></code> ke <code class="xref py py-class docutils literal notranslate"><span class="pre">Site</span></code> adalah <strong>OneToOne</strong>.</p>
 <p>Jadi satu Site hanya untuk satu Service.</p>
-<p>&gt; Parameter   : <strong>request</strong> untuk mencari <strong>Site ID</strong></p>
-<p>&gt; Return      : <strong>kind</strong> atau <strong>None</strong></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>root_path</strong> (<em>str</em><em>, </em><em>optional</em>) – root path to search isHiddenWithinTree, defaults to “../data_in/”</p></li>
-<li><p><strong>str1</strong> (<em>str</em><em>, </em><em>optional</em>) – root path to search isHiddenWithinTree, defaults to “../data_in/”</p></li>
-</ul>
+<dd class="field-odd"><p><strong>request</strong> (<em>str</em>) – parameter ini untuk mencari <strong>Site ID</strong></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>kind</strong> atau <strong>None</strong> jika service belum terdaftar (Penjelasan <strong>Kind</strong> dibawah)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>string</p>
 </dd>
 </dl>
-<p>Basic getter</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>root path</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>string</p>
+<dl>
+<dt>Penjelasan <strong>Kind</strong>:        </dt><dd><p>ECOMMERCE = 1, _(‘E-Commerce’)</p>
+<p>AGENCY = 2, _(‘Agency’)</p>
+<p>SAAS = 3, _(‘Saas’)</p>
+<p>BUSINESS = 4, _(‘Business’)</p>
+<p>PORTOFOLIO = 5, _(‘Portofolio’)</p>
+<p>BLOG = 6, _(‘Blog’)</p>
+<p>EDUCATION = 7, _(‘Education’)</p>
+<p># Add else here…</p>
+<p>OTHER = 9, _(‘Other’)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -384,7 +410,7 @@ received from the device so far, defaults to 0</p></li>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="core.managers.html" class="btn btn-neutral float-left" title="core.managers package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="core.migrations.html" class="btn btn-neutral float-left" title="core.migrations package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="frontend.html" class="btn btn-neutral float-right" title="frontend package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

@@ -1,5 +1,5 @@
 _A='agency'
-from .models import Service,Agency,Photo,AgencyMeta
+from.models import Service,Agency,Photo,AgencyMeta
 from django.db.models import OuterRef,Subquery
 from django.conf import settings
 def get_agency_info(site_id):
@@ -17,4 +17,3 @@ def get_agency_meta(request,site_id):
 		if B:
 			B=B.get();A=AgencyMeta.objects.filter(agency_id=B.id).annotate(file_path=E)[:1]
 			if A:A=A.get();F=settings.MEDIA_URL;A.file_path='%s://%s%s%s'%('https'if C.is_secure()else'http',C.get_host(),F,A.file_path);return A
-	return None

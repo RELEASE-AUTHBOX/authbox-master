@@ -1,6 +1,5 @@
-_I='/admin'
-_H="template belum terdaftar, silahkan daftar di halaman <a href='%s'>admin</a>"
-_G='template'
+_H='/admin'
+_G="template belum terdaftar, silahkan daftar di halaman <a href='%s'>admin</a>"
 _F='CPANEL_DOMAIN'
 _E='CPANEL_URL'
 _D='CPANEL_TOKEN'
@@ -10,27 +9,31 @@ _A=True
 import pytz,calendar,os
 from datetime import datetime,timedelta
 from django.utils import timezone
-from core.models import Service,Template,User
 from django.conf import settings
 from django.contrib.humanize.templatetags.humanize import naturalday,naturaltime
 from django.contrib.sites.models import Site
 from django.http import Http404
 from django.utils.translation import gettext_lazy as _
+from core.models import Service,Template,User
 def get_site_id(request):
-	D=request
+	E='-is_default';D=request
 	if not D:return-1
-	E=D.user.id
-	if not E:return-1
+	F=D.user.id
+	if not F:return-1
 	C=User.objects.filter(id=D.user.id)
 	if not C:return-2
-	C=C.get();A=C.agency.filter(is_default=_A)
+	C=C.get();A=C.agency.all().order_by(E)
 	if not A:return-3
 	if len(A)>1:return-31
-	A=A[0];B=Service.objects.filter(agency_id=A.id,is_default=_A)
+	A=A[0];B=Service.objects.filter(agency_id=A.id).order_by(E)
 	if not B:return-4
 	if len(B)>1:return-41
 	B=B[0]
 	if B:return B.site_id
+	return 0
+def get_site_id_front(request):
+	A=Site.objects.filter(domain=request.get_host()).values_list('id',flat=_A)
+	if A:return A[0]
 	return 0
 def get_agency_from(request):A=User.objects.get(id=request.user.id);B=A.agency.all()[0];return B.id
 def create_sub_domain(sub_domain):
@@ -46,18 +49,14 @@ def delete_sub_domain(sub_domain):
 	A=getattr(settings,_C,'');B=getattr(settings,_D,'');C=getattr(settings,_E,'');D=getattr(settings,_F,'')
 	if A:E=f"curl -H'Authorization: cpanel {A}:{B}' 'https://{C}:2083/json-api/cpanel?cpanel_jsonapi_func=delsubdomain&cpanel_jsonapi_module=SubDomain&cpanel_jsonapi_version=2&domain={sub_domain}.{D}'";F=os.popen(E);return _A
 	return _B
-def get_site_id_front(request):
-	A=Site.objects.filter(domain=request.get_host()).values_list('id',flat=_A)
-	if A:return A[0]
-	return 0
 def get_template_id(site_id,is_frontend=_A):
-	B=site_id;A=Template.objects.filter(site__id=B,is_frontend=is_frontend).values_list('id',flat=_A)[:1];
+	A=Template.objects.filter(site__id=site_id,is_frontend=is_frontend).values_list('id',flat=_A)[:1]
 	if A:return A[0]
-	raise Http404(_H%_I)
+	raise Http404(_G%_H)
 def get_template(site_id,is_frontend=_A):
-	B=site_id;A=Template.objects.filter(site__id=B,is_frontend=is_frontend).values_list('rel_path',flat=_A)[:1];
+	A=Template.objects.filter(site__id=site_id,is_frontend=is_frontend).values_list('rel_path',flat=_A)[:1]
 	if A:return A[0]
-	raise Http404(_H%_I)
+	raise Http404(_G%_H)
 def get_week_date(year,month,day):
 	A=calendar.Calendar();A=A.monthdatescalendar(year,month);E=_B;D=0
 	for D in range(0,len(A)-1):

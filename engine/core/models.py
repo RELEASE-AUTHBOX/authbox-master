@@ -42,7 +42,7 @@ def get_site_id(request):
 	C=C.get();A=C.agency.filter(is_default=_A)
 	if not A:return-3
 	if len(A)>1:return-31
-	A=A[0];print('agency == ',A);B=Service.objects.filter(agency_id=A.id,is_default=_A)
+	A=A[0];B=Service.objects.filter(agency_id=A.id,is_default=_A)
 	if not B:return-4
 	if len(B)>1:return-41
 	B=B[0]
@@ -134,8 +134,8 @@ class GlobalSetting(BaseAbstractModel):
 		super().save(*D,**E)
 @receiver(signals.post_save,sender=User,dispatch_uid='update_user_group')
 def _update_user_group(sender,instance,**D):
-	A=instance;print('signal from User',A);B=A.groups.all()
-	if not B:C=Group.objects.get(id=3);A.groups.add(C);print('done')
+	A=instance;B=A.groups.all()
+	if not B:C=Group.objects.get(id=3);A.groups.add(C);
 @receiver(signals.post_save,sender=Agency)
 def _update_shortuuid(sender,instance,**D):
 	C=instance;A=str(C.id);B=len(A)
