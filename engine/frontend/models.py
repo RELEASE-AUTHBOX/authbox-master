@@ -259,11 +259,12 @@ def auto_delete_file_on_change(sender,instance,**H):
 	except B.DoesNotExist:return _B
 	E=C.file_path_doc
 	if not A==E:
-		if os.path.isfile(A.path):
-			os.remove(A.path)
-			if B==GoogleCalendar:
-				F=os.path.dirname(A.path);G=_Y;D=os.path.join(F,G)
-				if os.path.isfile(D):os.remove(D)
+		if A:
+			if os.path.isfile(A.path):
+				os.remove(A.path)
+				if B==GoogleCalendar:
+					F=os.path.dirname(A.path);G=_Y;D=os.path.join(F,G)
+					if os.path.isfile(D):os.remove(D)
 @receiver(post_delete,sender=Menu,dispatch_uid=_N)
 @receiver(post_delete,sender=ModelList,dispatch_uid=_N)
 @receiver(post_delete,sender=ModelListSetting,dispatch_uid=_N)

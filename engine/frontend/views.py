@@ -83,8 +83,11 @@ from.models import*
 from django.utils.html import strip_tags
 from frontend.Google import*
 from core.management.commands.updatecalendar import update_calendar
+def get_calendar_id(site_id):
+	obj=GoogleCalendar.objects.filter(site_id=site_id)[:1]
+	if obj:obj=obj.get();return obj.calendar_id
 def get_calendar_ajax(request,year,month):
-	site_id=5;res=[];calendar_id='suratiwan03@gmail.com';timeZone=_y;TZA=pytz.timezone(timeZone);res=[];gc=GoogleCalendar.objects.filter(calendar_id=calendar_id)[:1]
+	site_id=5;res=[];calendar_id=get_calendar_id(site_id);timeZone=_y;TZA=pytz.timezone(timeZone);res=[];gc=GoogleCalendar.objects.filter(calendar_id=calendar_id)[:1]
 	if gc:
 		gcd=GoogleCalendarDetail.objects.filter(cal_year=year,cal_month=month,site_id=site_id,google_calendar=gc).order_by(_q)
 		for i in gcd:tmp={'title':i.summary,_q:i.start.astimezone(TZA).isoformat(),'end':i.end.astimezone(TZA).isoformat(),'desc':i.description};res.append(tmp)

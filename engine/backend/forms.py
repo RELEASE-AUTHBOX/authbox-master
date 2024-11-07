@@ -1,3 +1,4 @@
+_V='payment_notes'
 _U='is_visibled'
 _T='subtitle'
 _S='file_path_doc'
@@ -109,7 +110,7 @@ class GlobalSettingForm(ModelForm):
 class MenuForm(TranslatableModelForm):
 	class Meta:model=Menu;fields=[_G,_M,'order_menu',_N,_U,'is_external','exclude_menu']
 class AgencyForm(TranslatableModelForm):
-	class Meta:model=Agency;fields=[_G,'email','phone','fax','whatsapp','address','notes'];widgets={'notes':CKEditor5Widget(attrs={_C:_D},config_name=_E)}
+	class Meta:model=Agency;fields=[_G,'email','phone','fax','whatsapp','address','notes',_V];widgets={'notes':CKEditor5Widget(attrs={_C:_D},config_name=_E),_V:CKEditor5Widget(attrs={_C:_D},config_name=_E)}
 class CategoriesForm(TranslatableModelForm):
 	class Meta:model=Categories;fields=[_G,_B]
 class ProductForm(TranslatableModelForm):
