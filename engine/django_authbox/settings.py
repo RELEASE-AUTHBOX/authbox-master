@@ -1,23 +1,22 @@
-_y='MAIN_DOMAIN'
-_x='backgroundColors'
-_w='borderColors'
-_v='tableCellProperties'
-_u='tableProperties'
-_t='styles'
-_s='heading3'
-_r='heading2'
-_q='heading1'
-_p='paragraph'
-_o='mediaEmbed'
-_n='italic'
-_m='authbox.web.id'
-_l='MEDIA_ROOT'
-_k='STATIC_ROOT'
-_j='templates'
-_i='127.0.0.1'
-_h='PASSWORD'
-_g='DB_NAME'
-_f='BACKEND'
+_x='MAIN_DOMAIN'
+_w='backgroundColors'
+_v='borderColors'
+_u='tableCellProperties'
+_t='tableProperties'
+_s='styles'
+_r='heading3'
+_q='heading2'
+_p='heading1'
+_o='paragraph'
+_n='mediaEmbed'
+_m='italic'
+_l='authbox.web.id'
+_k='MEDIA_ROOT'
+_j='STATIC_ROOT'
+_i='templates'
+_h='127.0.0.1'
+_g='PASSWORD'
+_f='DB_NAME'
 _e='allauth'
 _d='ALLOWED_HOSTS'
 _c='SECRET_KEY'
@@ -73,15 +72,15 @@ ALLOWED_HOSTS=KEY[_d]
 ROOT_URLCONF='django_authbox.urls'
 INSTALLED_APPS=['django.contrib.admin','django.contrib.auth','django.contrib.contenttypes','django.contrib.sessions','django.contrib.messages','django.contrib.staticfiles','django.contrib.sites','django.contrib.humanize',_e,'allauth.account','allauth.socialaccount','allauth.socialaccount.providers.google','allauth.socialaccount.providers.facebook','allauth.socialaccount.providers.github','captcha','multiselectfield','parler','crispy_forms','crispy_bootstrap4','django_ckeditor_5','mobiledetect','djmoney','menu','region','outbox_hitcount','hitcount','core','backend','frontend','docs']
 MIDDLEWARE=['django.middleware.security.SecurityMiddleware','django.contrib.sessions.middleware.SessionMiddleware','core.force_default_language_middleware.ForceDefaultLanguageMiddleware','django.middleware.locale.LocaleMiddleware','django.middleware.common.CommonMiddleware','django.middleware.csrf.CsrfViewMiddleware','django.contrib.auth.middleware.AuthenticationMiddleware','django.contrib.messages.middleware.MessageMiddleware','django.middleware.clickjacking.XFrameOptionsMiddleware','mobiledetect.middleware.DetectMiddleware']
-TEMPLATES=[{_f:'django.template.backends.django.DjangoTemplates',_I:[],'APP_DIRS':_B,'OPTIONS':{'context_processors':['django.template.context_processors.debug','django.template.context_processors.request','django.contrib.auth.context_processors.auth','django.contrib.messages.context_processors.messages','frontend.processor.context_outbox','backend.processor.context_outbox','backend.processor.get_main_domain','backend.processor.site_id','backend.processor.version']}}]
+TEMPLATES=[{'BACKEND':'django.template.backends.django.DjangoTemplates',_I:[],'APP_DIRS':_B,'OPTIONS':{'context_processors':['django.template.context_processors.debug','django.template.context_processors.request','django.contrib.auth.context_processors.auth','django.contrib.messages.context_processors.messages','frontend.processor.context_outbox','backend.processor.context_outbox','backend.processor.get_main_domain','backend.processor.site_id','backend.processor.version']}}]
 WSGI_APPLICATION='django_authbox.wsgi.application'
 DB_ENGINE=KEY['DB_ENGINE']
 if'sqlite3'in DB_ENGINE:
-	db_name=KEY[_g]
+	db_name=KEY[_f]
 	if db_name.find('/')<0 and db_name.find('\\')<0:DATABASES={_D:{_J:DB_ENGINE,_C:os.path.join(BASE_DIR,'db',db_name)}}
 	else:DATABASES={_D:{_J:DB_ENGINE,_C:db_name}}
-else:DATABASES={_D:{_J:DB_ENGINE,_C:KEY[_g],'USER':KEY['DB_USER'],_h:KEY[_b],'HOST':KEY['DB_HOST'],'PORT':KEY['DB_PORT']}}
-DATABASES.update({'second_db':{_J:'django.db.backends.mysql',_C:'db_authbox','USER':'root',_h:'','HOST':_i,'PORT':'3306'}})
+else:DATABASES={_D:{_J:DB_ENGINE,_C:KEY[_f],'USER':KEY['DB_USER'],_g:KEY[_b],'HOST':KEY['DB_HOST'],'PORT':KEY['DB_PORT']}}
+DATABASES.update({'second_db':{_J:'django.db.backends.mysql',_C:'db_authbox','USER':'root',_g:'','HOST':_h,'PORT':'3306'}})
 tmp=os.path.basename(DATABASES[_D][_C])
 logger.error(f"Database Name[94m {tmp}[0m")
 AUTH_PASSWORD_VALIDATORS=[{_C:'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},{_C:'django.contrib.auth.password_validation.MinimumLengthValidator'},{_C:'django.contrib.auth.password_validation.CommonPasswordValidator'},{_C:'django.contrib.auth.password_validation.NumericPasswordValidator'}]
@@ -95,13 +94,13 @@ DEFAULT_AUTO_FIELD='django.db.models.BigAutoField'
 SITE_ID=1
 CONTRIBUTE_PATH=os.path.join(BASE_DIR_2,'authbox-contribute','clothes')
 TEMPLATES[0][_I].clear()
-TEMPLATES[0][_I].append(os.path.join(CONTRIBUTE_PATH,_j))
-TEMPLATES[0][_I].append(os.path.join(CONTRIBUTE_PATH,_j,_e))
-STATIC_ROOT=KEY[_k]if KEY.get(_k)else os.path.join(CONTRIBUTE_PATH,'staticfiles')
+TEMPLATES[0][_I].append(os.path.join(CONTRIBUTE_PATH,_i))
+TEMPLATES[0][_I].append(os.path.join(CONTRIBUTE_PATH,_i,_e))
+STATIC_ROOT=KEY[_j]if KEY.get(_j)else os.path.join(CONTRIBUTE_PATH,'staticfiles')
 path_level_up=os.path.abspath(os.path.join(STATIC_ROOT,'..','staticserver'))
 STATICFILES_DIRS=[path_level_up]
 MEDIA_URL='/media/'
-MEDIA_ROOT=KEY[_l]if KEY.get(_l)else os.path.join(CONTRIBUTE_PATH,'media')
+MEDIA_ROOT=KEY[_k]if KEY.get(_k)else os.path.join(CONTRIBUTE_PATH,'media')
 MIDDLEWARE+=['frontend.request_exposer.RequestExposerMiddleware','core.request_exposer.RequestExposerMiddleware']
 HITCOUNT_KEEP_HIT_IN_DATABASE={'months':3}
 HITCOUNT_KEEP_HIT_ACTIVE={'minutes':1}
@@ -142,17 +141,16 @@ ACCOUNT_USERNAME_REQUIRED=_H
 ACCOUNT_LOGOUT_ON_GET=_B
 SOCIALACCOUNT_LOGIN_ON_GET=_H
 SENDGRID_API_KEY='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'
-CACHES={_D:{_f:'django.core.cache.backends.locmem.LocMemCache','LOCATION':'unique-snowflake'}}
-INTERNAL_IPS=[_i,'localhost',_m]
+INTERNAL_IPS=[_h,'localhost',_l]
 customColorPalette=[{_E:'hsl(4, 90%, 58%)',_F:'Red'},{_E:'hsl(340, 82%, 52%)',_F:'Pink'},{_E:'hsl(291, 64%, 42%)',_F:'Purple'},{_E:'hsl(262, 52%, 47%)',_F:'Deep Purple'},{_E:'hsl(231, 48%, 48%)',_F:'Indigo'},{_E:'hsl(207, 90%, 54%)',_F:'Blue'}]
-CKEDITOR_5_CONFIGS={_D:{_R:[_S,_A,'bold',_n,'link',_T,_U,_V,'imageUpload']},'extends':{'blockToolbar':[_p,_q,_r,_s,_A,_T,_U,_A,_V],_o:{'previewsInData':_K,'extraProviders':[{'name':'all','url':'/^.+/'}]},_R:[_S,_A,'outdent','indent',_A,'alignment',_A,'bold',_n,'underline','strikethrough',_A,'link',_A,_P,'subscript','superscript','highlight',_A,_T,_U,'todoList',_A,'codeBlock',_o,'insertImage','sourceEditing',_A,_V,_A,'fontFamily','fontSize','fontColor','fontBackgroundColor','removeFormat','insertTable'],'image':{_R:['imageTextAlternative',_A,'imageStyle:alignLeft','imageStyle:alignRight','imageStyle:alignCenter','imageStyle:side',_A],_t:['full','side','alignLeft','alignRight','alignCenter']},'table':{'contentToolbar':['tableColumn','tableRow','mergeTableCells',_u,_v],_u:{_w:customColorPalette,_x:customColorPalette},_v:{_w:customColorPalette,_x:customColorPalette}},_S:{'options':[{_L:_p,_M:'Paragraph',_N:'ck-heading_paragraph'},{_L:_q,_W:'h1',_M:'Heading 1',_N:'ck-heading_heading1'},{_L:_r,_W:'h2',_M:'Heading 2',_N:'ck-heading_heading2'},{_L:_s,_W:'h3',_M:'Heading 3',_N:'ck-heading_heading3'}]}},'list':{'properties':{_t:_K,'startIndex':_K,'reversed':_K}}}
+CKEDITOR_5_CONFIGS={_D:{_R:[_S,_A,'bold',_m,'link',_T,_U,_V,'imageUpload']},'extends':{'blockToolbar':[_o,_p,_q,_r,_A,_T,_U,_A,_V],_n:{'previewsInData':_K,'extraProviders':[{'name':'all','url':'/^.+/'}]},_R:[_S,_A,'outdent','indent',_A,'alignment',_A,'bold',_m,'underline','strikethrough',_A,'link',_A,_P,'subscript','superscript','highlight',_A,_T,_U,'todoList',_A,'codeBlock',_n,'insertImage','sourceEditing',_A,_V,_A,'fontFamily','fontSize','fontColor','fontBackgroundColor','removeFormat','insertTable'],'image':{_R:['imageTextAlternative',_A,'imageStyle:alignLeft','imageStyle:alignRight','imageStyle:alignCenter','imageStyle:side',_A],_s:['full','side','alignLeft','alignRight','alignCenter']},'table':{'contentToolbar':['tableColumn','tableRow','mergeTableCells',_t,_u],_t:{_v:customColorPalette,_w:customColorPalette},_u:{_v:customColorPalette,_w:customColorPalette}},_S:{'options':[{_L:_o,_M:'Paragraph',_N:'ck-heading_paragraph'},{_L:_p,_W:'h1',_M:'Heading 1',_N:'ck-heading_heading1'},{_L:_q,_W:'h2',_M:'Heading 2',_N:'ck-heading_heading2'},{_L:_r,_W:'h3',_M:'Heading 3',_N:'ck-heading_heading3'}]}},'list':{'properties':{_s:_K,'startIndex':_K,'reversed':_K}}}
 CRISPY_TEMPLATE_PACK='bootstrap4'
-tmp=KEY.get(_y)
-MAIN_DOMAIN=KEY[_y]if tmp else'localhost:8000'
+tmp=KEY.get(_x)
+MAIN_DOMAIN=KEY[_x]if tmp else'localhost:8000'
 SOCIALACCOUNT_PROVIDERS={'github':{_X:{_Y:'6c0e925336cace458a21',_Z:'e5e0a76006524a3b49e9c0593ac29f2d1ee8c354',_a:''}},'facebook':{_X:{_Y:'1582129178867576',_Z:'6edc1f622ef5ba62ec8d8e54d8228ef8',_a:''}},'google':{_X:{_Y:'921195599940-a4ft11sk9m64oop9vr1amjkvu8g192af.apps.googleusercontent.com',_Z:'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',_a:''},'SCOPE':['profile','email'],'AUTH_PARAMS':{'access_type':'online'}}}
 CPANEL_USER='u1578244'
 CPANEL_TOKEN='QQ0GWU5HOJ7OYZWNM82IX2IA6PZGEK6M'
 CPANEL_URL='srv135.niagahoster.com'
-CPANEL_DOMAIN=_m
+CPANEL_DOMAIN=_l
 DOCS_ROOT=os.path.join(BASE_DIR,'docs/_build/html')
 DOCS_ACCESS='public'

@@ -23,7 +23,9 @@ def update_calendar(domain,month_start,month_end):
 	if not site:sys.stdout.write('Site Not Found!\n');return _A
 	site=site.get();cal=GoogleCalendar.objects.filter(site=site)[:1]
 	if not cal:sys.stdout.write('Calendar Not Found!\n');return _A
-	cal=cal.get();CLIENT_SECRET_FILE=cal.file_path_doc.path;calendar_id=cal.calendar_id;print('calendar_id',calendar_id);API_NAME='calendar';API_VERSION='v3';SCOPES=['https://www.googleapis.com/auth/calendar'];service=create_service(CLIENT_SECRET_FILE,API_NAME,API_VERSION,SCOPES);year=datetime.now().year;num_days=monthrange(year,int(month_end))[1];timeZone='Asia/Makassar';event_request_body={C:{F:str(year)+A+str(month_start)+'-01T00:00:00Z',G:timeZone},E:{F:str(year)+A+str(month_end)+A+str(num_days)+D,G:timeZone}};print('event_request_body',event_request_body);events=get_events(service,calendar_id,event_request_body)
+	cal=cal.get();CLIENT_SECRET_FILE=cal.file_path_doc.path;calendar_id=cal.calendar_id;print('calendar_id',calendar_id);API_NAME='calendar';API_VERSION='v3';SCOPES=['https://www.googleapis.com/auth/calendar'];service=create_service(CLIENT_SECRET_FILE,API_NAME,API_VERSION,SCOPES);result=service.calendarList().list().execute()
+	for i in result:pprint('calendar List',i)
+	year=datetime.now().year;num_days=monthrange(year,int(month_end))[1];timeZone='Asia/Makassar';event_request_body={C:{F:str(year)+A+str(month_start)+'-01T00:00:00Z',G:timeZone},E:{F:str(year)+A+str(month_end)+A+str(num_days)+D,G:timeZone}};print('event_request_body',event_request_body);events=get_events(service,calendar_id,event_request_body);res=service.calendarList().list().execute()
 	if events:
 		gcd=GoogleCalendarDetail.objects.filter(google_calendar=cal);print('gcd',gcd)
 		if gcd:
