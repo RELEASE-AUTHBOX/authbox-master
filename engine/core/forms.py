@@ -10,8 +10,8 @@ from django import forms
 from .models import Photo
 from django.contrib.auth import get_user_model
 from allauth.account.forms import LoginForm,ResetPasswordForm,SignupForm
-from captcha.fields import ReCaptchaField
-from captcha.widgets import ReCaptchaV2Invisible
+from django_recaptcha.fields import ReCaptchaField
+from django_recaptcha.widgets import ReCaptchaV2Invisible
 class PhotoForm(ModelForm):
 	str_file_path=forms.CharField(widget=forms.HiddenInput())
 	class Meta:model=Photo;fields=[_B]

@@ -20,16 +20,16 @@ _D='django_ckeditor_5'
 _C='class'
 _B='status'
 _A='content'
-from captcha.fields import ReCaptchaField
-from captcha.widgets import ReCaptchaV2Checkbox
-from core.models import*
+from django_recaptcha.fields import ReCaptchaField
+from django_recaptcha.widgets import ReCaptchaV2Checkbox
+from core.models import *
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Column,Layout,Row
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.forms import ModelForm
 from django_ckeditor_5.widgets import CKEditor5Widget
-from frontend.models import*
+from frontend.models import *
 from menu.models import Menu
 from parler.forms import TranslatableModelForm
 class TagsForm(TranslatableModelForm):
@@ -43,7 +43,7 @@ class AnnouncementForm(TranslatableModelForm):
 	dim_w=forms.CharField(widget=forms.HiddenInput(),initial=870);dim_h=forms.CharField(widget=forms.HiddenInput(),initial=500)
 	class Meta:model=Announcement;fields=[_F,_A,_I,_K,_R,_B];widgets={_A:CKEditor5Widget(attrs={_C:_D},config_name=_E)}
 	def __init__(self,*args,**kwargs):
-		site_id=kwargs.pop(_O);super().__init__(*args,**kwargs)
+		site_id=kwargs.pop(_O);super().__init__(*(args),**kwargs)
 		if site_id:self.fields[_K].queryset=Tags.objects.filter(site_id=site_id);self.fields[_I].queryset=Categories.objects.filter(site_id=site_id)
 class GoogleCalendarForm(ModelForm):
 	class Meta:model=GoogleCalendar;fields=['calendar_id',_S]
@@ -57,7 +57,7 @@ class NewsForm(TranslatableModelForm):
 	dim_w=forms.CharField(widget=forms.HiddenInput(),initial=870);dim_h=forms.CharField(widget=forms.HiddenInput(),initial=500)
 	class Meta:model=News;fields=[_F,_A,_I,_K,_H,_B];widgets={_A:CKEditor5Widget(attrs={_C:_D},config_name=_E)}
 	def __init__(self,*args,**kwargs):
-		site_id=kwargs.pop(_O);super().__init__(*args,**kwargs)
+		site_id=kwargs.pop(_O);super().__init__(*(args),**kwargs)
 		if site_id:self.fields[_K].queryset=Tags.objects.filter(site_id=site_id);self.fields[_I].queryset=Categories.objects.filter(site_id=site_id)
 class TestimonyForm(TranslatableModelForm):
 	dim_w=forms.CharField(widget=forms.HiddenInput(),initial=517);dim_h=forms.CharField(widget=forms.HiddenInput(),initial=517)
@@ -66,13 +66,13 @@ class ArticleForm(TranslatableModelForm):
 	dim_w=forms.CharField(widget=forms.HiddenInput(),initial=870);dim_h=forms.CharField(widget=forms.HiddenInput(),initial=500)
 	class Meta:model=Article;fields=[_F,_A,_I,_K,_H,_B];widgets={_A:CKEditor5Widget(attrs={_C:_D},config_name=_E)}
 	def __init__(self,*args,**kwargs):
-		site_id=kwargs.pop(_O);super().__init__(*args,**kwargs)
+		site_id=kwargs.pop(_O);super().__init__(*(args),**kwargs)
 		if site_id:self.fields[_K].queryset=Tags.objects.filter(site_id=site_id);self.fields[_I].queryset=Categories.objects.filter(site_id=site_id)
 class EventsForm(TranslatableModelForm):
 	dim_w=forms.CharField(widget=forms.HiddenInput(),initial=870);dim_h=forms.CharField(widget=forms.HiddenInput(),initial=500)
 	class Meta:model=Events;fields=[_F,'location','date','time',_A,_I,_K,_B];widgets={_A:CKEditor5Widget(attrs={_C:_D},config_name=_E)}
 	def __init__(self,*args,**kwargs):
-		site_id=kwargs.pop(_O);super().__init__(*args,**kwargs)
+		site_id=kwargs.pop(_O);super().__init__(*(args),**kwargs)
 		if site_id:self.fields[_K].queryset=Tags.objects.filter(site_id=site_id);self.fields[_I].queryset=Categories.objects.filter(site_id=site_id)
 class SlideShowForm(TranslatableModelForm):
 	dim_w=forms.CharField(widget=forms.HiddenInput(),initial=873);dim_h=forms.CharField(widget=forms.HiddenInput(),initial=424)
