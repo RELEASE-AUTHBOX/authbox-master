@@ -28,7 +28,10 @@ def update_calendar(domain,month_start,month_end):
 		print('calendar List',i[A])
 		if i[A]==calendar_id:mfound=True;break
 	if not mfound:sys.stdout.write(calendar_id+' Not found in Calendar List!\n');return _A
-	year=datetime.now().year;num_days=monthrange(year,int(month_end))[1];timeZone='Asia/Makassar';event_request_body={E:{H:str(year)+B+str(month_start)+'-01T00:00:00Z',I:timeZone},G:{H:str(year)+B+str(month_end)+B+str(num_days)+F,I:timeZone}};print('event_request_body',event_request_body);gcd=GoogleCalendarDetail.objects.filter(google_calendar=cal);print('gcd',gcd)
+	year=datetime.now().year;num_days=monthrange(year,int(month_end))[1];timeZone='Asia/Makassar';event_request_body={E:{H:str(year)+B+str(month_start)+'-01T00:00:00Z',I:timeZone},G:{H:str(year)+B+str(month_end)+B+str(num_days)+F,I:timeZone}};print('event_request_body',event_request_body)
+	if month_start==month_end:gcd=GoogleCalendarDetail.objects.filter(google_calendar=cal).filter(cal_year=year).filter(cal_month=month_start)
+	else:gcd=GoogleCalendarDetail.objects.filter(google_calendar=cal).filter(cal_year=year).filter(cal_month__gte=month_start).filter(cal_month__lte=month_end)
+	print('gcd',gcd)
 	if gcd:
 		print(f"Clear {len(gcd)} data")
 		for i in gcd:i.delete()
@@ -38,4 +41,4 @@ def update_calendar(domain,month_start,month_end):
 			for i in events[D]:
 				print('Proses ',i);tmp_start=list(i[E].values())[0];year=tmp_start.split(B)[0];month=tmp_start.split(B)[1];tmp_end=list(i[G].values())[0];print('events',i[A],i[E],i[J])
 				if C in i:print(C,i[C])
-				GoogleCalendarDetail.objects.create(site_id=site_id,google_calendar_id=cal.id,event_id=i[A],start=tmp_start+F,end=tmp_end+F,summary=i[J],description=i[C]if C in i else _A,visibility='public',location='Narvik Villa',transparency='opaque',cal_year=year,cal_month=month,cal_json=i);print('Save Complete')
+				GoogleCalendarDetail.objects.create(site_id=site_id,google_calendar_id=cal.id,event_id=i[A],start=tmp_start if'T'in tmp_start else tmp_start+F,end=tmp_end if'T'in tmp_end else tmp_end+F,summary=i[J],description=i[C]if C in i else _A,cal_name=calendar_id.split('@')[0],visibility='public',location=site.name,transparency='opaque',cal_year=year,cal_month=month,cal_json=i);print('Save Complete')

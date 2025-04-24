@@ -87,7 +87,7 @@ def get_calendar_id(site_id):
 	if obj:obj=obj.get();return obj.calendar_id
 	return _A
 def get_calendar_ajax(request,year,month):
-	site_id=5;res=[];calendar_id=get_calendar_id(site_id);print('calendar_id',calendar_id);timeZone=_x;TZA=pytz.timezone(timeZone);res=[];gc=GoogleCalendar.objects.filter(calendar_id=calendar_id)[:1]
+	print('get_calendar_ajax - request',request);site_id=get_site_id_front(request);res=[];calendar_id=get_calendar_id(site_id);print('calendar_id',calendar_id);timeZone=_x;TZA=pytz.timezone(timeZone);res=[];gc=GoogleCalendar.objects.filter(calendar_id=calendar_id)[:1]
 	if gc:
 		gcd=GoogleCalendarDetail.objects.filter(cal_year=year,cal_month=month,site_id=site_id,google_calendar=gc).order_by(_p)
 		for i in gcd:tmp={'title':i.summary,_p:i.start.astimezone(TZA).isoformat(),'end':i.end.astimezone(TZA).isoformat(),'desc':i.description};res.append(tmp)
