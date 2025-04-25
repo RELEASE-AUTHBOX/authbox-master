@@ -87,10 +87,16 @@ def get_calendar_id(site_id):
 	if obj:obj=obj.get();return obj.calendar_id
 	return _A
 def get_calendar_ajax(request,year,month):
-	print('get_calendar_ajax - request',request);site_id=get_site_id_front(request);res=[];calendar_id=get_calendar_id(site_id);print('calendar_id',calendar_id);timeZone=_x;TZA=pytz.timezone(timeZone);res=[];gc=GoogleCalendar.objects.filter(calendar_id=calendar_id)[:1]
+	print('get_calendar_ajax - request',request);site_id=get_site_id_front(request);res=[];calendar_id=get_calendar_id(site_id);print('calendar_id',calendar_id);timeZone=_x;bg_color=['rgb(220, 235, 252)','rgb(173, 209, 245)','rgb(129, 180, 237)','rgb(38, 101, 167)','rgb(0, 116, 217)'];bg_cal_name=[];TZA=pytz.timezone(timeZone);res=[];gc=GoogleCalendar.objects.filter(calendar_id=calendar_id)[:1]
 	if gc:
 		gcd=GoogleCalendarDetail.objects.filter(cal_year=year,cal_month=month,site_id=site_id,google_calendar=gc).order_by(_p)
-		for i in gcd:tmp={'title':i.summary,_p:i.start.astimezone(TZA).isoformat(),'end':i.end.astimezone(TZA).isoformat(),'desc':i.description};res.append(tmp)
+		for i in gcd:
+			if i.cal_name not in bg_cal_name:bg_cal_name.append(i.cal_name)
+			tmp_color=-1
+			for (j,name) in enumerate(bg_cal_name):
+				if name==i.cal_name:tmp_color=j
+			if tmp_color>=len(bg_color):tmp_color=-1
+			tmp={'title':i.summary,_p:i.start.astimezone(TZA).isoformat(),'end':i.end.astimezone(TZA).isoformat(),'desc':i.description,'eventBackgroundColor':''if tmp_color<0 else bg_color[tmp_color]};res.append(tmp)
 	return JsonResponse(res,safe=_K)
 def get_menu_group(site_id):
 	menugroup=MenuGroup.objects.filter(site_id=site_id,kind=1)

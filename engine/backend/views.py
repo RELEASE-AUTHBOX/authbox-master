@@ -1,6 +1,7 @@
-_BZ='expired_date'
-_BY='is_active'
-_BX='is_frontend'
+_Ba='expired_date'
+_BZ='is_active'
+_BY='is_frontend'
+_BX='Site is not defind!'
 _BW='site name updated'
 _BV='Description (en)'
 _BU='Description (id)'
@@ -1302,7 +1303,12 @@ class CalendarView(TemplateView):
 def calendar_sync_ajax(request):
 	site_id=get_site_id(request);site=Site.objects.filter(id=site_id);lst=[]
 	if site:site=site.get();site_domain=site.domain;lst.append(site_domain);skrg=datetime.now();lst.append(skrg.month);lst.append(skrg.year);update_calendar(site_domain,skrg.month,skrg.month)
-	else:lst.append('Site is not defind!')
+	else:lst.append(_BX)
+	return JsonResponse(lst,safe=_B)
+def calendar_sync_all_ajax(request):
+	site_id=get_site_id(request);site=Site.objects.filter(id=site_id);lst=[]
+	if site:site=site.get();site_domain=site.domain;lst.append(site_domain);update_calendar(site_domain,1,12)
+	else:lst.append(_BX)
 	return JsonResponse(lst,safe=_B)
 def calendar_ajax(request):
 	A='File Path';site_id=get_site_id(request);obj2=GoogleCalendar.objects.filter(site_id=site_id);lst=[]
@@ -1376,7 +1382,7 @@ def template_create(request):
 	context={};context[_J]=_q;active_page=get_translated_active_page(_B8);context[_E]=active_page;site_id=get_site_id(request);menu=get_menu_caches(request,_D,site_id,active_page);context.update(menu);template=get_template(site_id,is_frontend=_B)+_a
 	if request.method==_I:
 		form=TemplateForm(request.POST);photo=PhotoForm(request.POST)
-		if form.is_valid():tmp=request.POST.get(_B9);post=Template.objects.create(name=request.POST.get(_H),rel_path=request.POST.get('rel_path'),is_frontend=bool(request.POST.get(_BX)),template_owner_id=tmp if tmp else _C);Photo.objects.create(content_object=post,file_path=request.POST.get(_M));messages.info(request,mMsgBox.get(_d,request.POST.get(_H)));return redirect(reverse_lazy(_q))
+		if form.is_valid():tmp=request.POST.get(_B9);post=Template.objects.create(name=request.POST.get(_H),rel_path=request.POST.get('rel_path'),is_frontend=bool(request.POST.get(_BY)),template_owner_id=tmp if tmp else _C);Photo.objects.create(content_object=post,file_path=request.POST.get(_M));messages.info(request,mMsgBox.get(_d,request.POST.get(_H)));return redirect(reverse_lazy(_q))
 	else:messages.info(request,mMsgBox.get(_b));context[_G]=TemplateForm();context[_L]=PhotoForm()
 	return render(request,template,context)
 def template_update(request,uuid):
@@ -1386,7 +1392,7 @@ def template_update(request,uuid):
 	if request.method==_I:
 		form=TemplateForm(request.POST,instance=post);photo=PhotoForm(request.POST,instance=post_photo if post_photo else _C)
 		if form.is_valid():
-			obj=data.get();tmp=request.POST.get(_B9);obj.name=request.POST.get(_H);obj.rel_path=request.POST.get('rel_path');obj.is_frontend=bool(request.POST.get(_BX))
+			obj=data.get();tmp=request.POST.get(_B9);obj.name=request.POST.get(_H);obj.rel_path=request.POST.get('rel_path');obj.is_frontend=bool(request.POST.get(_BY))
 			if tmp:obj.template_owner_id=request.POST.get(_B9)
 			obj.save()
 			if photo.is_valid():
@@ -1449,7 +1455,7 @@ def service_create(request):
 	context={};context[_J]=_Q;active_page=get_translated_active_page(_Q);context[_E]=active_page;site_id=get_site_id(request);menu=get_menu_caches(request,_D,site_id,active_page);context.update(menu);template=get_template(site_id,is_frontend=_B)+_a
 	if request.method==_I:
 		print('request.post');form=ServiceForm(request.POST)
-		if form.is_valid():print('form is valid');post=Service.objects.create(site_id=request.POST.get(_AF),kind=request.POST.get('kind'),agency_id=request.POST.get(_N),is_active=bool(request.POST.get(_BY)),expired_date=request.POST.get(_BZ));print('post=',post);messages.info(request,mMsgBox.get(_d,request.POST.get(_H)));return redirect(reverse_lazy(_Q))
+		if form.is_valid():print('form is valid');post=Service.objects.create(site_id=request.POST.get(_AF),kind=request.POST.get('kind'),agency_id=request.POST.get(_N),is_active=bool(request.POST.get(_BZ)),expired_date=request.POST.get(_Ba));print('post=',post);messages.info(request,mMsgBox.get(_d,request.POST.get(_H)));return redirect(reverse_lazy(_Q))
 		else:print('form-',form)
 	else:print('else request.post');messages.info(request,mMsgBox.get(_b));context[_G]=ServiceForm()
 	return render(request,template,context)
@@ -1457,7 +1463,7 @@ def service_update(request,uuid):
 	context={};context[_J]=_Q;active_page=get_translated_active_page(_Q);context[_E]=active_page;site_id=get_site_id(request);menu=get_menu_caches(request,_D,site_id,active_page);context.update(menu);template=get_template(site_id,is_frontend=_B)+_W;data=Service.objects.filter(uuid=uuid);post=get_object_or_404(data)
 	if request.method==_I:
 		form=ServiceForm(request.POST,instance=post)
-		if form.is_valid():obj=data.get();obj.site_id=request.POST.get(_AF);obj.kind=request.POST.get('kind');obj.agency_id=request.POST.get(_N);obj.is_active=bool(request.POST.get(_BY));obj.expired_date=request.POST.get(_BZ);obj.save();messages.info(request,mMsgBox.get(_X,request.POST.get(_H)));return redirect(reverse_lazy(_Q))
+		if form.is_valid():obj=data.get();obj.site_id=request.POST.get(_AF);obj.kind=request.POST.get('kind');obj.agency_id=request.POST.get(_N);obj.is_active=bool(request.POST.get(_BZ));obj.expired_date=request.POST.get(_Ba);obj.save();messages.info(request,mMsgBox.get(_X,request.POST.get(_H)));return redirect(reverse_lazy(_Q))
 	else:messages.info(request,mMsgBox.get(_Y));context[_G]=ServiceForm(instance=post)
 	return render(request,template,context)
 def service_delete(request,uuid):context={};site_id=get_site_id(request);data=Service.objects.filter(uuid=uuid);post=get_object_or_404(data);tmp=post.name;post.delete();messages.info(request,mMsgBox.get(_c,tmp));return redirect(reverse_lazy(_Q))
