@@ -264,7 +264,7 @@ class IndexView(TemplateView):
 		service=service_exists(request);print('service from index',service);service_type=service;print('servicetype',service_type)
 		if not service_type:raise Http404("service belum terdaftar, silahkan daftar di halaman <a href='%s'>admin</a>"%_R)
 		self.site_id=get_site_id_front(request)
-		if request.session.session_key:obj=Site.objects.get(id=self.site_id);hit_count=HitCount.objects.get_for_object(obj);HitCountMixin.hit_count(request,hit_count)
+		if request.session.session_key:obj=Site.objects.get(id=self.site_id)
 		template=get_template(self.site_id);print('template=',template);self.template_name=template+'index.html';return super().get(request,*(args),**kwargs)
 	def get_context_data(self,*args,**kwargs):
 		context=super().get_context_data(*(args),**kwargs);context[_e]='index';context['menu_justify']='right';context['agency_meta']=get_agency_meta(self.request,self.site_id);context[_H]=self.request.device[_H];print('OptSettingName',OptSettingName)
@@ -282,7 +282,7 @@ class CheckOutView(TemplateView):
 		B='footer_menu_2';A='footer_menu_1';context=super().get_context_data(*(args),**kwargs);context[_e]='checkout';context[_H]=self.request.device[_H];active_page=get_translated_active_page(_S);menu=get_menu_caches(self.request,_T,self.site_id,active_page,kinds=1,exclude_menu=0);context.update(menu);menu_footer1=get_menu_caches_footer(self.request,A,self.site_id,active_page,kinds=1,exclude_menu=1,parent_name=A);context.update(menu_footer1);menu_footer2=get_menu_caches_footer(self.request,B,self.site_id,active_page,kinds=1,exclude_menu=1,parent_name=B);context.update(menu_footer2);context[_b]=get_menu_group(self.site_id);slug=self.kwargs[_Q]
 		if not slug:raise Http404(_t%(self.request.get_host(),_i))
 		kind=self.kwargs[_J];context[_J]=kind;model=apps.get_model(_E,kind);agency=get_agency_info(self.site_id);context.update(agency);context[_L]=get_logo(self.site_id);lang=get_active_language_choices()[0];content_detail=get_content_detail(self.site_id,lang,model,kind,slug);context[_u]=content_detail;context[_U]=get_relatedlink(self.site_id,lang);context[_V]=get_socialmedia(self.site_id);context[_M]=get_slideshow(self.site_id,lang);context[_I]=get_base_url(self.request,1);print(_s,context[_I]);return context
-class DetailView(TemplateView,HitCountDetailView):
+class DetailView(TemplateView):
 	site_id=_A;count_hit=_d
 	def get(self,request,*args,**kwargs):
 		self.site_id=get_site_id_front(request);service=service_exists(request)
