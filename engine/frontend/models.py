@@ -49,6 +49,7 @@ from menu.models import Menu
 from parler.models import TranslatableModel,TranslatedFields
 from uuslug import uuslug
 from .abstract import BaseAbstractModel
+from hitcount.models import HitCountMixin,HitCount
 User=get_user_model()
 exposed_request=_J
 LEN_NAME=100
@@ -85,9 +86,10 @@ class Announcement(BaseAbstractModel,BaseContentModel,TranslatableModel):
 	class Meta:verbose_name=_('announcement');verbose_name_plural=_('announcements')
 	def __str__(A):return f"{A.title}"
 	def save(A,*B,**C):A.slug=uuslug(A.title,instance=A,max_length=255);A.word_count=word_count(A.content);A.reading_time=reading_time(A.word_count);super().save(*(B),**C)
-class News(BaseAbstractModel,BaseContentModel,TranslatableModel):
-	translations=TranslatedFields(title=encrypt(models.CharField(_(_C),max_length=LEN_TITLE)),sub_title=encrypt(models.CharField(_(_G),max_length=LEN_SUB_TITLE,null=_A,blank=_A)),content=encrypt(CKEditor5Field(_(_E),blank=_A,null=_A,config_name=_D)));word_count=models.PositiveIntegerField(default=0,blank=_A,editable=_B);reading_time=models.PositiveIntegerField(default=0,blank=_A,editable=_B);is_header_text=models.BooleanField(default=_B)
+class News(BaseAbstractModel,BaseContentModel,TranslatableModel,HitCountMixin):
+	translations=TranslatedFields(title=encrypt(models.CharField(_(_C),max_length=LEN_TITLE)),sub_title=encrypt(models.CharField(_(_G),max_length=LEN_SUB_TITLE,null=_A,blank=_A)),content=encrypt(CKEditor5Field(_(_E),blank=_A,null=_A,config_name=_D)));word_count=models.PositiveIntegerField(default=0,blank=_A,editable=_B);reading_time=models.PositiveIntegerField(default=0,blank=_A,editable=_B);is_header_text=models.BooleanField(default=_B);hit_count_generic=GenericRelation(HitCount,object_id_field='object_pk',related_query_name='hit_count_generic_relation')
 	class Meta:verbose_name=_('news');verbose_name_plural=_('news')
+	def current_hit_count(A):return A.hit_count.hits
 	def __str__(A):return f"{A.title}"
 	def save(A,*B,**C):A.slug=uuslug(A.title,instance=A,max_length=255);A.word_count=word_count(A.content);A.reading_time=reading_time(A.word_count);super().save(*(B),**C)
 class Article(BaseAbstractModel,BaseContentModel,TranslatableModel):
