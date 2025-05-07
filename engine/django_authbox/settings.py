@@ -38,9 +38,9 @@ _N='class'
 _M='title'
 _L='model'
 _K='true'
-_J='ENGINE'
-_I='DIRS'
-_H=False
+_J=False
+_I='ENGINE'
+_H='DIRS'
 _G='id'
 _F='label'
 _E='color'
@@ -71,16 +71,16 @@ SECRET_KEY=KEY[_c]
 ALLOWED_HOSTS=KEY[_d]
 ROOT_URLCONF='django_authbox.urls'
 INSTALLED_APPS=['django.contrib.admin','django.contrib.auth','django.contrib.contenttypes','django.contrib.sessions','django.contrib.messages','django.contrib.staticfiles','django.contrib.sites','django.contrib.humanize',_e,'allauth.account','allauth.socialaccount','allauth.socialaccount.providers.google','allauth.socialaccount.providers.facebook','allauth.socialaccount.providers.github','django_recaptcha','multiselectfield','parler','crispy_forms','crispy_bootstrap4','django_ckeditor_5','mobiledetect','djmoney','menu','region','outbox_hitcount','hitcount','core','backend','frontend','docs']
-MIDDLEWARE=['django.middleware.security.SecurityMiddleware','django.contrib.sessions.middleware.SessionMiddleware','core.force_default_language_middleware.ForceDefaultLanguageMiddleware','django.middleware.locale.LocaleMiddleware','django.middleware.common.CommonMiddleware','django.middleware.csrf.CsrfViewMiddleware','django.contrib.auth.middleware.AuthenticationMiddleware','django.contrib.messages.middleware.MessageMiddleware','django.middleware.clickjacking.XFrameOptionsMiddleware','mobiledetect.middleware.DetectMiddleware']
-TEMPLATES=[{'BACKEND':'django.template.backends.django.DjangoTemplates',_I:[],'APP_DIRS':_B,'OPTIONS':{'context_processors':['django.template.context_processors.debug','django.template.context_processors.request','django.contrib.auth.context_processors.auth','django.contrib.messages.context_processors.messages','frontend.processor.context_outbox','backend.processor.context_outbox','backend.processor.get_main_domain','backend.processor.site_id','backend.processor.version']}}]
+MIDDLEWARE=['django.middleware.security.SecurityMiddleware','django.contrib.sessions.middleware.SessionMiddleware','core.force_default_language_middleware.ForceDefaultLanguageMiddleware','django.middleware.locale.LocaleMiddleware','django.middleware.common.CommonMiddleware','django.middleware.csrf.CsrfViewMiddleware','django.contrib.auth.middleware.AuthenticationMiddleware','django.contrib.messages.middleware.MessageMiddleware','django.middleware.clickjacking.XFrameOptionsMiddleware','mobiledetect.middleware.DetectMiddleware','allauth.account.middleware.AccountMiddleware']
+TEMPLATES=[{'BACKEND':'django.template.backends.django.DjangoTemplates',_H:[],'APP_DIRS':_B,'OPTIONS':{'context_processors':['django.template.context_processors.debug','django.template.context_processors.request','django.contrib.auth.context_processors.auth','django.contrib.messages.context_processors.messages','frontend.processor.context_outbox','backend.processor.context_outbox','backend.processor.get_main_domain','backend.processor.site_id','backend.processor.version']}}]
 WSGI_APPLICATION='django_authbox.wsgi.application'
 DB_ENGINE=KEY['DB_ENGINE']
 if'sqlite3'in DB_ENGINE:
 	db_name=KEY[_f]
-	if db_name.find('/')<0 and db_name.find('\\')<0:DATABASES={_D:{_J:DB_ENGINE,_C:os.path.join(BASE_DIR,'db',db_name)}}
-	else:DATABASES={_D:{_J:DB_ENGINE,_C:db_name}}
-else:DATABASES={_D:{_J:DB_ENGINE,_C:KEY[_f],'USER':KEY['DB_USER'],_g:KEY[_b],'HOST':KEY['DB_HOST'],'PORT':KEY['DB_PORT']}}
-DATABASES.update({'second_db':{_J:'django.db.backends.mysql',_C:'db_authbox','USER':'root',_g:'','HOST':_h,'PORT':'3306'}})
+	if db_name.find('/')<0 and db_name.find('\\')<0:DATABASES={_D:{_I:DB_ENGINE,_C:os.path.join(BASE_DIR,'db',db_name)}}
+	else:DATABASES={_D:{_I:DB_ENGINE,_C:db_name}}
+else:DATABASES={_D:{_I:DB_ENGINE,_C:KEY[_f],'USER':KEY['DB_USER'],_g:KEY[_b],'HOST':KEY['DB_HOST'],'PORT':KEY['DB_PORT']}}
+DATABASES.update({'second_db':{_I:'django.db.backends.mysql',_C:'db_authbox','USER':'root',_g:'','HOST':_h,'PORT':'3306'}})
 tmp=os.path.basename(DATABASES[_D][_C])
 logger.error(f"Database Name[94m {tmp}[0m")
 AUTH_PASSWORD_VALIDATORS=[{_C:'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},{_C:'django.contrib.auth.password_validation.MinimumLengthValidator'},{_C:'django.contrib.auth.password_validation.CommonPasswordValidator'},{_C:'django.contrib.auth.password_validation.NumericPasswordValidator'}]
@@ -93,9 +93,9 @@ STATIC_URL='/static/'
 DEFAULT_AUTO_FIELD='django.db.models.BigAutoField'
 SITE_ID=1
 CONTRIBUTE_PATH=os.path.join(BASE_DIR_2,'authbox-contribute','clothes')
-TEMPLATES[0][_I].clear()
-TEMPLATES[0][_I].append(os.path.join(CONTRIBUTE_PATH,_i))
-TEMPLATES[0][_I].append(os.path.join(CONTRIBUTE_PATH,_i,_e))
+TEMPLATES[0][_H].clear()
+TEMPLATES[0][_H].append(os.path.join(CONTRIBUTE_PATH,_i))
+TEMPLATES[0][_H].append(os.path.join(CONTRIBUTE_PATH,_i,_e))
 STATIC_ROOT=KEY[_j]if KEY.get(_j)else os.path.join(CONTRIBUTE_PATH,'staticfiles')
 path_level_up=os.path.abspath(os.path.join(STATIC_ROOT,'..','staticserver'))
 STATICFILES_DIRS=[path_level_up]
@@ -107,7 +107,7 @@ HITCOUNT_KEEP_HIT_ACTIVE={'minutes':1}
 LANGUAGES=(_G,_('Indonesia')),('en',_('English'))
 LOCALE_PATHS=[os.path.join(BASE_DIR,'locale')]
 PARLER_DEFAULT_LANGUAGE_CODE=_G
-PARLER_LANGUAGES={1:({_P:_G},{_P:'en'}),_D:{'fallbacks':[_G],'hide_untranslated':_H}}
+PARLER_LANGUAGES={1:({_P:_G},{_P:'en'}),_D:{'fallbacks':[_G],'hide_untranslated':_J}}
 RECAPTCHA_PUBLIC_KEY='6Le_ixcmAAAAABbCXol2K5HaE0vY906KKFrFm0PX'
 RECAPTCHA_PRIVATE_KEY='6Le_ixcmAAAAAFeqpjBlKQcgDkPxZjMmk--cuEZU'
 IMPORT_EXPORT_USE_TRANSACTIONS=_B
@@ -116,7 +116,7 @@ LOGOUT_REDIRECT_URL=_Q
 AUTH_USER_MODEL='core.User'
 ACCOUNT_FORMS={'login':'core.forms.UserLoginForm','reset_password':'core.forms.UserResetPasswordForm','signup':'core.forms.UserSignupForm'}
 AUTHENTICATION_BACKENDS=['allauth.account.auth_backends.AuthenticationBackend']
-EMAIL_USE_SSL=_H
+EMAIL_USE_SSL=_J
 EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST='smtp.gmail.com'
 EMAIL_HOST_USER='auto.email.activation@gmail.com'
@@ -124,22 +124,20 @@ EMAIL_HOST_PASSWORD='hpsodjhhkhaemoir'
 EMAIL_PORT=587
 EMAIL_USE_TLS=_B
 DEFAULT_FROM_EMAIL='AUTHBOX.web.id'
-ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS=_H
+ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS=_J
 ACCOUNT_LOGIN_ON_PASSWORD_RESET=_B
 ACCOUNT_LOGOUT_ON_PASSWORD_CHANGE=_B
 ACCOUNT_USERNAME_MIN_LENGTH=4
 ACCOUNT_SESSION_REMEMBER=_B
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS=1
-ACCOUNT_EMAIL_REQUIRED=_B
-ACCOUNT_LOGIN_ATTEMPTS_LIMIT=5
-ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT=86400
+ACCOUNT_SIGNUP_FIELDS=['email*','password1*','password2*']
+ACCOUNT_RATE_LIMITS=['login_failed']
 ACCOUNT_LOGOUT_REDIRECT_URL=_Q
-ACCOUNT_AUTHENTICATION_METHOD='email'
+ACCOUNT_LOGIN_METHODS={'email'}
 ACCOUNT_UNIQUE_EMAIL=_B
 ACCOUNT_USER_MODEL_USERNAME_FIELD=None
-ACCOUNT_USERNAME_REQUIRED=_H
 ACCOUNT_LOGOUT_ON_GET=_B
-SOCIALACCOUNT_LOGIN_ON_GET=_H
+SOCIALACCOUNT_LOGIN_ON_GET=_J
 SENDGRID_API_KEY='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'
 INTERNAL_IPS=[_h,'localhost',_l]
 customColorPalette=[{_E:'hsl(4, 90%, 58%)',_F:'Red'},{_E:'hsl(340, 82%, 52%)',_F:'Pink'},{_E:'hsl(291, 64%, 42%)',_F:'Purple'},{_E:'hsl(262, 52%, 47%)',_F:'Deep Purple'},{_E:'hsl(231, 48%, 48%)',_F:'Indigo'},{_E:'hsl(207, 90%, 54%)',_F:'Blue'}]

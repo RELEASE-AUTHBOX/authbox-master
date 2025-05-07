@@ -28,8 +28,8 @@ from multiselectfield import MultiSelectField
 from parler.models import TranslatableModel,TranslatedFields
 from region.models import Country,Province,Regency,SubDistrict,UrbanVillage
 from shortuuid.django_fields import ShortUUIDField
-from.managers import UserManager
-from.abstract import BaseAbstractModel
+from .managers import UserManager
+from .abstract import BaseAbstractModel
 from django.db.models import Max
 exposed_request=_C
 def get_site_id(request):
@@ -42,7 +42,7 @@ def get_site_id(request):
 	C=C.get();A=C.agency.filter(is_default=_A)
 	if not A:return-3
 	if len(A)>1:return-31
-	A=A[0];B=Service.objects.filter(agency_id=A.id,is_default=_A)
+	A=A[0];print('agency == ',A);B=Service.objects.filter(agency_id=A.id,is_default=_A)
 	if not B:return-4
 	if len(B)>1:return-41
 	B=B[0]
@@ -85,7 +85,7 @@ class OptSettingName(models.IntegerChoices):SLIDE_SHOW=1,_('Slide Show');MENU=2,
 class Template(BaseAbstractModel):
 	site=models.ManyToManyField(Site,related_name='templates_site',blank=_A);name=models.CharField(_(_D),max_length=50);rel_path=models.CharField(_('relative path'),max_length=255);is_frontend=models.BooleanField(default=_A);template_owner=models.ForeignKey(TemplateOwner,verbose_name=_(_I),on_delete=models.CASCADE,blank=_A,null=_A);service_option=MultiSelectField(choices=OptServiceType.choices,max_length=255,blank=_A,null=_A);photo=GenericRelation(Photo,verbose_name=_(_E));status=models.SmallIntegerField(choices=OptStatusPublish.choices,default=OptStatusPublish.DRAFT)
 	class Meta:verbose_name=_(_J);verbose_name_plural=_('templates')
-	def get_sites(A):return', '.join([A.domain for A in A.site.all()])
+	def get_sites(A):return ', '.join([A.domain for A in A.site.all()])
 	def __str__(A):return A.name
 class IconList(BaseAbstractModel):
 	template=models.ForeignKey(Template,on_delete=models.CASCADE);icon=models.CharField(_('icon'),max_length=100,null=_A,blank=_A)
@@ -100,13 +100,14 @@ class OptStatusDefault(models.IntegerChoices):DEFAULT=1,_('Default');OPTIONAL=2,
 class ModelList(BaseAbstractModel):
 	name=models.CharField(_(_D),max_length=50);description=models.CharField(_('desciption'),max_length=255);templates=models.ManyToManyField(Template,through='ModelListSetting');menu=models.OneToOneField(Menu,on_delete=models.CASCADE,default=_C,null=_A,blank=_A);status=models.SmallIntegerField(choices=OptStatusDefault.choices,default=OptStatusDefault.OPTIONAL)
 	class Meta:verbose_name=_('model list');verbose_name_plural=_('models list')
-	def get_templates(A):return', '.join([A.name for A in A.templates.all()])
+	def get_templates(A):return ', '.join([A.name for A in A.templates.all()])
 	def __str__(A):return A.name
 class ModelListSetting(BaseAbstractModel):
 	model_list=models.ForeignKey(ModelList,on_delete=models.CASCADE);template=models.ForeignKey(Template,on_delete=models.CASCADE);image_width=models.SmallIntegerField(default=0);image_height=models.SmallIntegerField(default=0)
 	class Meta:verbose_name=_('model list setting');verbose_name_plural=_('model list settings');unique_together=_K,_J
 	def get_image_size(A):
 		if A.image_width>0 and A.image_height>0:return f"{A.image_width} x {A.image_height} px"
+		return _C
 class MenuDefault(BaseAbstractModel):
 	model_list=models.ForeignKey(ModelList,on_delete=models.CASCADE);service_option=MultiSelectField(choices=OptServiceType.choices,max_length=255,blank=_A,null=_A)
 	class Meta:verbose_name=_('menu default');verbose_name_plural=_('menus default');unique_together='service_option',_K
@@ -131,11 +132,11 @@ class GlobalSetting(BaseAbstractModel):
 			A=GlobalSetting.objects.filter(site_id=get_site_id(exposed_request)).aggregate(max=Max('order_item'))
 			if A:
 				if not A[C]is _C:B.order_item=A[C]+1
-		super().save(*D,**E)
+		super().save(*(D),**E)
 @receiver(signals.post_save,sender=User,dispatch_uid='update_user_group')
 def _update_user_group(sender,instance,**D):
-	A=instance;B=A.groups.all()
-	if not B:C=Group.objects.get(id=3);A.groups.add(C);
+	A=instance;print('signal from User',A);B=A.groups.all()
+	if not B:C=Group.objects.get(id=3);A.groups.add(C);print('done')
 @receiver(signals.post_save,sender=Agency)
 def _update_shortuuid(sender,instance,**D):
 	C=instance;A=str(C.id);B=len(A)
