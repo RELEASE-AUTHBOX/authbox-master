@@ -29,4 +29,4 @@ midtransclient==1.4.2
 django-debug-toolbar==4.4.6
 django-docs==0.3.3
 python-dateutil==2.9.0.post0
-
+django-social-share==2.3.0

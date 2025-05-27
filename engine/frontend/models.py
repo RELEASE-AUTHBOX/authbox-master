@@ -91,7 +91,9 @@ class News(BaseAbstractModel,BaseContentModel,TranslatableModel,HitCountMixin):
 	class Meta:verbose_name=_('news');verbose_name_plural=_('news')
 	def current_hit_count(A):return A.hit_count.hits
 	def __str__(A):return f"{A.title}"
-	def save(A,*B,**C):A.slug=uuslug(A.title,instance=A,max_length=255);A.word_count=word_count(A.content);A.reading_time=reading_time(A.word_count);super().save(*(B),**C)
+	def save(A,*B,**C):
+		if not A.slug:A.slug=uuslug(A.title,instance=A,max_length=255)
+		A.word_count=word_count(A.content);A.reading_time=reading_time(A.word_count);super().save(*(B),**C)
 class Article(BaseAbstractModel,BaseContentModel,TranslatableModel):
 	translations=TranslatedFields(title=encrypt(models.CharField(_(_C),max_length=LEN_TITLE)),sub_title=encrypt(models.CharField(_(_G),max_length=LEN_SUB_TITLE,null=_A,blank=_A)),content=encrypt(CKEditor5Field(_(_E),blank=_A,null=_A,config_name=_D)));word_count=models.PositiveIntegerField(default=0,blank=_A,editable=_B);reading_time=models.PositiveIntegerField(default=0,blank=_A,editable=_B);is_header_text=models.BooleanField(default=_B)
 	class Meta:verbose_name=_('article');verbose_name_plural=_('articles')
