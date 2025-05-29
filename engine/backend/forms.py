@@ -38,7 +38,7 @@ class WhyUsForm(TranslatableModelForm):
 	class Meta:model=WhyUs;fields=[_F,_I,_N,_Q,_H,_B]
 class LogoForm(ModelForm):
 	dim_w=forms.CharField(widget=forms.HiddenInput(),initial=300);dim_h=forms.CharField(widget=forms.HiddenInput(),initial=48);save_as_png=forms.CharField(widget=forms.HiddenInput(),initial=1)
-	class Meta:model=Logo;fields=[_G]
+	class Meta:model=Logo;fields=[_G,'pos']
 class AnnouncementForm(TranslatableModelForm):
 	dim_w=forms.CharField(widget=forms.HiddenInput(),initial=870);dim_h=forms.CharField(widget=forms.HiddenInput(),initial=500)
 	class Meta:model=Announcement;fields=[_F,_A,_J,_K,_R,_B];widgets={_A:CKEditor5Widget(attrs={_C:_D},config_name=_E)}

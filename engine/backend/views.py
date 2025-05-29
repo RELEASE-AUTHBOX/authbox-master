@@ -444,7 +444,7 @@ class LogoView(TemplateView):
 		context[_Q]=service;context[_AR]=_T;active_page=get_translated_active_page(_v);context[_E]=active_page;menu=get_menu_caches(self.request,_D,self.site_id,active_page);context.update(menu);return context
 def logo_ajax(request):
 	site_id=get_site_id(request);subquery=Subquery(Photo.objects.filter(object_id=OuterRef(_A),content_type__model=_v).values(_h)[:1]);obj2=Logo.objects.filter(site_id=site_id).distinct().annotate(file_path=subquery);lst=[]
-	for i in obj2:res={};res[_P]=_C;res[_S]=i.uuid;res[_U]=i.updated_at;res[_AE]=Truncator(i.name).chars(50);res[_l]=i.file_path;res[_a]=get_natural_datetime(i.updated_at);res[_V]=_C;lst.append(res)
+	for i in obj2:res={};res[_P]=_C;res[_S]=i.uuid;res[_U]=i.updated_at;res[_AE]=Truncator(i.name).chars(50);res['Pos']=i.get_pos_display();res[_l]=i.file_path;res[_a]=get_natural_datetime(i.updated_at);res[_V]=_C;lst.append(res)
 	return JsonResponse(lst,safe=_B)
 def logo_create(request):
 	context={};context[_J]=_v;active_page=get_translated_active_page(_v);context[_E]=active_page;site_id=get_site_id(request);template=get_template(site_id,is_frontend=_B)+_b;menu=get_menu_caches(request,_D,site_id,active_page);context.update(menu)

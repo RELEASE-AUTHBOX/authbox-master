@@ -30,7 +30,7 @@ _B=False
 _A=True
 import math,os,string
 from bs4 import BeautifulSoup as bs
-from core.models import ModelList,ModelListSetting,Photo,IconList
+from core.models import ModelList,ModelListSetting,Photo,IconList,OptLogoSettingPos
 from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.sites.models import Site
@@ -56,7 +56,7 @@ LEN_NAME=100
 LEN_TITLE=300
 LEN_SUB_TITLE=300
 class Logo(BaseAbstractModel):
-	site=models.ForeignKey(Site,on_delete=models.CASCADE);name=models.CharField(_('logo name'),max_length=LEN_NAME);photo=GenericRelation(Photo)
+	site=models.ForeignKey(Site,on_delete=models.CASCADE);name=models.CharField(_('logo name'),max_length=LEN_NAME);photo=GenericRelation(Photo);pos=models.SmallIntegerField(choices=OptLogoSettingPos.choices,default=OptLogoSettingPos.TOP_NORMAL)
 	class Meta:verbose_name=_('logo');verbose_name_plural=_('logos')
 	def __str__(A):return f"{A.name}"
 class Favicon(BaseAbstractModel):

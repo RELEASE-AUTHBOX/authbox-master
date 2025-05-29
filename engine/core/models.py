@@ -82,6 +82,7 @@ class TemplateOwner(BaseAbstractModel):
 class OptStatusPublish(models.IntegerChoices):DRAFT=1,_('Draft');PUBLISHED=2,_('Published')
 class OptPriceLevel(models.IntegerChoices):LEVEL_1=1,_('Level 1');LEVEL_2=2,_('Level 2');LEVEL_3=3,_('Level 3');LEVEL_9=9,_('Custom Level')
 class OptSettingName(models.IntegerChoices):SLIDE_SHOW=1,_('Slide Show');MENU=2,_('Menu');WHY_US=3,_('Why Us')
+class OptLogoSettingPos(models.IntegerChoices):TOP_NORMAL=1,_('Top Normal');TOP_DARK=2,_('Top Dark');BOTTOM_NORMAL=3,_('Bottom Normal');BOTTOM_DARK=4,_('Bottom Dark')
 class Template(BaseAbstractModel):
 	site=models.ManyToManyField(Site,related_name='templates_site',blank=_A);name=models.CharField(_(_D),max_length=50);rel_path=models.CharField(_('relative path'),max_length=255);is_frontend=models.BooleanField(default=_A);template_owner=models.ForeignKey(TemplateOwner,verbose_name=_(_I),on_delete=models.CASCADE,blank=_A,null=_A);service_option=MultiSelectField(choices=OptServiceType.choices,max_length=255,blank=_A,null=_A);photo=GenericRelation(Photo,verbose_name=_(_E));status=models.SmallIntegerField(choices=OptStatusPublish.choices,default=OptStatusPublish.DRAFT)
 	class Meta:verbose_name=_(_J);verbose_name_plural=_('templates')
