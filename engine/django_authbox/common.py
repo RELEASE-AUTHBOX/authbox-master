@@ -25,7 +25,7 @@ def get_site_id(request):
 	C=C.get();A=C.agency.all().order_by(E)
 	if not A:return-3
 	if len(A)>1:return-31
-	A=A[0];B=Service.objects.filter(agency_id=A.id).order_by(E)
+	A=A[0];print('agency == ',A);B=Service.objects.filter(agency_id=A.id).order_by(E)
 	if not B:return-4
 	if len(B)>1:return-41
 	B=B[0]
@@ -37,7 +37,7 @@ def get_site_id_front(request):
 	return 0
 def get_agency_from(request):A=User.objects.get(id=request.user.id);B=A.agency.all()[0];return B.id
 def create_sub_domain(sub_domain):
-	A=getattr(settings,_C,'');D=getattr(settings,_D,'');E=getattr(settings,_E,'');F=getattr(settings,_F,'');B=-1
+	A=getattr(settings,_C,'');D=getattr(settings,_D,'');E=getattr(settings,_E,'');F=getattr(settings,_F,'');print('cpanel_user',A);B=-1
 	if A:
 		G='/public_html';H=f"curl -H'Authorization: cpanel {A}:{D}' 'https://{E}:2083/json-api/cpanel?cpanel_jsonapi_func=addsubdomain&cpanel_jsonapi_module=SubDomain&cpanel_jsonapi_version=2&domain={sub_domain}&rootdomain={F}&dir={G}'";C=3
 		while B!=0:
@@ -86,3 +86,4 @@ def get_natural_datetime(data_datetime):
 		C=(A-B).days-D
 		if C==0:return _('Sebulan yang lalu')
 	return naturalday(B)
+def get_format_date():A=datetime.now();return A.strftime('%A, %d %B %Y')
