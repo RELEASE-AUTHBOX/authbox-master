@@ -1,4 +1,5 @@
-_L='priority'
+_M='priority'
+_L='model_list'
 _K='order_item'
 _J='link'
 _I='name'
@@ -17,7 +18,7 @@ from parler.admin import TranslatableAdmin
 from .models import *
 class LogoAdmin(admin.ModelAdmin):list_filter=_A,_I;list_display=[_A,_I,_B,_C];search_fields=_A,_I;ordering=_D,
 admin.site.register(Logo,LogoAdmin)
-class AnnouncementAdmin(TranslatableAdmin):list_filter=_A,;list_display=[_A,_F,_H,_L,_G,_B,_C,_E];search_fields=_A,;ordering=_D,
+class AnnouncementAdmin(TranslatableAdmin):list_filter=_A,;list_display=[_A,_F,_H,_M,_G,_B,_C,_E];search_fields=_A,;ordering=_D,
 admin.site.register(Announcement,AnnouncementAdmin)
 class ArticleAdmin(TranslatableAdmin):list_filter=_A,;list_display=[_A,_F,_H,_G,_B,_C,_E];search_fields=_A,;ordering=_D,
 admin.site.register(Article,ArticleAdmin)
@@ -49,7 +50,7 @@ class TagsAdmin(TranslatableAdmin):list_filter=_A,;list_display=[_A,_I,_B,_C,_E]
 admin.site.register(Tags,TagsAdmin)
 class CategoriesAdmin(TranslatableAdmin):list_filter=_A,;list_display=[_A,_I,_B,_C,_E];search_fields=_A,;ordering=_D,
 admin.site.register(Categories,CategoriesAdmin)
-class BannerAdmin(admin.ModelAdmin):list_filter=_A,;list_display=[_A,_J,_L,_B,_C,_E];search_fields=_A,;ordering=_D,
+class BannerAdmin(admin.ModelAdmin):list_filter=_A,;list_display=[_A,_J,_M,_B,_C,_E];search_fields=_A,;ordering=_D,
 admin.site.register(Banner,BannerAdmin)
 admin.site.register(GoogleCalendar)
 admin.site.register(GoogleCalendarDetail)
@@ -61,3 +62,7 @@ class HowItWorksAdmin(TranslatableAdmin):list_filter=_A,;list_display=[_A,_F,_H,
 admin.site.register(HowItWorks,HowItWorksAdmin)
 class TestimonyAdmin(TranslatableAdmin):list_filter=_A,;list_display=[_A,_F,'subtitle',_G,_B,_C,_E];search_fields=_A,;ordering=_D,
 admin.site.register(Testimony,TestimonyAdmin)
+class LogAdmin(admin.ModelAdmin):list_filter=_A,_L;list_display=[_A,_L,'is_need_refresh','expired'];search_fields=_A,_L
+admin.site.register(Log,LogAdmin)
+class AutoHeadlineAdmin(admin.ModelAdmin):list_filter=_A,_F;list_display=[_A,_F,_H,'slug','categories','kind','created_at'];search_fields=_A,_F
+admin.site.register(AutoHeadline,AutoHeadlineAdmin)
