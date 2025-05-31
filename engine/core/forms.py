@@ -14,7 +14,7 @@ from django_recaptcha.fields import ReCaptchaField
 from django_recaptcha.widgets import ReCaptchaV2Invisible
 class PhotoForm(ModelForm):
 	str_file_path=forms.CharField(widget=forms.HiddenInput())
-	class Meta:model=Photo;fields=[_B]
+	class Meta:model=Photo;fields=[_B,'description']
 	def __init__(A,*B,**C):super().__init__(*(B),**C);A.helper=FormHelper();A.helper.form_method='post';A.helper.layout=Layout(Row(Column(_B,css_class='form-group col-md-12 mb-0')))
 class CustomUserCreationForm(UserCreationForm):
 	is_accept_terms=forms.BooleanField(required=True)
