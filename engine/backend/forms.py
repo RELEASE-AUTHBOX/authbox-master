@@ -11,8 +11,8 @@ _M='link'
 _L='order_item'
 _K='tags'
 _J='categories'
-_I='sub_title'
-_H='is_header_text'
+_I='is_header_text'
+_H='sub_title'
 _G='name'
 _F='title'
 _E='extends'
@@ -35,13 +35,13 @@ from parler.forms import TranslatableModelForm
 class TagsForm(TranslatableModelForm):
 	class Meta:model=Tags;fields=[_G,_B]
 class WhyUsForm(TranslatableModelForm):
-	class Meta:model=WhyUs;fields=[_F,_I,_N,_Q,_H,_B]
+	class Meta:model=WhyUs;fields=[_F,_H,_N,_Q,_I,_B]
 class LogoForm(ModelForm):
 	dim_w=forms.CharField(widget=forms.HiddenInput(),initial=300);dim_h=forms.CharField(widget=forms.HiddenInput(),initial=48);save_as_png=forms.CharField(widget=forms.HiddenInput(),initial=1)
 	class Meta:model=Logo;fields=[_G,'pos']
 class AnnouncementForm(TranslatableModelForm):
 	dim_w=forms.CharField(widget=forms.HiddenInput(),initial=870);dim_h=forms.CharField(widget=forms.HiddenInput(),initial=500)
-	class Meta:model=Announcement;fields=[_F,_A,_J,_K,_R,_B];widgets={_A:CKEditor5Widget(attrs={_C:_D},config_name=_E)}
+	class Meta:model=Announcement;fields=[_F,_H,_A,_J,_K,_R,_B];widgets={_A:CKEditor5Widget(attrs={_C:_D},config_name=_E)}
 	def __init__(self,*args,**kwargs):
 		site_id=kwargs.pop(_O);super().__init__(*(args),**kwargs)
 		if site_id:self.fields[_K].queryset=Tags.objects.filter(site_id=site_id);self.fields[_J].queryset=Categories.objects.filter(site_id=site_id)
@@ -49,22 +49,22 @@ class GoogleCalendarForm(ModelForm):
 	class Meta:model=GoogleCalendar;fields=['calendar_id',_S]
 class FasilitiesForm(TranslatableModelForm):
 	dim_w=forms.CharField(widget=forms.HiddenInput(),initial=870);dim_h=forms.CharField(widget=forms.HiddenInput(),initial=500)
-	class Meta:model=Fasilities;fields=[_F,_I,_A,_L,_H,_B];widgets={_A:CKEditor5Widget(attrs={_C:_D},config_name=_E)}
+	class Meta:model=Fasilities;fields=[_F,_H,_A,_L,_I,_B];widgets={_A:CKEditor5Widget(attrs={_C:_D},config_name=_E)}
 class OffersForm(TranslatableModelForm):
 	dim_w=forms.CharField(widget=forms.HiddenInput(),initial=870);dim_h=forms.CharField(widget=forms.HiddenInput(),initial=500)
-	class Meta:model=Offers;fields=[_F,_I,_A,_L,_H,_B];widgets={_A:CKEditor5Widget(attrs={_C:_D},config_name=_E)}
+	class Meta:model=Offers;fields=[_F,_H,_A,_L,_I,_B];widgets={_A:CKEditor5Widget(attrs={_C:_D},config_name=_E)}
 class NewsForm(TranslatableModelForm):
 	dim_w=forms.CharField(widget=forms.HiddenInput(),initial=870);dim_h=forms.CharField(widget=forms.HiddenInput(),initial=500)
-	class Meta:model=News;fields=[_F,_I,_A,_J,_K,_H,_B];widgets={_A:CKEditor5Widget(attrs={_C:_D},config_name=_E)}
+	class Meta:model=News;fields=[_F,_H,_A,_J,_K,_I,_B];widgets={_A:CKEditor5Widget(attrs={_C:_D},config_name=_E)}
 	def __init__(self,*args,**kwargs):
 		site_id=kwargs.pop(_O);super().__init__(*(args),**kwargs)
 		if site_id:self.fields[_K].queryset=Tags.objects.filter(site_id=site_id);self.fields[_J].queryset=Categories.objects.filter(site_id=site_id)
 class TestimonyForm(TranslatableModelForm):
 	dim_w=forms.CharField(widget=forms.HiddenInput(),initial=517);dim_h=forms.CharField(widget=forms.HiddenInput(),initial=517)
-	class Meta:model=Testimony;fields=[_F,_T,_A,_H,_B];widgets={_A:CKEditor5Widget(attrs={_C:_D},config_name=_E)}
+	class Meta:model=Testimony;fields=[_F,_T,_A,_I,_B];widgets={_A:CKEditor5Widget(attrs={_C:_D},config_name=_E)}
 class ArticleForm(TranslatableModelForm):
 	dim_w=forms.CharField(widget=forms.HiddenInput(),initial=870);dim_h=forms.CharField(widget=forms.HiddenInput(),initial=500)
-	class Meta:model=Article;fields=[_F,_A,_J,_K,_H,_B];widgets={_A:CKEditor5Widget(attrs={_C:_D},config_name=_E)}
+	class Meta:model=Article;fields=[_F,_H,_A,_J,_K,_I,_B];widgets={_A:CKEditor5Widget(attrs={_C:_D},config_name=_E)}
 	def __init__(self,*args,**kwargs):
 		site_id=kwargs.pop(_O);super().__init__(*(args),**kwargs)
 		if site_id:self.fields[_K].queryset=Tags.objects.filter(site_id=site_id);self.fields[_J].queryset=Categories.objects.filter(site_id=site_id)
@@ -76,7 +76,7 @@ class EventsForm(TranslatableModelForm):
 		if site_id:self.fields[_K].queryset=Tags.objects.filter(site_id=site_id);self.fields[_J].queryset=Categories.objects.filter(site_id=site_id)
 class SlideShowForm(TranslatableModelForm):
 	dim_w=forms.CharField(widget=forms.HiddenInput(),initial=873);dim_h=forms.CharField(widget=forms.HiddenInput(),initial=424)
-	class Meta:model=SlideShow;fields=[_F,_I,_A,_B];widgets={_A:CKEditor5Widget(attrs={_C:_D},config_name=_E)}
+	class Meta:model=SlideShow;fields=[_F,_H,_A,_B];widgets={_A:CKEditor5Widget(attrs={_C:_D},config_name=_E)}
 class DailyAlertForm(TranslatableModelForm):
 	class Meta:model=DailyAlert;fields=['alert',_M,_B]
 class GreetingForm(TranslatableModelForm):
@@ -84,18 +84,18 @@ class GreetingForm(TranslatableModelForm):
 	class Meta:model=Greeting;fields=[_F,_G,'designation',_A,_B];widgets={_A:CKEditor5Widget(attrs={_C:_D},config_name=_E)}
 class PagesForm(TranslatableModelForm):
 	dim_w=forms.CharField(widget=forms.HiddenInput(),initial=870);dim_h=forms.CharField(widget=forms.HiddenInput(),initial=500)
-	class Meta:model=Pages;fields=[_F,_I,_A,_B];widgets={_A:CKEditor5Widget(attrs={_C:_D},config_name=_E)}
+	class Meta:model=Pages;fields=[_F,_H,_A,_B];widgets={_A:CKEditor5Widget(attrs={_C:_D},config_name=_E)}
 class SocialMediaForm(ModelForm):
 	class Meta:model=SocialMedia;fields=['kind',_M,_B]
 class HowItWorksForm(TranslatableModelForm):
 	dim_w=forms.CharField(widget=forms.HiddenInput(),initial=500);dim_h=forms.CharField(widget=forms.HiddenInput(),initial=624)
-	class Meta:model=HowItWorks;fields=[_F,_I,_A,_N,_L,_H,_B];widgets={_A:CKEditor5Widget(attrs={_C:_D},config_name=_E)}
+	class Meta:model=HowItWorks;fields=[_F,_H,_A,_N,_L,_I,_B];widgets={_A:CKEditor5Widget(attrs={_C:_D},config_name=_E)}
 class AboutUsForm(TranslatableModelForm):
 	dim_w=forms.CharField(widget=forms.HiddenInput(),initial=900);dim_h=forms.CharField(widget=forms.HiddenInput(),initial=600)
-	class Meta:model=AboutUs;fields=[_F,_I,_A,_B];widgets={_A:CKEditor5Widget(attrs={_C:_D},config_name=_E)}
+	class Meta:model=AboutUs;fields=[_F,_H,_A,_B];widgets={_A:CKEditor5Widget(attrs={_C:_D},config_name=_E)}
 class PhotoGalleryForm(TranslatableModelForm):
 	dim_w=forms.CharField(widget=forms.HiddenInput(),initial=1000);dim_h=forms.CharField(widget=forms.HiddenInput(),initial=496)
-	class Meta:model=PhotoGallery;fields=[_F,_A,_L,_H,_B];widgets={_A:CKEditor5Widget(attrs={_C:_D},config_name=_E)}
+	class Meta:model=PhotoGallery;fields=[_F,_A,_L,_I,_B];widgets={_A:CKEditor5Widget(attrs={_C:_D},config_name=_E)}
 class VideoGalleryForm(TranslatableModelForm):
 	class Meta:model=VideoGallery;fields=[_F,_P,_B];widgets={_P:CKEditor5Widget(attrs={_C:_D},config_name=_E)}
 class RelatedLinkForm(TranslatableModelForm):
@@ -115,7 +115,7 @@ class CategoriesForm(TranslatableModelForm):
 	class Meta:model=Categories;fields=[_G,_B]
 class ProductForm(TranslatableModelForm):
 	dim_w=forms.CharField(widget=forms.HiddenInput(),initial=870);dim_h=forms.CharField(widget=forms.HiddenInput(),initial=500)
-	class Meta:model=Product;fields=[_G,_F,_I,_N,'price',_A,_L,_H,_B];widgets={_A:CKEditor5Widget(attrs={_C:_D},config_name=_E)}
+	class Meta:model=Product;fields=[_G,_F,_H,_N,'price',_A,_L,_I,_B];widgets={_A:CKEditor5Widget(attrs={_C:_D},config_name=_E)}
 class TemplateOwnerForm(ModelForm):
 	class Meta:model=TemplateOwner;fields=[_G]
 class ModelListForm(ModelForm):
@@ -129,7 +129,7 @@ class BannerForm(ModelForm):
 	dim_w=forms.CharField(widget=forms.HiddenInput(),initial=267);dim_h=forms.CharField(widget=forms.HiddenInput(),initial=417)
 	class Meta:model=Banner;fields=[_R,_M]
 class LocationForm(TranslatableModelForm):
-	class Meta:model=Location;fields=[_F,_T,_P,_H,_B];widgets={_P:CKEditor5Widget(attrs={_C:_D},config_name=_E)}
+	class Meta:model=Location;fields=[_F,_T,_P,_I,_B];widgets={_P:CKEditor5Widget(attrs={_C:_D},config_name=_E)}
 class CustomUserCreationForm(UserCreationForm):
 	is_accept_terms=forms.BooleanField(required=True)
 	class Meta(UserCreationForm.Meta):model=get_user_model();fields='email',_G,'is_accept_terms'
