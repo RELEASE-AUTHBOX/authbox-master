@@ -72,7 +72,7 @@ class Favicon(BaseAbstractModel):
 	class Meta:verbose_name=_('favicon');verbose_name_plural=_('favicons')
 	def __str__(A):return f"{A.name}"
 class OptStatusPublish(models.IntegerChoices):DRAFT=1,_('Draft');PUBLISHED=2,_('Published')
-class OptSocialMediaKinds(models.IntegerChoices):FACEBOOK=1,_('Facebook');TWITTER=2,_('Twitter');PINTEREST=3,_('Pinterest');YOUTUBE=4,_('Youtube');INSTAGRAM=5,_('Instagram');WHATSAPP=6,_('WhatsApp');TIKTOK=7,_('TikTok')
+class OptSocialMediaKinds(models.IntegerChoices):FACEBOOK=1,_('Facebook');TWITTER=2,_('Twitter');YOUTUBE=4,_('Youtube');INSTAGRAM=5,_('Instagram');WHATSAPP=6,_('WhatsApp');TIKTOK=7,_('TikTok')
 class OptPriority(models.IntegerChoices):HIGH=1,_('High');MIDDLE=2,_(_S);LOW=3,_('Low')
 def word_count(text):A=bs(text,'html.parser');B=A.get_text();return sum([A.strip(string.punctuation).isalpha()for A in B.split()])
 def reading_time(wordcount):B=200;C,D=math.modf(wordcount/B);E=1 if C*60>=30 else 0;A=D+E;return 1 if A<=0 else A
