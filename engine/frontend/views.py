@@ -68,7 +68,7 @@ _D='-created_at'
 _C=True
 _B=False
 _A=None
-import calendar,datetime,random,shutil,math
+import os,calendar,datetime,random,shutil,math
 from PIL import Image
 from django.utils import timezone
 from dateutil.parser import parse
@@ -421,7 +421,8 @@ def copy_image(file_path,algoname=''):
 	media_root=settings.MEDIA_ROOT;source=file_path;res=os.path.splitext(source)
 	if algoname:destination=res[0]+'_'+algoname+res[1]
 	else:destination=res[0]+'_copy'+res[1]
-	image=Image.open(os.path.join(media_root,source));new_width=image.width//2;aspect_ratio=image.height/image.width;new_height=int(new_width*aspect_ratio);resized_image=image.resize((new_width,new_height));resized_image.save(os.path.join(media_root,destination));return destination
+	if os.path.isfile(os.path.join(media_root,source)):image=Image.open(os.path.join(media_root,source));new_width=image.width//2;aspect_ratio=image.height/image.width;new_height=int(new_width*aspect_ratio);resized_image=image.resize((new_width,new_height));resized_image.save(os.path.join(media_root,destination));return destination
+	return _A
 def check_need_refresh(site_id,model_name,expired_in):
 	model_list=ModelList.objects.filter(name=model_name)[:1]
 	if not model_list:raise Http404("Model List '%s' belum terdaftar, silahkan daftar di halaman <a href='%s'>admin</a>"%(model_name,_S))
@@ -478,7 +479,7 @@ def get_autoheadline(site_id,lang,max_data=15):
 				if i.file_path:destination=copy_image(i.file_path,A);Photo.objects.create(content_object=obj,file_path=destination)
 				m_count-=1
 				if m_count<=0:break
-	subquery_foto=get_photo(_AB);obj=AutoHeadline.objects.filter(site_id=site_id).annotate(file_path=subquery_foto).order_by('is_editable',_D)[:max_data]
+	subquery_foto=get_photo(_AB);obj=AutoHeadline.objects.filter(site_id=site_id).annotate(file_path=subquery_foto).order_by('is_editable',_K,_D)[:max_data]
 	for i in obj:i.created_at_str=get_natural_datetime(i.created_at)
 	return obj
 def get_article_notes(site_id,lang,max_data=5):
@@ -562,7 +563,6 @@ def get_related_news(site_id,lang,categories_id,slug,max_data=15):
 				obj_1=AutoRelatedNews.objects.create(site_id=site_id,admin_id=i.admin_id,title=i.title,sub_title=i.sub_title,slug=i.slug,categories=i.categories,kind=OptModelKinds.ANNOUNCEMENT,is_editable=_C,created_at=i.created_at,created_at_str=get_natural_datetime(i.created_at))
 				if i.file_path:destination=copy_image(i.file_path,A);Photo.objects.create(content_object=obj_1,file_path=destination)
 				m_count-=1
-			else:pass
 		subquery_foto=get_photo(_I);obj=Article.objects.language(lang).filter(site_id=site_id,status=OptStatusPublish.PUBLISHED,categories_id=categories_id,is_header_text=_B).annotate(file_path=subquery_foto).order_by(_D)[:article_1]
 		for i in obj:
 			if slug!=i.slug:

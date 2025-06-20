@@ -72,7 +72,7 @@ ALLOWED_HOSTS=KEY[_d]
 ROOT_URLCONF='django_authbox.urls'
 INSTALLED_APPS=['django.contrib.admin','django.contrib.auth','django.contrib.contenttypes','django.contrib.sessions','django.contrib.messages','django.contrib.staticfiles','django.contrib.sites','django.contrib.humanize',_e,'allauth.account','allauth.socialaccount','allauth.socialaccount.providers.google','allauth.socialaccount.providers.facebook','allauth.socialaccount.providers.github','django_recaptcha','multiselectfield','parler','crispy_forms','crispy_bootstrap4','django_ckeditor_5','mobiledetect','djmoney','django_social_share','menu','region','outbox_hitcount','hitcount','core','backend','frontend','docs']
 MIDDLEWARE=['django.middleware.security.SecurityMiddleware','django.contrib.sessions.middleware.SessionMiddleware','core.force_default_language_middleware.ForceDefaultLanguageMiddleware','django.middleware.locale.LocaleMiddleware','django.middleware.common.CommonMiddleware','django.middleware.csrf.CsrfViewMiddleware','django.contrib.auth.middleware.AuthenticationMiddleware','django.contrib.messages.middleware.MessageMiddleware','django.middleware.clickjacking.XFrameOptionsMiddleware','mobiledetect.middleware.DetectMiddleware','allauth.account.middleware.AccountMiddleware']
-TEMPLATES=[{'BACKEND':'django.template.backends.django.DjangoTemplates',_I:[],'APP_DIRS':_B,'OPTIONS':{'context_processors':['django.template.context_processors.debug','django.template.context_processors.request','django.contrib.auth.context_processors.auth','django.contrib.messages.context_processors.messages','frontend.processor.context_outbox','backend.processor.context_outbox','backend.processor.get_main_domain','backend.processor.site_id','backend.processor.version']}}]
+TEMPLATES=[{'BACKEND':'django.template.backends.django.DjangoTemplates',_I:[],'APP_DIRS':_B,'OPTIONS':{'context_processors':['django.template.context_processors.debug','django.template.context_processors.request','django.contrib.auth.context_processors.auth','django.contrib.messages.context_processors.messages','frontend.processor.context_outbox','backend.processor.context_outbox','backend.processor.get_main_domain','backend.processor.site_id','backend.processor.version','core.processor.get_static_version']}}]
 WSGI_APPLICATION='django_authbox.wsgi.application'
 DB_ENGINE=KEY['DB_ENGINE']
 if'sqlite3'in DB_ENGINE:
@@ -157,3 +157,4 @@ CKEDITOR_5_FILE_UPLOAD_PERMISSION='staff'
 CKEDITOR_5_ALLOW_ALL_FILE_TYPES=_B
 CKEDITOR_5_UPLOAD_FILE_TYPES=['jpeg','pdf','png']
 CKEDITOR_5_MAX_FILE_SIZE=1
+STATIC_VERSION='20250614'
