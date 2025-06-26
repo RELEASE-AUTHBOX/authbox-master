@@ -128,7 +128,7 @@ class TemplateForm(ModelForm):
 	class Meta:model=Template;fields=[_G,'rel_path','template_owner','is_frontend',_B]
 class BannerForm(ModelForm):
 	dim_w=forms.CharField(widget=forms.HiddenInput(),initial=267);dim_h=forms.CharField(widget=forms.HiddenInput(),initial=417)
-	class Meta:model=Banner;fields=[_S,_M]
+	class Meta:model=Banner;fields=[_S,'position',_M]
 class LocationForm(TranslatableModelForm):
 	class Meta:model=Location;fields=[_F,_U,_P,_I,_B];widgets={_P:CKEditor5Widget(attrs={_C:_D},config_name=_E)}
 class CustomUserCreationForm(UserCreationForm):

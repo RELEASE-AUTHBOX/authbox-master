@@ -50,7 +50,7 @@ class TagsAdmin(TranslatableAdmin):list_filter=_A,;list_display=[_A,_I,_B,_C,_E]
 admin.site.register(Tags,TagsAdmin)
 class CategoriesAdmin(TranslatableAdmin):list_filter=_A,;list_display=[_A,_I,_B,_C,_E];search_fields=_A,;ordering=_D,
 admin.site.register(Categories,CategoriesAdmin)
-class BannerAdmin(admin.ModelAdmin):list_filter=_A,;list_display=[_A,_J,_M,_B,_C,_E];search_fields=_A,;ordering=_D,
+class BannerAdmin(admin.ModelAdmin):list_filter=_A,;list_display=[_A,_J,_M,'position',_B,_C,_E];search_fields=_A,;ordering=_D,
 admin.site.register(Banner,BannerAdmin)
 admin.site.register(GoogleCalendar)
 admin.site.register(GoogleCalendarDetail)

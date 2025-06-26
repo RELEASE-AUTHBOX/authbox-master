@@ -38,7 +38,7 @@ _B=False
 _A=True
 import math,os,string
 from bs4 import BeautifulSoup as bs
-from core.models import ModelList,ModelListSetting,Photo,IconList,OptLogoSettingPos
+from core.models import ModelList,ModelListSetting,Photo,IconList,OptLogoSettingPos,OptPosition
 from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.sites.models import Site
@@ -248,7 +248,7 @@ class Popup(BaseAbstractModel,TranslatableModel):
 	site=models.ForeignKey(Site,on_delete=models.CASCADE,verbose_name=_(_D));admin=models.ForeignKey(User,on_delete=models.PROTECT);translations=TranslatedFields(title=encrypt(models.CharField(_(_C),max_length=LEN_TITLE)));link=encrypt(models.URLField(_(_L),max_length=255,null=_A,blank=_A));photo=GenericRelation(Photo,verbose_name=_(_E));status=models.SmallIntegerField(choices=OptStatusPublish.choices,default=OptStatusPublish.PUBLISHED)
 	def __str__(A):return f"{A.title}"
 class Banner(BaseAbstractModel):
-	site=models.ForeignKey(Site,on_delete=models.CASCADE,verbose_name=_(_D));admin=models.ForeignKey(User,on_delete=models.PROTECT);photo=GenericRelation(Photo,verbose_name=_(_E));link=models.URLField(max_length=255,null=_A,blank=_A);priority=models.SmallIntegerField(choices=OptPriority.choices,default=OptPriority.LOW,verbose_name=_(_V));status=models.SmallIntegerField(choices=OptStatusPublish.choices,default=OptStatusPublish.PUBLISHED)
+	site=models.ForeignKey(Site,on_delete=models.CASCADE,verbose_name=_(_D));admin=models.ForeignKey(User,on_delete=models.PROTECT);photo=GenericRelation(Photo,verbose_name=_(_E));link=models.URLField(max_length=255,null=_A,blank=_A);position=models.PositiveIntegerField(choices=OptPosition.choices,default=OptPosition.DEFAULT);priority=models.SmallIntegerField(choices=OptPriority.choices,default=OptPriority.LOW,verbose_name=_(_V));status=models.SmallIntegerField(choices=OptStatusPublish.choices,default=OptStatusPublish.PUBLISHED)
 	def __str__(A):
 		B=''
 		if A.priority==1:B='High'

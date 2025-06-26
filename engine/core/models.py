@@ -1,4 +1,5 @@
-_K='model_list'
+_L='model_list'
+_K='Default'
 _J='template'
 _I='template owner'
 _H='description'
@@ -42,7 +43,7 @@ def get_site_id(request):
 	C=C.get();A=C.agency.filter(is_default=_A)
 	if not A:return-3
 	if len(A)>1:return-31
-	A=A[0];print('agency == ',A);B=Service.objects.filter(agency_id=A.id,is_default=_A)
+	A=A[0];B=Service.objects.filter(agency_id=A.id,is_default=_A)
 	if not B:return-4
 	if len(B)>1:return-41
 	B=B[0]
@@ -97,7 +98,7 @@ class Service(BaseAbstractModel):
 	def __str__(A):
 		if A.agency:return f"{A.agency.name}"
 		return'-'
-class OptStatusDefault(models.IntegerChoices):DEFAULT=1,_('Default');OPTIONAL=2,_('Optional')
+class OptStatusDefault(models.IntegerChoices):DEFAULT=1,_(_K);OPTIONAL=2,_('Optional')
 class ModelList(BaseAbstractModel):
 	name=models.CharField(_(_D),max_length=50);description=models.CharField(_('desciption'),max_length=255);templates=models.ManyToManyField(Template,through='ModelListSetting');menu=models.OneToOneField(Menu,on_delete=models.CASCADE,default=_C,null=_A,blank=_A);status=models.SmallIntegerField(choices=OptStatusDefault.choices,default=OptStatusDefault.OPTIONAL)
 	class Meta:verbose_name=_('model list');verbose_name_plural=_('models list')
@@ -105,13 +106,16 @@ class ModelList(BaseAbstractModel):
 	def __str__(A):return A.name
 class ModelListSetting(BaseAbstractModel):
 	model_list=models.ForeignKey(ModelList,on_delete=models.CASCADE);template=models.ForeignKey(Template,on_delete=models.CASCADE);image_width=models.SmallIntegerField(default=0);image_height=models.SmallIntegerField(default=0)
-	class Meta:verbose_name=_('model list setting');verbose_name_plural=_('model list settings');unique_together=_K,_J
+	class Meta:verbose_name=_('model list setting');verbose_name_plural=_('model list settings');unique_together=_L,_J
+class OptPosition(models.IntegerChoices):DEFAULT=0,_(_K);TOP=1,_('Top');MIDDLE_TOP=2,_('Middle Top');MIDDLE_BOTTOM=3,_('Middle Bottom');BOTTOM=4,_('Bottom')
+class ImageDimension(models.Model):
+	model_list_setting=models.ForeignKey(ModelListSetting,on_delete=models.CASCADE);position=models.PositiveIntegerField(choices=OptPosition.choices,default=OptPosition.DEFAULT);image_width=models.SmallIntegerField(default=0);image_height=models.SmallIntegerField(default=0)
 	def get_image_size(A):
 		if A.image_width>0 and A.image_height>0:return f"{A.image_width} x {A.image_height} px"
 		return _C
 class MenuDefault(BaseAbstractModel):
 	model_list=models.ForeignKey(ModelList,on_delete=models.CASCADE);service_option=MultiSelectField(choices=OptServiceType.choices,max_length=255,blank=_A,null=_A)
-	class Meta:verbose_name=_('menu default');verbose_name_plural=_('menus default');unique_together='service_option',_K
+	class Meta:verbose_name=_('menu default');verbose_name_plural=_('menus default');unique_together='service_option',_L
 	def __str__(A):return''
 class UserLog(BaseAbstractModel):
 	site=models.ForeignKey(Site,on_delete=models.CASCADE);user=models.ForeignKey(User,on_delete=models.CASCADE,blank=_A,null=_A);user_agent=models.CharField(max_length=255,editable=_B);ip_address=models.CharField(max_length=40,editable=_B);is_expired=models.BooleanField(default=_B);social_media=models.CharField(max_length=20)
@@ -136,8 +140,8 @@ class GlobalSetting(BaseAbstractModel):
 		super().save(*(D),**E)
 @receiver(signals.post_save,sender=User,dispatch_uid='update_user_group')
 def _update_user_group(sender,instance,**D):
-	A=instance;print('signal from User',A);B=A.groups.all()
-	if not B:C=Group.objects.get(id=3);A.groups.add(C);print('done')
+	A=instance;B=A.groups.all()
+	if not B:C=Group.objects.get(id=3);A.groups.add(C);
 @receiver(signals.post_save,sender=Agency)
 def _update_shortuuid(sender,instance,**D):
 	C=instance;A=str(C.id);B=len(A)

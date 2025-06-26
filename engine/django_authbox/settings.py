@@ -80,7 +80,7 @@ if'sqlite3'in DB_ENGINE:
 	if db_name.find('/')<0 and db_name.find('\\')<0:DATABASES={_D:{_J:DB_ENGINE,_C:os.path.join(BASE_DIR,'db',db_name)}}
 	else:DATABASES={_D:{_J:DB_ENGINE,_C:db_name}}
 else:DATABASES={_D:{_J:DB_ENGINE,_C:KEY[_f],'USER':KEY['DB_USER'],_g:KEY[_b],'HOST':KEY['DB_HOST'],'PORT':KEY['DB_PORT']}}
-DATABASES.update({'second_db':{_J:'django.db.backends.mysql',_C:'db_authbox','USER':'root',_g:'','HOST':_h,'PORT':'3306'}})
+DATABASES.update({'second_db':{_J:'django.db.backends.mysql',_C:'db_lobar_restore','USER':'root',_g:'','HOST':_h,'PORT':'3306'}})
 tmp=os.path.basename(DATABASES[_D][_C])
 logger.error(f"Database Name[94m {tmp}[0m")
 AUTH_PASSWORD_VALIDATORS=[{_C:'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},{_C:'django.contrib.auth.password_validation.MinimumLengthValidator'},{_C:'django.contrib.auth.password_validation.CommonPasswordValidator'},{_C:'django.contrib.auth.password_validation.NumericPasswordValidator'}]

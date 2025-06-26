@@ -1,7 +1,9 @@
-_R='last_login'
-_Q='groups'
-_P='is_superuser'
-_O='file_path'
+_T='position'
+_S='last_login'
+_R='groups'
+_Q='is_superuser'
+_P='file_path'
+_O='model_list_setting'
 _N='template'
 _M='service_option'
 _L='kind'
@@ -26,7 +28,7 @@ from django.contrib.auth import get_user_model
 User=get_user_model()
 class AgencyAdmin(TranslatableAdmin):list_filter=_A,;list_display=[_A,'shortuuid','province','regency','sub_district','urban_village','address','phone',_C];search_fields=_A,;ordering=_B,
 admin.site.register(Agency,AgencyAdmin)
-class BaseUserAdmin(UserAdmin):fieldsets=(None,{_E:(_F,'password')}),(_('Personal info'),{_E:(_A,_G)}),(_('Permissions'),{_E:(_J,_K,_P,_Q,'user_permissions')}),(_('Important dates'),{_E:(_R,)});add_fieldsets=(None,{'classes':('wide',),_E:(_F,_A,'password1','password2',_G)}),;list_display=_F,_A,_K,_R;list_filter=_K,_P,_J,_Q;search_fields=_F,_A;ordering=_F,
+class BaseUserAdmin(UserAdmin):fieldsets=(None,{_E:(_F,'password')}),(_('Personal info'),{_E:(_A,_G)}),(_('Permissions'),{_E:(_J,_K,_Q,_R,'user_permissions')}),(_('Important dates'),{_E:(_S,)});add_fieldsets=(None,{'classes':('wide',),_E:(_F,_A,'password1','password2',_G)}),;list_display=_F,_A,_K,_S;list_filter=_K,_Q,_J,_R;search_fields=_F,_A;ordering=_F,
 admin.site.register(User,BaseUserAdmin)
 class ServiceAdmin(admin.ModelAdmin):list_filter=_G,_L;list_display=[_G,_L,_J,'site','expired_date',_C];search_fields=_G,_L;ordering=_B,
 admin.site.register(Service,ServiceAdmin)
@@ -38,9 +40,11 @@ class ModelListAdmin(admin.ModelAdmin):list_filter=_A,_I,_H;list_display=[_A,_I,
 admin.site.register(ModelList,ModelListAdmin)
 class MenuDefaultAdmin(admin.ModelAdmin):list_filter=_M,_D;list_display=[_D,_M];search_fields=_D,;ordering=_B,
 admin.site.register(MenuDefault,MenuDefaultAdmin)
-class ModelListSettingAdmin(admin.ModelAdmin):list_filter=_D,_N;list_display=[_D,_N,'get_image_size',_C];search_fields=_D,;ordering=_B,
+class ModelListSettingAdmin(admin.ModelAdmin):list_filter=_D,_N;list_display=[_D,_N,_C];search_fields=_D,;ordering=_B,
 admin.site.register(ModelListSetting,ModelListSettingAdmin)
-class PhotoAdmin(admin.ModelAdmin):list_filter=_O,;list_display=['content_type',_O,'object_id','content_object',_C];search_fields=_O,;ordering=_B,
+class ImageDimensionAdmin(admin.ModelAdmin):list_filter=_O,_T;list_display=[_O,_T];search_fields=_O,
+admin.site.register(ImageDimension,ImageDimensionAdmin)
+class PhotoAdmin(admin.ModelAdmin):list_filter=_P,;list_display=['content_type',_P,'object_id','content_object',_C];search_fields=_P,;ordering=_B,
 admin.site.register(Photo,PhotoAdmin)
 class GlobalSettingAdmin(admin.ModelAdmin):list_filter=_A,;list_display=[_A,'value','site','order_item',_C];search_fields=_A,;ordering=_B,
 admin.site.register(GlobalSetting,GlobalSettingAdmin)
