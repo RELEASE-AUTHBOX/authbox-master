@@ -13,9 +13,8 @@ from django.shortcuts import HttpResponse,redirect,render
 from PIL import Image
 from core.models import Service,User,UserLog
 from django_authbox.common import get_site_id
-from .  import forms
 from .forms import CustomUserCreationForm
-from .models import Template,ModelListSetting
+from .models import Template,ModelListSetting,OptPosition,ImageDimension
 from django.utils.http import urlsafe_base64_decode
 from django.utils.encoding import force_str as force_text
 from .tokens import account_activation_token
@@ -27,27 +26,26 @@ def register(request):
 	else:A=forms.CustomUserCreationForm(label_suffix='')
 	return render(B,'registration/register.html',{'form':A})
 def create_unique_name(request):A=get_site_id(request);B=datetime.now();return str(A)+'-'+B.strftime('%Y%m%d-%H%M%S-%f')
-def download_image(request,url):B=create_unique_name(request);F=settings.MEDIA_ROOT;A='youtube/';C=os.path.join(F,A);G=os.makedirs(C,exist_ok=_A);print('create dir = ',G);D='.jpg';A=A+B+D;H=B+D;E=os.path.join(C,H);print('full name = ',E);urllib.request.install_opener(urllib.request.build_opener(urllib.request.ProxyHandler({'http':'proxy.server:3128'})));urllib.request.urlretrieve(url,E);return A
+def download_image(request,url):B=create_unique_name(request);F=settings.MEDIA_ROOT;A='youtube/';C=os.path.join(F,A);G=os.makedirs(C,exist_ok=_A);D='.jpg';A=A+B+D;H=B+D;E=os.path.join(C,H);urllib.request.install_opener(urllib.request.build_opener(urllib.request.ProxyHandler({'http':'proxy.server:3128'})));urllib.request.urlretrieve(url,E);return A
 def upload_photo(request,width,height,save_as_png=0):
-	O='JPEG';N='image/png';M='.jpeg';L='data.content_type=';J=save_as_png;I=request;A=I.FILES.get('photo');print('print photo',A);P=Image.open(io.BytesIO(A.read()));print('image');B=P.resize((width,height),Image.Resampling.LANCZOS);print('resized_image');print(B);F=create_unique_name(I);print('filename');print(F);G=datetime.now();Q=G.strftime('%Y');R=G.strftime('%m');S=G.strftime('%d');print(L,A.content_type)
+	O='JPEG';N='image/png';M='.jpeg';L='data.content_type=';J=save_as_png;I=request;A=I.FILES.get('photo');P=Image.open(io.BytesIO(A.read()));B=P.resize((width,height),Image.Resampling.LANCZOS);F=create_unique_name(I);G=datetime.now();Q=G.strftime('%Y');R=G.strftime('%m');S=G.strftime('%d');
 	if A.content_type=='image/gif':C='.gif'
 	elif A.content_type=='image/jpeg':C=M
 	elif A.content_type=='image/jpg':C='.jpg'
 	elif A.content_type==N:C=M
 	elif A.content_type=='image/bmp':C='.bmp'
 	else:C='.ief'
-	print('ext');print(C);H=settings.MEDIA_ROOT;print('media root',H);D=os.path.join('crop',Q,R,S);E=os.path.join(H,D);print('path',D);print('media_root_path',E);T=os.makedirs(E,exist_ok=_A);print('makedirs');print(T)
+	H=settings.MEDIA_ROOT;D=os.path.join('crop',Q,R,S);E=os.path.join(H,D);T=os.makedirs(E,exist_ok=_A);
 	if not J:F=F+C
 	else:F=F+'.png'
-	D=os.path.join(D,F);print('path = ',D);E=os.path.join(H,D);print(L,A.content_type)
+	D=os.path.join(D,F);E=os.path.join(H,D);
 	if not J:
-		print('not save_as_png')
 		if A.content_type==N:
-			B.load();print('resized_image.mode=',B.mode);K=Image.new('RGB',B.size,(255,255,255))
+			B.load();K=Image.new('RGB',B.size,(255,255,255))
 			if B.mode=='RGBA':K.paste(B,mask=B.getchannel('A'));K.save(E,O,quality=80,optimize=_A)
 			else:B.save(E,O,quality=80,optimize=_A)
-		else:print('NON PNG');B.save(E,quality=80,optimize=_A)
-	else:print('save as png');B.save(E,quality=80,optimize=_A)
+		else:B.save(E,quality=80,optimize=_A)
+	else:B.save(E,quality=80,optimize=_A)
 	return HttpResponse(D)
 def get_ip(request):
 	B=request;A=B.headers.get('X-Forwarded-For',B.META.get('REMOTE_ADDR','127.0.0.1'))
@@ -62,7 +60,7 @@ def pre_login(request):
 	return HttpResponse({'ok'})
 def force_authenticate_in(request,user_id):
 	A=User.objects.get(id=user_id)
-	if A:A.backend=settings.AUTHENTICATION_BACKENDS[0];print(_D);login(request,A)
+	if A:A.backend=settings.AUTHENTICATION_BACKENDS[0];login(request,A)
 	return HttpResponse({'ok'})
 def force_authenticate_out(request):logout(request);return HttpResponse({'ok'})
 def social_media(request,user_id,uuid):
@@ -81,18 +79,20 @@ def social_media(request,user_id,uuid):
 			if not E:return HttpResponse({'user not registered in this site'})
 		else:return HttpResponse({F})
 	else:return HttpResponse({'service not found'})
-	if A:A.backend=settings.AUTHENTICATION_BACKENDS[0];print(_D);login(D,A);return redirect(_E)
+	if A:A.backend=settings.AUTHENTICATION_BACKENDS[0];login(D,A);return redirect(_E)
 	return HttpResponse({F})
 def post_login_redirect(request,user_id,uuid):
 	A=UserLog.objects.filter(uuid=uuid)
-	if A:A=A.get();A.user_id=user_id;A.save();B=request.scheme+'://';B=B+A.site.domain;print(B);return HttpResponse(B+'/id/accounts/login/?u='+str(A.user_id)+'&media='+A.social_media+'&s='+str(A.uuid))
+	if A:A=A.get();A.user_id=user_id;A.save();B=request.scheme+'://';B=B+A.site.domain;return HttpResponse(B+'/id/accounts/login/?u='+str(A.user_id)+'&media='+A.social_media+'&s='+str(A.uuid))
 	return HttpResponse(_E)
-def get_crop_image_size(request,model_name):
-	C=model_name;F=get_site_id(request);B=Template.objects.filter(site__id=F,is_frontend=_A)[:1];print('template',B);print('model_name',C);C=C.replace('_',' ')
-	if B:
-		B=B.get().id;D=0;E=0;A=ModelListSetting.objects.filter(template_id=B,model_list__name__iexact=C);print(A,'modellist')
-		if A:A=A.get();D=A.image_width;E=A.image_height
-	return JsonResponse({'ww':D,'hh':E},safe=_B)
+def get_crop_image_size(request,model_name,position=OptPosition.DEFAULT):
+	C=model_name;G=get_site_id(request);A=Template.objects.filter(site__id=G,is_frontend=_A)[:1];C=C.replace('_',' ')
+	if A:
+		A=A.get().id;E=0;F=0;D=ModelListSetting.objects.filter(template_id=A,model_list__name__iexact=C)
+		if D:
+			D=D.get();B=ImageDimension.objects.filter(model_list_setting_id=D.id,position=position)
+			if B:B=B.get();E=B.image_width;F=B.image_height
+	return JsonResponse({'ww':E,'hh':F},safe=_B)
 def account_activation_sent(request):return render(request,'account_activation_sent.html')
 def activate(request,uidb64,token):
 	try:B=force_text(urlsafe_base64_decode(uidb64));A=User.objects.get(pk=B)
