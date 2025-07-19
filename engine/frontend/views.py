@@ -514,7 +514,7 @@ def get_article_notes(site_id,lang,max_data=5):
 	for i in obj:i.created_at_str=get_natural_datetime(i.created_at)
 	return obj
 def get_flash_news(site_id,lang,slug=_A,max_data=15):
-	A='flashnews';model_name='Flash News';most_view_within=30;expired_in=1;announcement_percent=0.2;article_percent=0.3;news_percent=0.5;announcement_1=math.ceil(announcement_percent*max_data);article_1=math.ceil(article_percent*max_data);news_1=math.ceil(news_percent*max_data);m_count=max_data
+	A='flashnews';model_name='Flash News';most_view_within=45;expired_in=1;announcement_percent=0.2;article_percent=0.3;news_percent=0.5;announcement_1=math.ceil(announcement_percent*max_data);article_1=math.ceil(article_percent*max_data);news_1=math.ceil(news_percent*max_data);m_count=max_data
 	if check_need_refresh(site_id,model_name,expired_in):
 		AutoFlashNews.objects.filter(site_id=site_id).delete();count_days=timezone.now()-datetime.timedelta(days=most_view_within);count_days=count_days.replace(hour=0,minute=0,second=0,microsecond=0);subquery_foto=get_photo(_E);obj=Announcement.objects.language(lang).filter(site_id=site_id,status=OptStatusPublish.PUBLISHED,is_header_text=_B,created_at__gte=count_days).annotate(file_path=subquery_foto).order_by(_C)[:announcement_1]
 		for i in obj:
