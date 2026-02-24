@@ -210,7 +210,7 @@ CAPTCHA_LENGTH=6
 CAPTCHA_TIMEOUT=5
 CAPTCHA_CHALLENGE_FUNCT='captcha.helpers.random_char_challenge'
 OTP_EXPIRATION_MINUTES=10
-CORS_ALLOWED_ORIGINS=config('CORS_ALLOWED_ORIGINS',default='http://localhost:5173,http://127.0.0.1:5173,http://localhost:5174,http://127.0.0.1:5174,http://test.authbox.web.id:5174,https://test.authbox.web.id',cast=Csv())
+CORS_ALLOWED_ORIGINS=config('CORS_ALLOWED_ORIGINS',default='http://localhost:5173,http://127.0.0.1:5173,http://localhost:5174,http://127.0.0.1:5174,https://authbox.web.id,http://localhost:8000,http://127.0.0.1:8000',cast=Csv())
 CORS_ALLOW_CREDENTIALS=_B
 CORS_ALLOW_METHODS=['DELETE','GET',_r,'PATCH','POST','PUT']
 CORS_ALLOW_HEADERS=['accept','accept-encoding','authorization','content-type','dnt','origin','user-agent','x-csrftoken','x-requested-with']

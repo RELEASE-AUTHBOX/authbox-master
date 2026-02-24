@@ -30,7 +30,7 @@ def get_device_fingerprint(request):A=request;import hashlib as B;C=A.META.get('
 class LoginView(APIView):
 	permission_classes=[AllowAny]
 	def post(I,request):
-		B=request;D=B.data.get(_B);E=B.data.get('password');F=B.data.get('captchaKey');G=B.data.get('captchaValue')
+		A=request;D=A.data.get(_B);E=A.data.get('password');F=A.data.get('captchaKey');G=A.data.get('captchaValue')
 		if not all([D,E,F,G]):return Response({_A:'Username, password, and captcha are required'},status=status.HTTP_400_BAD_REQUEST)
 		try:
 			C=CaptchaStore.objects.get(hashkey=F)
@@ -38,9 +38,9 @@ class LoginView(APIView):
 			if C.response.lower()!=G.lower():return Response({_A:'Invalid captcha. Please try again.'},status=status.HTTP_400_BAD_REQUEST)
 			C.delete()
 		except CaptchaStore.DoesNotExist:return Response({_A:'Invalid captcha. Please refresh and try again.'},status=status.HTTP_400_BAD_REQUEST)
-		A=authenticate(username=D,password=E)
-		if not A:return Response({_A:'Invalid username or password'},status=status.HTTP_401_UNAUTHORIZED)
-		login(B,A,backend=_H);H,J=UserProfile.objects.get_or_create(user=A);return Response({'skip_otp':_D,_C:_I,_E:{'id':A.id,_B:A.username,_F:A.email,_G:H.email_verified}},status=status.HTTP_200_OK)
+		B=authenticate(username=D,password=E)
+		if not B:return Response({_A:'Invalid username or password'},status=status.HTTP_401_UNAUTHORIZED)
+		login(A,B,backend=_H);H,J=UserProfile.objects.get_or_create(user=B);return Response({'skip_otp':_D,_C:_I,_E:{'id':B.id,_F:B.email,_G:H.email_verified}},status=status.HTTP_200_OK)
 class CaptchaRefreshView(APIView):
 	permission_classes=[AllowAny]
 	def get(D,request):
