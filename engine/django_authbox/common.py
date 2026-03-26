@@ -86,4 +86,4 @@ def get_natural_datetime(data_datetime):
 		C=(A-B).days-D
 		if C==0:return _('Sebulan yang lalu')
 	return naturalday(B)
-def get_format_date():A=datetime.now();return A.strftime('%A, %d %B %Y')
+def get_format_date():from babel.dates import format_date as A;B=datetime.now();return A(B,format='full',locale='id_ID')
