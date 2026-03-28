@@ -1,0 +1,38 @@
+Create this file in server (cpanel python app):
+
+passenger_wsgi.py
+------------------
+
+#import imp
+import os
+import sys
+
+
+#sys.path.insert(0, os.path.dirname(__file__))
+#wsgi = imp.load_source('wsgi', 'passenger_wsgi.py')
+#application = wsgi.application
+
+# Add your project directory to the Python path
+sys.path.insert(0, os.path.dirname(__file__))
+
+# Set the environment variable to point to your Django settings
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'django_authbox.settings')
+
+# Import the Django WSGI application
+from django.core.wsgi import get_wsgi_application
+application = get_wsgi_application()
+
+
+.htaccess
+----------
+# lokasi di public_html
+
+# DO NOT REMOVE. CLOUDLINUX PASSENGER CONFIGURATION BEGIN
+PassengerAppRoot "/home/authboxw/authbox2/authbox_master/engine"
+PassengerBaseURI "/"
+PassengerPython "/home/authboxw/virtualenv/authbox2/authbox_master/engine/3.8/bin/python"
+# DO NOT REMOVE. CLOUDLINUX PASSENGER CONFIGURATION END
+# DO NOT REMOVE OR MODIFY. CLOUDLINUX ENV VARS CONFIGURATION BEGIN
+<IfModule Litespeed>
+</IfModule>
+# DO NOT REMOVE OR MODIFY. CLOUDLINUX ENV VARS CONFIGURATION END
