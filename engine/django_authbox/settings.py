@@ -90,7 +90,7 @@ BASE_DIR_2=os.path.normpath(os.path.join(BASE_DIR_1,'..'))
 AES_KEY='ad6a17d79291b2143a34f1859784e6380b77faddd4abbf928dddb5bdc070908f'
 LIB=OutboxEncryption(os.path.join(BASE_DIR,_e))
 file_name=LIB.scan_environment_variable()
-file_name_color='\x1b[91m'+file_name+'\x1b[0m'
+file_name_color=file_name
 file_path=os.path.join(BASE_DIR,_e,file_name)
 file_path_color=os.path.join(BASE_DIR,_e,file_name_color)
 if not Path(file_path).is_file():raise Exception(f"File Not found: {file_path_color}")
@@ -115,7 +115,7 @@ if'sqlite3'in DB_ENGINE:
 else:DATABASES={_G:{_S:DB_ENGINE,_C:KEY[_s],'USER':KEY['DB_USER'],_t:KEY[_n],'HOST':KEY['DB_HOST'],'PORT':KEY['DB_PORT']}}
 DATABASES.update({'second_db':{_S:'django.db.backends.mysql',_C:'db_lobar_restore','USER':'root',_t:'','HOST':_u,'PORT':'3306'}})
 tmp=os.path.basename(DATABASES[_G][_C])
-logger.error(f"Database Name[94m {tmp}[0m")
+logger.error(f"Database Name {tmp}")
 AUTH_PASSWORD_VALIDATORS=[{_C:'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},{_C:'django.contrib.auth.password_validation.MinimumLengthValidator'},{_C:'django.contrib.auth.password_validation.CommonPasswordValidator'},{_C:'django.contrib.auth.password_validation.NumericPasswordValidator'}]
 LANGUAGE_CODE=_L
 TIME_ZONE='Asia/Makassar'
