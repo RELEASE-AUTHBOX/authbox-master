@@ -93,7 +93,7 @@ file_name=LIB.scan_environment_variable()
 file_name_color='\x1b[91m'+file_name+'\x1b[0m'
 file_path=os.path.join(BASE_DIR,_e,file_name)
 file_path_color=os.path.join(BASE_DIR,_e,file_name_color)
-if not Path(file_path).is_file():raise Exception(f"[1m File Not found: [0m {file_path_color}")
+if not Path(file_path).is_file():raise Exception(f"File Not found: {file_path_color}")
 PLAINT_KEY=[_n,_o]
 PLAINT_LIST=[_p]
 KEY=LIB.dec_environ(PLAINT_KEY,PLAINT_LIST)
