@@ -7,5 +7,4 @@ def send_email(from_email,to_emails,subject,html_content):
 	try:
 		A=getattr(settings,'SENDGRID_API_KEY',None)
 		if A:A=SendGridAPIClient(A);B=A.send(C);print(B.status_code);print(B.body);print(B.headers)
-		else:print('SENDGRID_API_KEY not found in settings.py')
-	except Exception as D:print(D.message)
+	except Exception as D:pass
