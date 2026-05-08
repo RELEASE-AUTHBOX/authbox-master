@@ -364,7 +364,11 @@ class DetailView(HitCountDetailView):
 		context[_AL]=get_flash_news(self.site_id,lang,slug,16);context[_q]=get_popular(self.site_id,lang,slug,11);context[_O]=get_photogallery(self.site_id,lang);context[_Z]=get_relatedlink(self.site_id,lang);context[_a]=get_socialmedia(self.site_id);context[_A4]=get_location(self.site_id,lang);context[_U]=get_slideshow(self.site_id,lang);context[_R]=get_base_url(self.request,1);print(_AA,context[_R])
 		if not context[A]:context[A]=context[_L]
 		if not context[B]:context[B]=context[_L]
-		og=get_og(self.site_id);context.update(og);return context
+		og=get_og(self.site_id);context.update(og)
+		for i in OptSettingName:
+			setting=get_setting(self.site_id,i.value)
+			if setting:context[i.name]=setting
+		return context
 class ListView(TemplateView):
 	site_id=_A
 	def post(self,request,*args,**kwargs):context=self.get_context_data(**kwargs);print('enter post!!');search=request.POST.get(_u);print(_u,search);return self.render_to_response(context)

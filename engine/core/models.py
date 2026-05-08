@@ -29,8 +29,8 @@ from multiselectfield import MultiSelectField
 from parler.models import TranslatableModel,TranslatedFields
 from region.models import Country,Province,Regency,SubDistrict,UrbanVillage
 from shortuuid.django_fields import ShortUUIDField
-from .managers import UserManager
-from .abstract import BaseAbstractModel
+from.managers import UserManager
+from.abstract import BaseAbstractModel
 from django.db.models import Max
 exposed_request=_C
 def get_site_id(request):
@@ -43,7 +43,7 @@ def get_site_id(request):
 	C=C.get();A=C.agency.filter(is_default=_A)
 	if not A:return-3
 	if len(A)>1:return-31
-	A=A[0];B=Service.objects.filter(agency_id=A.id,is_default=_A)
+	A=A[0];print('agency == ',A);B=Service.objects.filter(agency_id=A.id,is_default=_A)
 	if not B:return-4
 	if len(B)>1:return-41
 	B=B[0]
@@ -82,12 +82,12 @@ class TemplateOwner(BaseAbstractModel):
 	def __str__(A):return A.name
 class OptStatusPublish(models.IntegerChoices):DRAFT=1,_('Draft');PUBLISHED=2,_('Published')
 class OptPriceLevel(models.IntegerChoices):LEVEL_1=1,_('Level 1');LEVEL_2=2,_('Level 2');LEVEL_3=3,_('Level 3');LEVEL_9=9,_('Custom Level')
-class OptSettingName(models.IntegerChoices):SLIDE_SHOW=1,_('Slide Show');MENU=2,_('Menu');WHY_US=3,_('Why Us')
+class OptSettingName(models.IntegerChoices):SLIDE_SHOW=1,_('Slide Show');MENU=2,_('Menu');WHY_US=3,_('Why Us');CONTENT_META=4,_('Content Meta Info')
 class OptLogoSettingPos(models.IntegerChoices):TOP_NORMAL=1,_('Top Normal');TOP_DARK=2,_('Top Dark');BOTTOM_NORMAL=3,_('Bottom Normal');BOTTOM_DARK=4,_('Bottom Dark')
 class Template(BaseAbstractModel):
 	site=models.ManyToManyField(Site,related_name='templates_site',blank=_A);name=models.CharField(_(_D),max_length=50);rel_path=models.CharField(_('relative path'),max_length=255);is_frontend=models.BooleanField(default=_A);template_owner=models.ForeignKey(TemplateOwner,verbose_name=_(_I),on_delete=models.CASCADE,blank=_A,null=_A);service_option=MultiSelectField(choices=OptServiceType.choices,max_length=255,blank=_A,null=_A);photo=GenericRelation(Photo,verbose_name=_(_E));status=models.SmallIntegerField(choices=OptStatusPublish.choices,default=OptStatusPublish.DRAFT)
 	class Meta:verbose_name=_(_J);verbose_name_plural=_('templates')
-	def get_sites(A):return ', '.join([A.domain for A in A.site.all()])
+	def get_sites(A):return', '.join([A.domain for A in A.site.all()])
 	def __str__(A):return A.name
 class IconList(BaseAbstractModel):
 	template=models.ForeignKey(Template,on_delete=models.CASCADE);icon=models.CharField(_('icon'),max_length=100,null=_A,blank=_A)
@@ -102,7 +102,7 @@ class OptStatusDefault(models.IntegerChoices):DEFAULT=1,_(_K);OPTIONAL=2,_('Opti
 class ModelList(BaseAbstractModel):
 	name=models.CharField(_(_D),max_length=50);description=models.CharField(_('desciption'),max_length=255);templates=models.ManyToManyField(Template,through='ModelListSetting');menu=models.OneToOneField(Menu,on_delete=models.CASCADE,default=_C,null=_A,blank=_A);status=models.SmallIntegerField(choices=OptStatusDefault.choices,default=OptStatusDefault.OPTIONAL)
 	class Meta:verbose_name=_('model list');verbose_name_plural=_('models list')
-	def get_templates(A):return ', '.join([A.name for A in A.templates.all()])
+	def get_templates(A):return', '.join([A.name for A in A.templates.all()])
 	def __str__(A):return A.name
 class ModelListSetting(BaseAbstractModel):
 	model_list=models.ForeignKey(ModelList,on_delete=models.CASCADE);template=models.ForeignKey(Template,on_delete=models.CASCADE)
@@ -112,7 +112,6 @@ class ImageDimension(models.Model):
 	model_list_setting=models.ForeignKey(ModelListSetting,on_delete=models.CASCADE);position=models.PositiveIntegerField(choices=OptPosition.choices,default=OptPosition.DEFAULT);image_width=models.SmallIntegerField(default=0);image_height=models.SmallIntegerField(default=0)
 	def get_image_size(A):
 		if A.image_width>0 and A.image_height>0:return f"{A.image_width} x {A.image_height} px"
-		return _C
 	def get_model_list_name(A):return A.model_list_setting.template.name+' - '+A.model_list_setting.model_list.name
 class MenuDefault(BaseAbstractModel):
 	model_list=models.ForeignKey(ModelList,on_delete=models.CASCADE);service_option=MultiSelectField(choices=OptServiceType.choices,max_length=255,blank=_A,null=_A)
@@ -127,7 +126,7 @@ class TemplateBlock(BaseAbstractModel):
 	class Meta:verbose_name=_('template block');verbose_name_plural=_('template blocks')
 	def __str__(A):return A.name
 class GlobalSetting(BaseAbstractModel):
-	site=models.ForeignKey(Site,on_delete=models.CASCADE);name=models.SmallIntegerField(choices=OptSettingName.choices,default=_C);value=models.CharField(_('value'),max_length=255,null=_A,blank=_A,default=_C);ref_template_block=models.ForeignKey(TemplateBlock,on_delete=models.CASCADE,null=_A,default=_A);order_item=models.PositiveIntegerField(default=0)
+	site=models.ForeignKey(Site,on_delete=models.CASCADE);name=models.SmallIntegerField(choices=OptSettingName.choices,default=_C);value=models.CharField(_('value'),max_length=255,null=_A,blank=_A,default=_C);ref_template_block=models.ForeignKey(TemplateBlock,on_delete=models.CASCADE,null=_A,blank=_A,default=_A);order_item=models.PositiveIntegerField(default=0)
 	class Meta:verbose_name=_('global setting');verbose_name_plural=_('global settings')
 	def __str__(A):
 		if A.name:return A.get_name_display()
@@ -138,11 +137,11 @@ class GlobalSetting(BaseAbstractModel):
 			A=GlobalSetting.objects.filter(site_id=get_site_id(exposed_request)).aggregate(max=Max('order_item'))
 			if A:
 				if not A[C]is _C:B.order_item=A[C]+1
-		super().save(*(D),**E)
+		super().save(*D,**E)
 @receiver(signals.post_save,sender=User,dispatch_uid='update_user_group')
 def _update_user_group(sender,instance,**D):
-	A=instance;B=A.groups.all()
-	if not B:C=Group.objects.get(id=3);A.groups.add(C);
+	A=instance;print('signal from User',A);B=A.groups.all()
+	if not B:C=Group.objects.get(id=3);A.groups.add(C);print('done')
 @receiver(signals.post_save,sender=Agency)
 def _update_shortuuid(sender,instance,**D):
 	C=instance;A=str(C.id);B=len(A)
