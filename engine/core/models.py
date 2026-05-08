@@ -107,12 +107,14 @@ class ModelList(BaseAbstractModel):
 class ModelListSetting(BaseAbstractModel):
 	model_list=models.ForeignKey(ModelList,on_delete=models.CASCADE);template=models.ForeignKey(Template,on_delete=models.CASCADE)
 	class Meta:verbose_name=_('model list setting');verbose_name_plural=_('model list settings');unique_together=_L,_J
-class OptPosition(models.IntegerChoices):DEFAULT=0,_(_K);TOP=1,_('Top');MIDDLE_TOP=2,_('Middle Top');MIDDLE_BOTTOM=3,_('Middle Bottom');BOTTOM=4,_('Bottom')
+	def __str__(A):return f"{A.template.name} - {A.model_list.name}"
+class OptPosition(models.IntegerChoices):DEFAULT=0,_(_K);TOP=1,_('Top');MIDDLE_TOP=2,_('Middle Top');MIDDLE_BOTTOM=3,_('Middle Bottom');BOTTOM=4,_('Bottom');TOP_VERTICAL=5,_('Top Vertical')
 class ImageDimension(models.Model):
 	model_list_setting=models.ForeignKey(ModelListSetting,on_delete=models.CASCADE);position=models.PositiveIntegerField(choices=OptPosition.choices,default=OptPosition.DEFAULT);image_width=models.SmallIntegerField(default=0);image_height=models.SmallIntegerField(default=0)
 	def get_image_size(A):
 		if A.image_width>0 and A.image_height>0:return f"{A.image_width} x {A.image_height} px"
 	def get_model_list_name(A):return A.model_list_setting.template.name+' - '+A.model_list_setting.model_list.name
+	def __str__(A):return A.get_model_list_name()+' - '+A.get_position_display()
 class MenuDefault(BaseAbstractModel):
 	model_list=models.ForeignKey(ModelList,on_delete=models.CASCADE);service_option=MultiSelectField(choices=OptServiceType.choices,max_length=255,blank=_A,null=_A)
 	class Meta:verbose_name=_('menu default');verbose_name_plural=_('menus default');unique_together='service_option',_L
