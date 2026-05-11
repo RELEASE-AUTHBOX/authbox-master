@@ -476,7 +476,7 @@ def check_need_refresh(site_id,model_name,expired_in):
 def get_autoheadline(site_id,lang,max_data=15):
 	B='count_days';A='headline';model_name='Auto Headline';model_name_editor_choice='Auto Headline Editor Choice';most_view_within=30;show_editor_choice_within=30;editor_choice=.5;system_choice=.5;announcement_percent=.2;article_percent=.3;news_percent=.5;expired_in=1;expired_editor_choice_in=1;announcement_1=math.ceil(editor_choice*announcement_percent*max_data);article_1=math.ceil(editor_choice*article_percent*max_data);news_1=math.ceil(editor_choice*news_percent*max_data);announcement_2=math.ceil(system_choice*announcement_percent*max_data);article_2=math.ceil(system_choice*article_percent*max_data);news_2=math.ceil(system_choice*news_percent*max_data);m_count=max_data
 	if check_need_refresh(site_id,model_name_editor_choice,expired_editor_choice_in):
-		AutoHeadline.objects.filter(site_id=site_id,is_editable=_B).delete();count_days=timezone.now()-datetime.timedelta(days=show_editor_choice_within);print(B,count_days);count_days=count_days.replace(hour=0,minute=0,second=0,microsecond=0);print(B,count_days);subquery_foto=get_photo(_E);obj_announcement=Announcement.objects.language(lang).filter(site_id=site_id,status=OptStatusPublish.PUBLISHED,is_header_text=_B,is_editor_choice=_D,updated_at__gte=count_days).annotate(file_path=subquery_foto).order_by(_F)[:announcement_1];print('obj_announcement',obj_announcement.count(),count_days)
+		print('begin by editor choice');AutoHeadline.objects.filter(site_id=site_id,is_editable=_B).delete();count_days=timezone.now()-datetime.timedelta(days=show_editor_choice_within);print(B,count_days);count_days=count_days.replace(hour=0,minute=0,second=0,microsecond=0);print(B,count_days);subquery_foto=get_photo(_E);obj_announcement=Announcement.objects.language(lang).filter(site_id=site_id,status=OptStatusPublish.PUBLISHED,is_header_text=_B,is_editor_choice=_D,updated_at__gte=count_days).annotate(file_path=subquery_foto).order_by(_F)[:announcement_1];print('obj_announcement',obj_announcement.count(),count_days)
 		for i in obj_announcement:
 			obj=AutoHeadline.objects.create(site_id=site_id,admin_id=i.admin_id,title=i.title,sub_title=i.sub_title,slug=i.slug,categories=i.categories,kind=OptModelKinds.ANNOUNCEMENT,is_editable=_B,created_at=i.created_at,created_at_str=get_natural_datetime(i.created_at))
 			if i.file_path:destination=copy_image(i.file_path,A,resize=100);Photo.objects.create(content_object=obj,file_path=destination)
@@ -492,8 +492,9 @@ def get_autoheadline(site_id,lang,max_data=15):
 			if i.file_path:destination=copy_image(i.file_path,A,resize=100);Photo.objects.create(content_object=obj,file_path=destination)
 			m_count-=1
 			if m_count<=0:break
+	for i in AutoHeadline.objects.all():print(i)
 	if check_need_refresh(site_id,model_name,expired_in):
-		count_days=timezone.now()-datetime.timedelta(days=most_view_within);count_days=count_days.replace(hour=0,minute=0,second=0,microsecond=0);subquery_foto=get_photo(_E);obj_announcement=Announcement.objects.language(lang).filter(site_id=site_id,status=OptStatusPublish.PUBLISHED,is_header_text=_B,is_editor_choice=_B,created_at__gte=count_days).annotate(file_path=subquery_foto).order_by(_C)[:announcement_2]
+		print('get By System');count_days=timezone.now()-datetime.timedelta(days=most_view_within);count_days=count_days.replace(hour=0,minute=0,second=0,microsecond=0);subquery_foto=get_photo(_E);obj_announcement=Announcement.objects.language(lang).filter(site_id=site_id,status=OptStatusPublish.PUBLISHED,is_header_text=_B,is_editor_choice=_B,created_at__gte=count_days).annotate(file_path=subquery_foto).order_by(_C)[:announcement_2]
 		for i in obj_announcement:
 			obj=AutoHeadline.objects.create(site_id=site_id,admin_id=i.admin_id,title=i.title,sub_title=i.sub_title,slug=i.slug,categories=i.categories,kind=OptModelKinds.ANNOUNCEMENT,is_editable=_D,created_at=i.created_at,created_at_str=get_natural_datetime(i.created_at))
 			if i.file_path:destination=copy_image(i.file_path,A,resize=100);Photo.objects.create(content_object=obj,file_path=destination)
@@ -510,12 +511,13 @@ def get_autoheadline(site_id,lang,max_data=15):
 			m_count-=1
 			if m_count<=0:break
 		if m_count>0:
-			subquery_foto=get_photo(_G);obj_news=News.objects.language(lang).filter(site_id=site_id,status=OptStatusPublish.PUBLISHED,is_header_text=_B,is_editor_choice=_B,updated_at__lt=count_days).annotate(file_path=subquery_foto).order_by(_F)[:m_count]
+			print('get extra data');subquery_foto=get_photo(_G);obj_news=News.objects.language(lang).filter(site_id=site_id,status=OptStatusPublish.PUBLISHED,is_header_text=_B,is_editor_choice=_B,updated_at__lt=count_days).annotate(file_path=subquery_foto).order_by(_F)[:m_count]
 			for i in obj_news:
 				obj=AutoHeadline.objects.create(site_id=site_id,admin_id=i.admin_id,title=i.title,sub_title=i.sub_title,slug=i.slug,categories=i.categories,kind=OptModelKinds.NEWS,is_editable=_D,created_at=i.created_at,created_at_str=get_natural_datetime(i.created_at))
 				if i.file_path:destination=copy_image(i.file_path,A,resize=100);Photo.objects.create(content_object=obj,file_path=destination)
 				m_count-=1
 				if m_count<=0:break
+	for i in AutoHeadline.objects.all():print(i)
 	subquery_foto=get_photo(_AK);obj=AutoHeadline.objects.filter(site_id=site_id).annotate(file_path=subquery_foto).order_by('is_editable','updated_at')[:max_data]
 	for i in obj:i.created_at_str=get_natural_datetime(i.created_at)
 	return obj
