@@ -492,7 +492,6 @@ def get_autoheadline(site_id,lang,max_data=15):
 			if i.file_path:destination=copy_image(i.file_path,A,resize=100);Photo.objects.create(content_object=obj,file_path=destination)
 			m_count-=1
 			if m_count<=0:break
-	for i in AutoHeadline.objects.all():print(i)
 	if check_need_refresh(site_id,model_name,expired_in):
 		print('get By System');count_days=timezone.now()-datetime.timedelta(days=most_view_within);count_days=count_days.replace(hour=0,minute=0,second=0,microsecond=0);subquery_foto=get_photo(_E);obj_announcement=Announcement.objects.language(lang).filter(site_id=site_id,status=OptStatusPublish.PUBLISHED,is_header_text=_B,is_editor_choice=_B,created_at__gte=count_days).annotate(file_path=subquery_foto).order_by(_C)[:announcement_2]
 		for i in obj_announcement:
@@ -517,7 +516,6 @@ def get_autoheadline(site_id,lang,max_data=15):
 				if i.file_path:destination=copy_image(i.file_path,A,resize=100);Photo.objects.create(content_object=obj,file_path=destination)
 				m_count-=1
 				if m_count<=0:break
-	for i in AutoHeadline.objects.all():print(i)
 	subquery_foto=get_photo(_AK);obj=AutoHeadline.objects.filter(site_id=site_id).annotate(file_path=subquery_foto).order_by('is_editable','updated_at')[:max_data]
 	for i in obj:i.created_at_str=get_natural_datetime(i.created_at)
 	return obj
