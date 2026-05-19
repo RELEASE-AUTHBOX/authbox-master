@@ -9,7 +9,7 @@ crispy-bootstrap4==2024.10
 django-ckeditor-5==0.2.17
 django-mobile-detect==0.1
 django_money==3.5.4
-authbox_menu==1.0.0
+authbox-menu==1.0.2
 django_outbox_region==1.0.2
 django_outbox_hitcount==1.1.1
 mysqlclient==2.2.0
