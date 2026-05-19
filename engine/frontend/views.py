@@ -224,6 +224,7 @@ def get_relatedlink(site_id,lang,max_data=3):return RelatedLink.objects.language
 def get_news(site_id,lang,max_data=3,max_words=20):
 	subquery_foto=get_photo(_F);obj=News.objects.language(lang).filter(site_id=site_id,status=OptStatusPublish.PUBLISHED).annotate(file_path=subquery_foto).order_by(_H,_G)[:max_data]
 	for i in obj:
+		i.full_content=''
 		if not i.is_header_text:i.full_content=i.content;i.content=Truncator(strip_tags(i.content)).words(max_words);i.created_at=get_natural_datetime(i.created_at)
 	return obj
 def get_article(site_id,lang,max_data=3,max_words=20):
