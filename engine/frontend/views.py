@@ -331,8 +331,8 @@ class IndexView(TemplateView):
 		for photo in photo_gallery:
 			if photo.file_path.startswith(('http://','https://')):img_url=photo.file_path
 			else:img_url=f"/media/{photo.file_path}"
-			gallery_items.append({C:'photo','src':img_url,_b:photo.title,D:photo.file_path})
-		context['gallery_items']=gallery_items;return context
+			gallery_items.append({C:'photo','src':img_url,_b:photo.title,D:img_url})
+		import random;random.shuffle(gallery_items);context['gallery_items']=gallery_items;return context
 class CheckOutView(TemplateView):
 	site_id=_A
 	def get(self,request,*args,**kwargs):
