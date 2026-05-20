@@ -736,17 +736,20 @@ def get_direct_update(request):
 def error_404(request,exception):site_id=get_site_id_front(request);context={};agency=get_agency_info(site_id);context.update(agency);active_page=get_translated_active_page(_T);menu=get_menu_caches(request,_U,site_id,active_page,kinds=1,exclude_menu=0);context.update(menu);parent_order=1;menu_footer0=get_menu_caches_footer2(request,f"header_menu_{parent_order}",site_id,active_page,kinds=1,exclude_menu=1,parent_order=parent_order);context.update(menu_footer0);parent_order=2;menu_footer1=get_menu_caches_footer2(request,f"footer_menu_{parent_order}",site_id,active_page,kinds=1,exclude_menu=1,parent_order=parent_order);context.update(menu_footer1);parent_order=3;menu_footer2=get_menu_caches_footer2(request,f"footer_menu_{parent_order}",site_id,active_page,kinds=1,exclude_menu=1,parent_order=parent_order);context.update(menu_footer2);context[_N]=get_logo(site_id);context[_o]=get_logo_pos(site_id,OptLogoSettingPos.TOP_NORMAL);context[_p]=get_logo_pos(site_id,OptLogoSettingPos.TOP_DARK);context[_q]=get_logo_pos(site_id,OptLogoSettingPos.BOTTOM_NORMAL);context[_r]=get_logo_pos(site_id,OptLogoSettingPos.BOTTOM_DARK);context[_s]=get_format_date();lang=get_active_language_choices()[0];template=get_template(site_id);print(_Ac,template);return render(request,f"{template}error-404.html",context,status=404)
 def error_500(request):site_id=get_site_id_front(request);context={};agency=get_agency_info(site_id);context.update(agency);active_page=get_translated_active_page(_T);menu=get_menu_caches(request,_U,site_id,active_page,kinds=1,exclude_menu=0);context.update(menu);parent_order=1;menu_footer0=get_menu_caches_footer2(request,f"header_menu_{parent_order}",site_id,active_page,kinds=1,exclude_menu=1,parent_order=parent_order);context.update(menu_footer0);parent_order=2;menu_footer1=get_menu_caches_footer2(request,f"footer_menu_{parent_order}",site_id,active_page,kinds=1,exclude_menu=1,parent_order=parent_order);context.update(menu_footer1);parent_order=3;menu_footer2=get_menu_caches_footer2(request,f"footer_menu_{parent_order}",site_id,active_page,kinds=1,exclude_menu=1,parent_order=parent_order);context.update(menu_footer2);context[_N]=get_logo(site_id);context[_o]=get_logo_pos(site_id,OptLogoSettingPos.TOP_NORMAL);context[_p]=get_logo_pos(site_id,OptLogoSettingPos.TOP_DARK);context[_q]=get_logo_pos(site_id,OptLogoSettingPos.BOTTOM_NORMAL);context[_r]=get_logo_pos(site_id,OptLogoSettingPos.BOTTOM_DARK);context[_s]=get_format_date();lang=get_active_language_choices()[0];template=get_template(site_id);print(_Ac,template);return render(request,f"{template}error-500.html",context,status=500)
 def sitemap_view(request):
-	E='changefreq';D='%Y-%m-%dT%H:%M:%S+00:00';C='lastmod';B='loc';A='url';from django.http import HttpResponse;import xml.etree.ElementTree as ET;from django.apps import apps;from django.utils import timezone;from django.contrib.sites.models import Site;root=ET.Element('urlset',xmlns='http://www.sitemaps.org/schemas/sitemap/0.9');languages=[_Y,'en'];static_paths=['','description/detail/','greeting/detail/','booking/detail/'];sites=Site.objects.all()
-	for site in sites:
-		base_url=f"https://{site.domain}"
-		for lang in languages:
-			for path in static_paths:url_elem=ET.SubElement(root,A);loc_elem=ET.SubElement(url_elem,B);loc_elem.text=f"{base_url}/{lang}/{path}"if path else f"{base_url}/{lang}/";lastmod_elem=ET.SubElement(url_elem,C);lastmod_elem.text=timezone.now().strftime(D);changefreq_elem=ET.SubElement(url_elem,E);changefreq_elem.text='daily';priority_elem=ET.SubElement(url_elem,_AB);priority_elem.text='1.0'if not path else'0.8'
-		dynamic_models=[_E,_F,_I,_S,_k]
-		for model_name in dynamic_models:
-			try:
-				model=apps.get_model(_J,model_name);queryset=model.objects.filter(site_id=site.id,status=2)
-				for obj in queryset:
-					if not obj.slug:continue
-					for lang in languages:url_elem=ET.SubElement(root,A);loc_elem=ET.SubElement(url_elem,B);loc_elem.text=f"{base_url}/{lang}/{model_name}/detail/{obj.slug}/";lastmod_elem=ET.SubElement(url_elem,C);updated_at=getattr(obj,_AD,_A)or getattr(obj,'created_at',_A)or timezone.now();lastmod_elem.text=updated_at.strftime(D);changefreq_elem=ET.SubElement(url_elem,E);changefreq_elem.text='weekly';priority_elem=ET.SubElement(url_elem,_AB);priority_elem.text='0.6'
-			except Exception:pass
+	E='changefreq';D='%Y-%m-%dT%H:%M:%S+00:00';C='lastmod';B='loc';A='url';from django.http import HttpResponse;import xml.etree.ElementTree as ET;from django.apps import apps;from django.utils import timezone;from django.contrib.sites.models import Site;from django.contrib.sites.shortcuts import get_current_site;root=ET.Element('urlset',xmlns='http://www.sitemaps.org/schemas/sitemap/0.9');languages=[_Y,'en'];static_paths=['','description/detail/','greeting/detail/','booking/detail/'];host=request.META.get('HTTP_HOST','')or request.META.get('SERVER_NAME','');domain=host.split(':')[0]
+	try:site=Site.objects.get(domain=host)
+	except Site.DoesNotExist:
+		try:site=Site.objects.get(domain=domain)
+		except Site.DoesNotExist:site=get_current_site(request)
+	base_url=f"https://{site.domain}"
+	for lang in languages:
+		for path in static_paths:url_elem=ET.SubElement(root,A);loc_elem=ET.SubElement(url_elem,B);loc_elem.text=f"{base_url}/{lang}/{path}"if path else f"{base_url}/{lang}/";lastmod_elem=ET.SubElement(url_elem,C);lastmod_elem.text=timezone.now().strftime(D);changefreq_elem=ET.SubElement(url_elem,E);changefreq_elem.text='daily';priority_elem=ET.SubElement(url_elem,_AB);priority_elem.text='1.0'if not path else'0.8'
+	dynamic_models=[_E,_F,_I,_S,_k]
+	for model_name in dynamic_models:
+		try:
+			model=apps.get_model(_J,model_name);queryset=model.objects.filter(site_id=site.id,status=2)
+			for obj in queryset:
+				if not obj.slug:continue
+				for lang in languages:url_elem=ET.SubElement(root,A);loc_elem=ET.SubElement(url_elem,B);loc_elem.text=f"{base_url}/{lang}/{model_name}/detail/{obj.slug}/";lastmod_elem=ET.SubElement(url_elem,C);updated_at=getattr(obj,_AD,_A)or getattr(obj,'created_at',_A)or timezone.now();lastmod_elem.text=updated_at.strftime(D);changefreq_elem=ET.SubElement(url_elem,E);changefreq_elem.text='weekly';priority_elem=ET.SubElement(url_elem,_AB);priority_elem.text='0.6'
+		except Exception:pass
 	xml_str=ET.tostring(root,encoding='utf-8',method='xml');response_content=b'<?xml version="1.0" encoding="UTF-8"?>\n'+xml_str;return HttpResponse(response_content,content_type='application/xml')
