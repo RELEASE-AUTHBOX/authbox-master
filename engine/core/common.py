@@ -1,5 +1,5 @@
 _A='agency'
-from .models import Service,Agency,Photo,AgencyMeta
+from.models import Service,Agency,Photo,AgencyMeta
 from django.db.models import OuterRef,Subquery
 from django.conf import settings
 def get_agency_info(site_id):
@@ -11,10 +11,17 @@ def get_agency_info(site_id):
 	return A
 def get_photo(model_name):return Subquery(Photo.objects.filter(object_id=OuterRef('id'),content_type__model=model_name).values('file_path')[:1])
 def get_agency_meta(request,site_id):
-	D=get_photo('agencymeta');C=Service.objects.filter(site_id=site_id).values_list(_A,flat=True);A=None
-	if C:
-		A=Agency.objects.filter(id=C[0])
-		if A:
-			A=A.get();B=AgencyMeta.objects.filter(agency_id=A.id).annotate(file_path=D)[:1]
-			if B:B=B.get();E=settings.MEDIA_URL;return B
-	return None
+	G='http';F='https';B=request;H=get_photo('agencymeta');E=Service.objects.filter(site_id=site_id).values_list(_A,flat=True);C=None
+	if E:
+		C=Agency.objects.filter(id=E[0])
+		if C:
+			C=C.get();A=AgencyMeta.objects.filter(agency_id=C.id).annotate(file_path=H)[:1]
+			if A:
+				A=A.get();D=settings.MEDIA_URL
+				if A.file_path:
+					if not A.file_path.startswith(('http://','https://')):
+						if B:
+							if not A.file_path.startswith(D):A.file_path='%s://%s%s%s'%(F if B.is_secure()else G,B.get_host(),D,A.file_path)
+							else:A.file_path='%s://%s%s'%(F if B.is_secure()else G,B.get_host(),A.file_path)
+						elif not A.file_path.startswith(D):A.file_path=f"{D}{A.file_path}"
+				return A

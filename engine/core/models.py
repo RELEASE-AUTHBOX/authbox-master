@@ -52,8 +52,9 @@ def get_site_id(request):
 class OptBillingType(models.IntegerChoices):TRANSACTION_BASE=1,_('Transaction Base');TIME_BASE=2,_('Time Base');ADVERTISE_BASE=3,_('Advertise Base')
 class OptServiceType(models.IntegerChoices):ECOMMERCE=1,_('E-Commerce');AGENCY=2,_('Agency');SAAS=3,_('Saas');BUSINESS=4,_('Business');PORTOFOLIO=5,_('Portofolio');BLOG=6,_('Blog');EDUCATION=7,_('Education');OTHER=9,_('Other')
 class OptColorTheme(models.IntegerChoices):SLATE=81,_('slate');GRAY=73,_('gray');ZINC=72,_('zinc');NEUTRAL=71,_('neutral');STONE=63,_('stone');RED=62,_('red');ORANGE=61,_('orange');AMBER=53,_('amber');YELLOW=52,_('yellow');LIME=51,_('lime');GREEN=43,_('green');EMERALD=42,_('emerald');TEAL=41,_('teal');CYAN=33,_('cyan');SKY=32,_('sky');BLUE=31,_('blue');INDIGO=23,_('indigo');VIOLET=22,_('violet');PURPLE=21,_('purple');FUCHSIA=13,_('fuchsia');PINK=12,_('pink');ROSE=11,_('rose')
+def photo_upload_path(instance,filename):from datetime import datetime as B;import os;A=B.now();C=A.strftime('%Y');D=A.strftime('%m');E=A.strftime('%d');return os.path.join('crop',C,D,E,filename)
 class Photo(BaseAbstractModel):
-	file_path=models.ImageField(blank=_A,null=_A,upload_to='temp');description=models.CharField(_('photo description'),max_length=500,blank=_A,null=_A);content_type=models.ForeignKey(ContentType,on_delete=models.CASCADE,blank=_A,null=_A);object_id=models.PositiveIntegerField(blank=_A,null=_A);content_object=GenericForeignKey()
+	file_path=models.ImageField(blank=_A,null=_A,upload_to=photo_upload_path);description=models.CharField(_('photo description'),max_length=500,blank=_A,null=_A);content_type=models.ForeignKey(ContentType,on_delete=models.CASCADE,blank=_A,null=_A);object_id=models.PositiveIntegerField(blank=_A,null=_A);content_object=GenericForeignKey()
 	class Meta:verbose_name=_(_E);verbose_name_plural=_('photos')
 	def __str__(A):
 		if A.file_path:return f"{A.file_path.url}"
