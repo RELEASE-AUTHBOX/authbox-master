@@ -318,7 +318,7 @@ class IndexView(TemplateView):
 		for news_loop in context.get(_F,[]):
 			try:raw_content=news_loop.content;desc_str=str(raw_content)if raw_content else''
 			except Exception:desc_str=''
-			news_data.append({_Y:news_loop.id,B:news_loop.categories.name,_c:Truncator(strip_tags(news_loop.title)).words(20),A:news_loop.file_path,'desc':Truncator(strip_tags(desc_str)).words(20)if desc_str else'','full_desc':news_loop.full_content,_O:news_loop.slug,'date':news_loop.created_at,_AD:news_loop.updated_at})
+			news_data.append({_Y:news_loop.id,B:news_loop.categories.name if news_loop.categories else'',_c:Truncator(strip_tags(news_loop.title)).words(20),A:news_loop.file_path,'desc':Truncator(strip_tags(desc_str)).words(20)if desc_str else'','full_desc':news_loop.full_content,_O:news_loop.slug,'date':news_loop.created_at,_AD:news_loop.updated_at})
 		context['news_data']=news_data;seen_cats=[];categories_data=[]
 		for item in news_data:
 			cat=item.get(B,'')
